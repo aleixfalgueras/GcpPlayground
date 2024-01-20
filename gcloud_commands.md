@@ -8,7 +8,7 @@ gcloud auth application-default login
 ### service accounts
 gcloud iam service-accounts create [SERVICE_ACCOUNT_NAME] --display-name "[SERVICE_ACCOUNT_DISPLAY_NAME]"
 gcloud iam service-accounts keys create [FILE_PATH] --iam-account [SERVICE_ACCOUNT_NAME]@[PROJECT_ID].iam.gserviceaccount.com
-
+gsutil iam ch serviceAccount:[SERVICE_ACCOUNT_EMAIL]:roles/storage.admin gs://[BUCKET_NAME]
 
 ### config
 gcloud config configurations create [CONFIGURATION_NAME]

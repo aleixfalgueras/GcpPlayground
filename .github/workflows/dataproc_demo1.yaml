@@ -10,6 +10,7 @@ permissions:
 env:
   PROJECT_ID: industrial-keep-410516
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+  DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1/jars/
 
 jobs:
   build:
@@ -36,4 +37,4 @@ jobs:
 
     - name: Upload jar to GCS
       run: |
-        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} gs://aleix-demos-bucket/dataproc/demo1/jars/
+        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}
