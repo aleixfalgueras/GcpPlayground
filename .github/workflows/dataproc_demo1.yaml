@@ -16,6 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
+    - uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_GCS_SA_DEMOS_KEY }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
     
     - name: Set up JDK 11
       uses: actions/setup-java@v3
@@ -27,14 +34,6 @@ jobs:
     - name: Run sbt clean compile assembly
       run: sbt clean compile assembly
 
-    - uses: google-github-actions/setup-gcloud@v2
-      with:
-        service_account_email: ${{ secrets.GCP_GCS_SA_DEMOS_EMAIL }}
-        service_account_key: ${{ secrets.GCP_GCS_SA_DEMOS_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
-      
     - name: Upload jar to GCS
       run: |
-        pwd
-        ls
-        gsutil -m cp /home/runner/work/GcpPlayground/GcpPlayground/target/scala-2.13/${{ env.JAR_NAME }} gs://aleix-demos-bucket/dataproc/demo1/jars/
+        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} gs://aleix-demos-bucket/dataproc/demo1/jars/
