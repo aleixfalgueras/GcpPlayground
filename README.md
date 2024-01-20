@@ -12,3 +12,5 @@ https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.workfl
 
 GceClusterConfig: Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster.
 
+# TODO:
+- Save SA key in GCS

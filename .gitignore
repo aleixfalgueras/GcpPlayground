@@ -221,3 +221,5 @@ spark-warehouse/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,spark,scala
+
+*key.json

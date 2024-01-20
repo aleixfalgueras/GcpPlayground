@@ -2,10 +2,13 @@ name: Dataproc Demo1
 
 on:
   push:
-    branches: [ "feature/dataproc/demo1" ]
+    branches: ["feature/dataproc/demo1"]
 
 permissions:
   contents: read
+
+env:
+  PROJECT_ID: industrial-keep-410516
 
 jobs:
   build:
@@ -19,24 +22,15 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: 'sbt'
-        
-    # - name: Cache SBT dependencies
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: |
-    #       ~/.ivy2/cache
-    #       ~/.sbt
-    #       ~/.m2
-    #     key: ${{ runner.os }}-sbt-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
-        
-    - name: Run clean compile assembly
+
+    - name: Run sbt clean compile assembly
       run: sbt clean compile assembly
 
     - uses: google-github-actions/setup-gcloud@v2
       with:
-        service_account_email: ${{ secrets.GCP_SA_GCS_EMAIL }}
-        service_account_key: ${{ secrets.GCP_SA_GCS_KEY }}
-        project_id: industrial-keep-410516
+        service_account_email: ${{ secrets.GCP_GCS_SA_DEMOS_EMAIL }}
+        service_account_key: ${{ secrets.GCP_GCS_SA_DEMOS_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
       
     - name: Upload jar to GCS
       run: gsutil -m cp .\target\scala-2.13\GcpPlayground-assembly-0.1.0-SNAPSHOT.jar gs://aleix-demos-bucket/dataproc/demo1/jars/

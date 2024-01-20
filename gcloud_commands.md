@@ -5,17 +5,22 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass (solve ".ps1 is not d
 gcloud auth login
 gcloud auth application-default login
 
+### service accounts
+gcloud iam service-accounts create [SERVICE_ACCOUNT_NAME] --display-name "[SERVICE_ACCOUNT_DISPLAY_NAME]"
+gcloud iam service-accounts keys create [FILE_PATH] --iam-account [SERVICE_ACCOUNT_NAME]@[PROJECT_ID].iam.gserviceaccount.com
+
+
 ### config
-gcloud config configurations create {configurationName}
+gcloud config configurations create [CONFIGURATION_NAME]
 gcloud config list
-gcloud config set project {projectId}
+gcloud config set project [PROJECT_ID]
 
 ### gsutil
-gsutil [-m] cp {local_path} gs://
+gsutil [-m] cp [LOCAL_PATH] gs://
 gsutil rm [-r] gs://
 
 ### storage
 gcloud storage buckets create gs://
 gcloud storage buckets list
-gcloud storage cp {local_path} gs://
+gcloud storage cp [LOCAL_PATH] gs://
 gcloud storage rm gs://
