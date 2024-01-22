@@ -16,8 +16,8 @@ placement:
   managedCluster:
     clusterName: 'ephemeral-spark-cluster'
     config:
-      configBucket: gs://aleix-stg-bucket
-      tempBucket: gs://aleix-tmp-bucket
+      configBucket: aleix-stg-bucket
+      tempBucket: aleix-tmp-bucket
       gceClusterConfig:
         internalIpOnly: true
         subnetworkUri: 'us-central1'

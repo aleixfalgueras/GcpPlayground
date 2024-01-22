@@ -27,9 +27,9 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
-#    - name: Upload worflow template to GCS
-#      run: |
-#        gsutil cp ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }} ${{ env.DEMOS_BUCKET }}/dataproc/
+    - name: Upload worflow template to GCS
+      run: |
+        gsutil cp ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }} ${{ env.DEMOS_BUCKET }}/dataproc/
 
     - name: Run dataproc import
       env:
