@@ -27,5 +27,9 @@ Service accounts:
 APIs:
 - dataproc.googleapis.com
 
+Permission:
+- gsutil iam ch serviceAccount:demos-gcs-sa@industrial-keep-410516.iam.gserviceaccount.com:roles/storage.admin gs://[BUCKET_NAME]
+- gsutil iam ch serviceAccount:demos-gcs-sa@industrial-keep-410516.iam.gserviceaccount.com:roles/dataproc.editor
+
 ### TODO:
 - Save SA key in GCS
