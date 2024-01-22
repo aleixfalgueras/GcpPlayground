@@ -26,5 +26,5 @@ gcloud storage cp [LOCAL_PATH] gs://
 gcloud storage rm gs://
 
 ### dataproc
-gcloud dataproc workflow-templates import [TEMPLATE_NAME] --region=[REGION] --file=[YAML_FILE_PATH]
-gcloud dataproc workflow-templates instantiate [TEMPLATE_NAME] --region=[REGION]
+gcloud dataproc workflow-templates import [TEMPLATE_ID] --region=[REGION] --source=[YAML_FILE_PATH]
+gcloud dataproc workflow-templates instantiate [TEMPLATE_ID] --region=[REGION]
