@@ -10,7 +10,9 @@ permissions:
 env:
   PROJECT_ID: industrial-keep-410516
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
-  DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1/jars/
+  DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1/
+  REGION: us-central1
+  WORKFLOW_TEMPLATE_NAME: demo1.yaml
 
 jobs:
   build:
@@ -35,6 +37,13 @@ jobs:
     - name: Run sbt clean compile assembly
       run: sbt clean compile assembly
 
-    - name: Upload jar to GCS
+    - name: Upload jar and worflow template to GCS
       run: |
-        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}
+        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
+        gsutil cp ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_NAME }} ${{ env.DEMOS_BUCKET }}/dataproc/
+
+    - name: Run dataproc import
+      run: gcloud dataproc workflow-templates import demo1 --region=${{ env.REGION }} --file=${{ env.WORKFLOW_TEMPLATE_NAME }}
+
+    - name: Run dataproc instantiate
+      run:  gcloud dataproc workflow-templates instantiate ${{ env.WORKFLOW_TEMPLATE_NAME }} --region=${{ env.REGION }}
