@@ -15,6 +15,7 @@ GceClusterConfig: Common config settings for resources of Compute Engine cluster
 ### Vars
 Project ID: industrial-keep-410516
 
+### GCP
 Buckets:
 - gs://aleix-tmp-bucket
 - gs://aleix-stg-bucket
@@ -22,6 +23,9 @@ Buckets:
 
 Service accounts:
 - demos-gcs-sa@industrial-keep-410516.iam.gserviceaccount.com
+
+APIs:
+- dataproc.googleapis.com
 
 ### TODO:
 - Save SA key in GCS
