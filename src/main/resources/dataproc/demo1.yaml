@@ -14,7 +14,7 @@ jobs:
     stepId: compute
 placement:
   managedCluster:
-    clusterName: 'ephemeral-spark-cluster'
+    clusterName: 'demo1'
     config:
       configBucket: aleix-stg-bucket
       tempBucket: aleix-tmp-bucket
@@ -26,6 +26,10 @@ placement:
       masterConfig:
         numInstances: 1
         machineTypeUri: 'e2-standard-2'
+        diskConfig:
+          bootDiskSizeGb: 100
       workerConfig:
         numInstances: 2
         machineTypeUri: 'e2-standard-2'
+        diskConfig:
+          bootDiskSizeGb: 100
