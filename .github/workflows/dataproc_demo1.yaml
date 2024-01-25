@@ -59,4 +59,4 @@ jobs:
 
     - name: Run dataproc instantiate
       run: |
-        gcloud dataproc workflow-templates instantiate ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }} --impersonate-service-account=demos-gcs-sa@industrial-keep-410516.iam.gserviceaccount.com
+        gcloud dataproc workflow-templates instantiate ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }}
