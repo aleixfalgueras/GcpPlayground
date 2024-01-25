@@ -20,7 +20,6 @@ placement:
       tempBucket: aleix-tmp-bucket
       gceClusterConfig:
         internalIpOnly: true
-        subnetworkUri: 'us-central1'
       softwareConfig:
         imageVersion: 2.0.56-debian10
       masterConfig:
