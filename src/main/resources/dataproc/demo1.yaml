@@ -6,10 +6,10 @@ jobs:
       mainClass: dataproc.Demo1
       properties:
         spark.driver.cores: "2"
-        spark.driver.memory: "4G"
+        spark.driver.memory: "2G"
         spark.executor.instances: "2"
-        spark.executor.memory: "4G"
-        spark.executor.cores: "4"
+        spark.executor.memory: "2G"
+        spark.executor.cores: "2"
         spark.dynamicAllocation.enabled: "false"
     stepId: compute
 placement:
