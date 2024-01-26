@@ -2,7 +2,7 @@ dagTimeout: 1200s
 jobs:
   - sparkJob:
       jarFileUris:
-        - https://storage.cloud.google.com/aleix-tmp-bucket/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+        - https://storage.cloud.google.com/aleix-demos-bucket/dataproc/demo1/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
       mainClass: com.aleix.dataproc.Demo1
       properties:
         spark.driver.cores: "2"
