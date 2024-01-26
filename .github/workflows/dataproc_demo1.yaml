@@ -39,7 +39,7 @@ jobs:
       run: sbt clean compile assembly
 
     - name: Upload jar to GCS
-      if: ${{ github.event.inputs.action == 'build_and_deploy'}}
+      # if: ${{ github.event.inputs.action == 'build_and_deploy'}}
       env:
         DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
       run: |
