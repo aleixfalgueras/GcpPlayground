@@ -3,7 +3,7 @@ jobs:
   - sparkJob:
       jarFileUris:
         - https://storage.cloud.google.com/aleix-tmp-bucket/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
-      mainClass: dataproc.Demo1
+      mainClass: com.aleix.dataproc.Demo1
       properties:
         spark.driver.cores: "2"
         spark.driver.memory: "2G"
