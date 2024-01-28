@@ -9,11 +9,13 @@ object Demo1 {
   private val logger: Logger = Logger.getLogger(Demo1.getClass)
 
   def main(args: Array[String]): Unit = {
-    val spark = SparkSession.builder.getOrCreate()
+    val spark = SparkSession.builder
+      .master("local[*]")
+      .appName("Hello world")
+      .getOrCreate()
+
     spark.sparkContext.setLogLevel("ERROR") // only affects spark framework messages
-
-    import spark.implicits._
-
+    
     val data = Seq(
       ("A", "Categoría1", 10, "..."),
       ("A", "Categoría2", 20, "---"),
