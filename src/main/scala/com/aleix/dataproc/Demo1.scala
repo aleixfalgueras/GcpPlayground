@@ -14,8 +14,6 @@ object Demo1 {
       .appName("Hello world")
       .getOrCreate()
 
-    spark.sparkContext.setLogLevel("ERROR") // only affects spark framework messages
-    
     val data = Seq(
       ("A", "Categoría1", 10, "..."),
       ("A", "Categoría2", 20, "---"),
@@ -23,9 +21,10 @@ object Demo1 {
       ("B", "Categoría2", 40, "^^^")
     )
 
-    spark.createDataFrame(data).toDF("id", "cat", "valor", "not_important").show()
+    val klass = classOf[SparkSession].getProtectionDomain.getCodeSource.getLocation
+    logger.info("SparkSession: " + klass)
 
-    logger.info("Hello world!")
+    spark.createDataFrame(data).toDF("id", "cat", "valor", "not_important").show()
 
   }
 
