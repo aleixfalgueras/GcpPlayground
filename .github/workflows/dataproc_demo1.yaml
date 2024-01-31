@@ -49,7 +49,7 @@ jobs:
       env:
         DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
       run: |
-        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
+        gsutil -m cp ./target/scala-2.12/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
 
     # ----------------------------------------------------------
 
