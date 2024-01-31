@@ -9,8 +9,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "GcpPlayground",
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-core" % sparkVersion,
-      "org.apache.spark" %% "spark-sql" % sparkVersion
+      "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
+      "org.apache.spark" %% "spark-sql" % sparkVersion % "provided"
     )
   )
 
