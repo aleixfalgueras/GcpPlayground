@@ -38,27 +38,27 @@ jobs:
         cache: 'sbt'
 
     - name: Run sbt clean compile assembly
-      run: sbt clean compile assembly
+      run: sbt -v clean compile
 
-    - name: Upload jar to GCS
-      # if: ${{ github.event.inputs.action == 'build_and_deploy'}}
-      env:
-        DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
-      run: |
-        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
-
-    # ----------------------------------------------------------
-
-    - name: Upload worflow template to GCS
-      run: |
-        gsutil cp ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }} ${{ env.DEMOS_BUCKET }}/dataproc/
-
-    - name: Run dataproc import
-      env:
-        WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }}
-      run: |
-        gcloud dataproc workflow-templates import ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }} --source=${{ env.WORKFLOW_TEMPLATE_FILE_PATH }} --quiet
-
-    - name: Run dataproc instantiate
-      run: |
-        gcloud dataproc workflow-templates instantiate ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }}
+#    - name: Upload jar to GCS
+#      # if: ${{ github.event.inputs.action == 'build_and_deploy'}}
+#      env:
+#        DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
+#      run: |
+#        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
+#
+#    # ----------------------------------------------------------
+#
+#    - name: Upload worflow template to GCS
+#      run: |
+#        gsutil cp ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }} ${{ env.DEMOS_BUCKET }}/dataproc/
+#
+#    - name: Run dataproc import
+#      env:
+#        WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }}
+#      run: |
+#        gcloud dataproc workflow-templates import ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }} --source=${{ env.WORKFLOW_TEMPLATE_FILE_PATH }} --quiet
+#
+#    - name: Run dataproc instantiate
+#      run: |
+#        gcloud dataproc workflow-templates instantiate ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }}
