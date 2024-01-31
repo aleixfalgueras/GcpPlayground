@@ -14,6 +14,10 @@ lazy val root = (project in file("."))
     )
   )
 
+assembly / assemblyShadeRules := Seq(
+  ShadeRule.rename("org.apache.spark.**" -> "relocated.org.apache.spark.@1").inAll
+)
+
 assembly / assemblyMergeStrategy := {
   case PathList("META-INF", "services", xs @ _*) => MergeStrategy.concat
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
