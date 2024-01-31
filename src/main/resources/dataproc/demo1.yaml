@@ -19,7 +19,7 @@ placement:
       configBucket: aleix-stg-bucket
       tempBucket: aleix-tmp-bucket
       softwareConfig:
-        imageVersion: 2.0.56-debian10
+        imageVersion: 2.2.2-debian12
       masterConfig:
         numInstances: 1
         machineTypeUri: 'e2-standard-2'
