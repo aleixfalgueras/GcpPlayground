@@ -1,4 +1,4 @@
-package com.aleix.dataproc
+package com.demos.dataproc
 
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession
