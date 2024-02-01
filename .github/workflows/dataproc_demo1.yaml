@@ -12,7 +12,7 @@ env:
   DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
   REGION: us-central1
   WORKFLOW_TEMPLATE_ID: demo1
-  WORKFLOW_TEMPLATE_FILE_NAME: demo1.yaml
+  WORKFLOW_TEMPLATE_FILE_NAME: demo1_wt.yaml
   # TODO: Remove
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
 

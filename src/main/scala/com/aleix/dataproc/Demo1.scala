@@ -14,15 +14,14 @@ object Demo1 {
       .appName("Hello world")
       .getOrCreate()
 
+    logger.info("Hello world")
+
     val data = Seq(
       ("A", "Categoría1", 10, "..."),
       ("A", "Categoría2", 20, "---"),
       ("B", "Categoría1", 30, "´´´"),
       ("B", "Categoría2", 40, "^^^")
     )
-
-    val klass = classOf[SparkSession].getProtectionDomain.getCodeSource.getLocation
-    logger.info("SparkSession: " + klass)
 
     spark.createDataFrame(data).toDF("id", "cat", "valor", "not_important").show()
 

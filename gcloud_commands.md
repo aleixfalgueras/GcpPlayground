@@ -14,7 +14,6 @@ gcloud iam service-accounts create [SERVICE_ACCOUNT_NAME] --display-name "[SERVI
 gcloud iam service-accounts keys create [FILE_PATH] --iam-account [SERVICE_ACCOUNT_NAME]@[PROJECT_ID].iam.gserviceaccount.com
 gcloud projects add-iam-policy-binding [PROJECT_ID] --member='serviceAccount:[SERVICE_ACCOUNT_EMAIL]' --role='[ROLE]'
 
-
 ### config
 gcloud config configurations create [CONFIGURATION_NAME]
 gcloud config list
