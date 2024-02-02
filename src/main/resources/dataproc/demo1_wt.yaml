@@ -1,0 +1,32 @@
+dagTimeout: 1200s
+jobs:
+  - sparkJob:
+      jarFileUris:
+        - gs://aleix-demos-bucket/dataproc/demo1/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+      mainClass: com.demos.dataproc.Demo1
+      properties:
+        spark.driver.cores: "2"
+        spark.driver.memory: "2G"
+        spark.executor.instances: "2"
+        spark.executor.memory: "2G"
+        spark.executor.cores: "2"
+        spark.dynamicAllocation.enabled: "false"
+    stepId: compute
+placement:
+  managedCluster:
+    clusterName: 'demo1'
+    config:
+      configBucket: aleix-stg-bucket
+      tempBucket: aleix-tmp-bucket
+      softwareConfig:
+        imageVersion: 2.2.2-debian12
+      masterConfig:
+        numInstances: 1
+        machineTypeUri: 'e2-standard-2'
+        diskConfig:
+          bootDiskSizeGb: 100
+      workerConfig:
+        numInstances: 2
+        machineTypeUri: 'e2-standard-2'
+        diskConfig:
+          bootDiskSizeGb: 100

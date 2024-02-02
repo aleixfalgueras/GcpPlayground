@@ -1,14 +1,21 @@
-# GoogleSDKCloud
+# GCP Playground
 
-To install and use GoogleSDKCloud in Windows you must set env var CLOUDSDK_PYTHON (ex: C:\Users\a.falgueras.casals\dev\python\python_3_11_7\python.exe)
+Personal project to explore GCP.
 
-Generate application credentials with gcloud auth application-default login and set env var GOOGLE_APPLICATION_CREDENTIALS.
-Credentials file can be found here: C:\Users\a.falgueras.casals\AppData\Roaming\gcloud\application_default_credentials.json. 
-The credentials will apply to all API calls that make use of the Application Default Credentials client library.
+## Demos 
 
-# Dataproc 
-## Workflow template YAML files
-https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.workflowTemplates
+dataproc.demo1: Datproc's hello world.
 
-GceClusterConfig: Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster.
+## GCP
+Project ID: industrial-keep-410516
 
+Buckets:
+- gs://aleix-tmp-bucket
+- gs://aleix-stg-bucket
+- gs://aleix-demos-bucket
+
+Service accounts:
+- demos-sa@industrial-keep-410516.iam.gserviceaccount.com
+
+## GitHub Action Secrets
+GCP_SA_DEMOS_KEY = demos-sa key

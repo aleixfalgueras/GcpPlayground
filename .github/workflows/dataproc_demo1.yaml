@@ -1,0 +1,35 @@
+name: Dataproc Demo1
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PROJECT_ID: industrial-keep-410516
+  DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
+  REGION: us-central1
+  WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/demo1_wt.yaml
+  WORKFLOW_TEMPLATE_ID: demo1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_SA_DEMOS_KEY }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: Run dataproc import
+      run: |
+        gcloud dataproc workflow-templates import ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }} --source=${{ env.WORKFLOW_TEMPLATE_FILE_PATH }} --quiet
+
+    - name: Run dataproc instantiate
+      run: |
+        gcloud dataproc workflow-templates instantiate ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }}
