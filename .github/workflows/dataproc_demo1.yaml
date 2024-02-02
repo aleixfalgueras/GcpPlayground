@@ -11,18 +11,12 @@ env:
   PROJECT_ID: industrial-keep-410516
   DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
   REGION: us-central1
+  WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/demo1_wt.yaml
   WORKFLOW_TEMPLATE_ID: demo1
-  WORKFLOW_TEMPLATE_FILE_NAME: demo1_wt.yaml
-  # TODO: Remove
-  JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      # sbt configuration
-      JAVA_OPTS: -Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M -Dfile.encoding=UTF-8
-      JVM_OPTS: -Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M -Dfile.encoding=UTF-8
     steps:
     - uses: actions/checkout@v3
 
@@ -33,33 +27,7 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
-    # TODO: Remove ------------------------------------------
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: 'sbt'
-
-    - name: Run sbt clean compile assembly
-      run: sbt -v clean compile assembly
-
-    - name: Upload jar to GCS
-      # if: ${{ github.event.inputs.action == 'build_and_deploy'}}
-      env:
-        DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
-      run: |
-        gsutil -m cp ./target/scala-2.12/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
-
-    # ----------------------------------------------------------
-
-    - name: Upload worflow template to GCS
-      run: |
-        gsutil cp ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }} ${{ env.DEMOS_BUCKET }}/dataproc/
-
     - name: Run dataproc import
-      env:
-        WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/${{ env.WORKFLOW_TEMPLATE_FILE_NAME }}
       run: |
         gcloud dataproc workflow-templates import ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }} --source=${{ env.WORKFLOW_TEMPLATE_FILE_PATH }} --quiet
 
