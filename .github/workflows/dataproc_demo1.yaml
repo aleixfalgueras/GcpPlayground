@@ -1,8 +1,7 @@
 name: Dataproc Demo1
 
 on:
-  push:
-    branches: ["feature/dataproc/demo1"]
+  workflow_dispatch:
 
 permissions:
   contents: read

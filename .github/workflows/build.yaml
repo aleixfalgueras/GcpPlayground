@@ -1,4 +1,4 @@
-name: Build fat jar
+name: Build
 
 on:
   push:
@@ -8,11 +8,11 @@ on:
       action:
         description: 'Action to perform'
         required: true
-        default: 'build_and_deploy'
         type: choice
         options:
           - build
           - build_and_deploy
+        default: 'build_and_deploy'
 
 permissions:
   contents: read
@@ -21,16 +21,21 @@ env:
   PROJECT_ID: industrial-keep-410516
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
   REGION: us-central1
+  DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # sbt configuration
+      JAVA_OPTS: -Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M -Dfile.encoding=UTF-8
+      JVM_OPTS: -Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M -Dfile.encoding=UTF-8
     steps:
     - uses: actions/checkout@v3
 
     - uses: 'google-github-actions/auth@v2'
       with:
-        credentials_json: '${{ secrets.GCP_GCS_SA_DEMOS_KEY }}'
+        credentials_json: '${{ secrets.GCP_GCS_DEMOS_KEY }}'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
@@ -45,9 +50,8 @@ jobs:
     - name: Run sbt clean compile assembly
       run: sbt clean compile assembly
 
+    # TODO: Upload resources to GCS ?
     - name: Upload jar to GCS
       if: ${{ github.event.inputs.action == 'build_and_deploy'}}
-      env:
-        DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
       run: |
         gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
