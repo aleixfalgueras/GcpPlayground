@@ -18,10 +18,12 @@ permissions:
   contents: read
 
 env:
+  ACTION: ${{ inputs.action || 'build_and_deploy' }}
   PROJECT_ID: industrial-keep-410516
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
   REGION: us-central1
   DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
+
 
 jobs:
   build:
@@ -50,8 +52,7 @@ jobs:
     - name: Run sbt clean compile assembly
       run: sbt clean compile assembly
 
-    # TODO: Upload resources to GCS ?
     - name: Upload jar to GCS
-      if: ${{ github.event.inputs.action == 'build_and_deploy'}}
+      if: ${{ env.ACTION == 'build_and_deploy'}}
       run: |
-        gsutil -m cp ./target/scala-2.13/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
+        gsutil -m cp ./target/scala-2.12/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
