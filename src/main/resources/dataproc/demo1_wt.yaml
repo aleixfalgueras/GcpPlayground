@@ -11,11 +11,20 @@ jobs:
         spark.executor.memory: "2G"
         spark.executor.cores: "2"
         spark.dynamicAllocation.enabled: "false"
+        # properties to enable and save spark history logs
+#        spark.eventLog.enabled: "true"
+#        spark.eventLog.dir: "gs://@@GCS_SPARK_HISTORY@@/spark-job-history"
+#        spark.hadoop.yarn.nodemanager.remote-app-log-dir: "gs://@@GCS_SPARK_HISTORY@@/yarn-logs"
+#        spark.history.fs.logDirectory: "gs://@@GCS_SPARK_HISTORY@@/spark-job-history"
+#        spark.history.fs.gs.outputstream.type: "FLUSHABLE_COMPOSITE"
+#        spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
     stepId: compute
 placement:
   managedCluster:
     clusterName: 'demo1'
     config:
+      endpointConfig:
+        enableHttpPortAccess: true  # --enable-component-gateway
       configBucket: aleix-stg-bucket
       tempBucket: aleix-tmp-bucket
       softwareConfig:
