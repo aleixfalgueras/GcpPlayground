@@ -2,7 +2,7 @@
 # buckets
 
 resource "google_storage_bucket_iam_binding" "DCESA_tmp_bucket_admin" {
-  bucket = google_storage_bucket.tmp_bucket.name
+  bucket = google_storage_bucket.dataproc_tmp_bucket.name
   role   = "roles/storage.admin"
 
   members = [
@@ -11,7 +11,7 @@ resource "google_storage_bucket_iam_binding" "DCESA_tmp_bucket_admin" {
 }
 
 resource "google_storage_bucket_iam_binding" "DCESA_stg_bucket_admin" {
-  bucket = google_storage_bucket.stg_bucket.name
+  bucket = google_storage_bucket.dataproc_stg_bucket.name
   role   = "roles/storage.admin"
 
   members = [

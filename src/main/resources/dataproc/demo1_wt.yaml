@@ -25,8 +25,8 @@ placement:
     config:
       endpointConfig:
         enableHttpPortAccess: true  # --enable-component-gateway
-      configBucket: aleix-stg-bucket
-      tempBucket: aleix-tmp-bucket
+      configBucket: dataproc-stg-bucket
+      tempBucket: dataproc-tmp-bucket
       softwareConfig:
         imageVersion: 2.2.2-debian12
       masterConfig:

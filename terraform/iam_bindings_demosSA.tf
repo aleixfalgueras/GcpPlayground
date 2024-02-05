@@ -10,7 +10,7 @@ resource "google_project_iam_member" "demosSA_dataproc_editor_binding" {
 # buckets
 
 resource "google_storage_bucket_iam_binding" "demosSA_demos_bucket_admin" {
-  bucket = google_storage_bucket.demos_bucket.name
+  bucket = google_storage_bucket.aleix_demos_bucket.name
   role   = "roles/storage.admin"
 
   members = [
