@@ -12,6 +12,7 @@ env:
   REGION: us-central1
   WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/demo1_wt.yaml
   WORKFLOW_TEMPLATE_ID: demo1
+  SPARK_HISTORY_BUCKET: spark-history-bucket
 
 jobs:
   deploy:
@@ -25,6 +26,10 @@ jobs:
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: Create spark history logs folder in GCS
+      run: |
+        sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_BUCKET }} ${{ env.WORKFLOW_TEMPLATE_ID }}
 
     - name: Run dataproc import
       run: |
