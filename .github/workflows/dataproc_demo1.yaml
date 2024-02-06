@@ -27,9 +27,10 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
-    - name: Create spark history logs folder in GCS
+    - name: Create spark history logs folders in GCS (if they don't exists)
       run: |
-        sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_BUCKET }} ${{ env.WORKFLOW_TEMPLATE_ID }}
+        sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_BUCKET }} ${{ env.WORKFLOW_TEMPLATE_ID }}/spark-job-history
+        sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_BUCKET }} ${{ env.WORKFLOW_TEMPLATE_ID }}/yarn-logs
 
     - name: Run dataproc import
       run: |

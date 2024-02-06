@@ -18,6 +18,15 @@ resource "google_storage_bucket_iam_binding" "demosSA_demos_bucket_admin" {
   ]
 }
 
+resource "google_storage_bucket_iam_binding" "demosSA_spark_history_bucket_admin" {
+  bucket = google_storage_bucket.spark_history_bucket.name
+  role   = "roles/storage.admin"
+
+  members = [
+    "serviceAccount:${google_service_account.demosSA.email}"
+  ]
+}
+
 /*
 The next configuration allows demos_sa SA to assume roles or perform actions on behalf of the
 default Compute Engine service account (DCESA). This can be useful in scenarios where you want to
