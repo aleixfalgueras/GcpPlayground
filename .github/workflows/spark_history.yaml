@@ -1,6 +1,8 @@
 name: Spark History
 
 on:
+  push:
+    branches: [ "master" ]
   workflow_dispatch:
 
 permissions:
@@ -8,9 +10,10 @@ permissions:
 
 env:
   CLUSTER_NAME: spark-history
+  CLUSTER_REGION: us-central1
   SPARK_HISTORY_BUCKET: spark-history-bucket
-  DATAPROC_STG_BUCKET: gs://dataproc-stg-bucket
-  DATAPROC_TEMP_BUCKET: gs://dataproc-tmp-bucket
+  DATAPROC_STG_BUCKET: dataproc-stg-bucket
+  DATAPROC_TEMP_BUCKET: dataproc-tmp-bucket
   DATAPROC_IMAGE: 2.2.2-debian12
 
 jobs:
@@ -26,6 +29,10 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
-    - name: Create spark history
+    - name: Create spark history cluster
       run: |
-        gcloud dataproc clusters create ${{ env.CLUSTER_NAME }} --region=us --image-version=${{ env.DATAPROC_IMAGE }} --master-machine-type=n2-standard-2 --num-workers=0 --bucket=${{ env.DATAPROC_STG_BUCKET }} --temp-bucket=${{ env.DATAPROC_TEMP_BUCKET }} --enable-component-gateway --properties=dataproc:dataproc.allow.zero.workers=true,yarn:yarn.nodemanager.remote-app-log-dir=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/yarn-logs,spark:spark.history.fs.logDirectory=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/spark-job-history,spark:spark.history.custom.executor.log.url.applyIncompleteApplication=false,spark:spark.history.custom.executor.log.url="{{ '{{YARN_LOG_SERVER_URL}}/{{NM_HOST}}:{{NM_PORT}}/{{CONTAINER_ID}}/{{CONTAINER_ID}}/{{USER}}/{{FILE_NAME}}' }}"
+        gcloud dataproc clusters create ${{ env.CLUSTER_NAME }} --region=${{ env.CLUSTER_REGION }} \
+        --master-machine-type=n2-standard-2 --single-node --image-version=${{ env.DATAPROC_IMAGE }} \
+        --bucket=${{ env.DATAPROC_STG_BUCKET }} --temp-bucket=${{ env.DATAPROC_TEMP_BUCKET }} \
+        --enable-component-gateway \
+        --properties=yarn:yarn.nodemanager.remote-app-log-dir=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/yarn-logs,spark:spark.history.fs.logDirectory=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/spark-job-history,spark:spark.history.custom.executor.log.url.applyIncompleteApplication=false,spark:spark.history.custom.executor.log.url="{{ '{{YARN_LOG_SERVER_URL}}/{{NM_HOST}}:{{NM_PORT}}/{{CONTAINER_ID}}/{{CONTAINER_ID}}/{{USER}}/{{FILE_NAME}}' }}"
