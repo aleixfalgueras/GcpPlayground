@@ -36,7 +36,7 @@ workflow_templates_path = f"{dataproc_path}/workflow_templates"
 # TODO: SDLAPPES-2305
 # PyComposer constants and code
 BIN_PATH = "/home/airflow/gcs/dags/common/bin"
-CHECK_AND_INIT_GCS_FOLDER_SH_FILENAME = "check_and_init_gcs_folder.sh"
+CHECK_AND_INIT_GCS_FOLDER_SH_FILENAME = "init_GCS_folder.sh"
 
 
 def get_check_and_init_gcs_folder_sh_path():
