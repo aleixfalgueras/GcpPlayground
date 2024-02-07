@@ -1,9 +1,17 @@
 name: Spark History
 
 on:
-  push:
-    branches: [ "master" ]
   workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        type: choice
+        options:
+          - create
+          - delete
+        default: 'create'
+
 
 permissions:
   contents: read
@@ -30,9 +38,15 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v2'
 
     - name: Create spark history cluster
+      if: ${{ inputs.ACTION == 'create' }}
       run: |
         gcloud dataproc clusters create ${{ env.CLUSTER_NAME }} --region=${{ env.CLUSTER_REGION }} \
         --master-machine-type=n2-standard-2 --single-node --image-version=${{ env.DATAPROC_IMAGE }} \
         --bucket=${{ env.DATAPROC_STG_BUCKET }} --temp-bucket=${{ env.DATAPROC_TEMP_BUCKET }} \
         --enable-component-gateway \
         --properties=yarn:yarn.nodemanager.remote-app-log-dir=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/yarn-logs,spark:spark.history.fs.logDirectory=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/spark-job-history,spark:spark.history.custom.executor.log.url.applyIncompleteApplication=false,spark:spark.history.custom.executor.log.url="{{ '{{YARN_LOG_SERVER_URL}}/{{NM_HOST}}:{{NM_PORT}}/{{CONTAINER_ID}}/{{CONTAINER_ID}}/{{USER}}/{{FILE_NAME}}' }}"
+
+    - name: Delete spark history cluster
+      if: ${{ inputs.ACTION == 'delete' }}
+      run: |
+        gcloud dataproc clusters delete ${{ env.CLUSTER_NAME }} --region=${{ env.CLUSTER_REGION }}

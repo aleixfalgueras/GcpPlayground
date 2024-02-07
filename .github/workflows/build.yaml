@@ -22,7 +22,6 @@ env:
   REGION: us-central1
   DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
