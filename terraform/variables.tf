@@ -7,6 +7,10 @@ variable "project_id" {
   description = "GCP project ID"
 }
 
+variable "project_number" {
+  description = "GCP project number"
+}
+
 variable "region" {
   description = "Region for all resources"
 }

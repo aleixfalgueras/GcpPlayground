@@ -1,7 +1,7 @@
 
 # roles
 
-resource "google_project_iam_member" "demosSA_dataproc_editor_binding" {
+resource "google_project_iam_member" "demosSA_dataproc_editor" {
   project = var.project_id
   role    = "roles/dataproc.editor"
   member  = "serviceAccount:${google_service_account.demosSA.email}"
@@ -9,22 +9,16 @@ resource "google_project_iam_member" "demosSA_dataproc_editor_binding" {
 
 # buckets
 
-resource "google_storage_bucket_iam_binding" "demosSA_demos_bucket_admin" {
+resource "google_storage_bucket_iam_member" "demosSA_demos_bucket_admin" {
   bucket = google_storage_bucket.aleix_demos_bucket.name
   role   = "roles/storage.admin"
-
-  members = [
-    "serviceAccount:${google_service_account.demosSA.email}"
-  ]
+  member = "serviceAccount:${google_service_account.demosSA.email}"
 }
 
-resource "google_storage_bucket_iam_binding" "demosSA_spark_history_bucket_admin" {
+resource "google_storage_bucket_iam_member" "demosSA_spark_history_bucket_admin" {
   bucket = google_storage_bucket.spark_history_bucket.name
   role   = "roles/storage.admin"
-
-  members = [
-    "serviceAccount:${google_service_account.demosSA.email}"
-  ]
+  member = "serviceAccount:${google_service_account.demosSA.email}"
 }
 
 /*
