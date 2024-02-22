@@ -1,13 +1,12 @@
-package com.demos.dataproc
+package com.demos.quickstart
 
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession
 
 
-object Demo1 {
+object DataprocHelloWorld {
 
-  private val logger: Logger = Logger.getLogger(Demo1.getClass)
-
+  private val logger: Logger = Logger.getLogger(getClass)
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder
       .master("local[*]")

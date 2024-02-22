@@ -1,6 +1,13 @@
 name: Build
 
 on:
+  workflow_call:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        type: string
+        default: 'build_and_deploy'
   workflow_dispatch:
     inputs:
       action:
@@ -20,7 +27,7 @@ env:
   PROJECT_ID: industrial-keep-410516
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
   REGION: us-central1
-  DEMOS_BUCKET: gs://aleix-demos-bucket/dataproc/demo1
+  DEPLOY_PATH: gs://aleix-demos-bucket/jars
 
 jobs:
   build:
@@ -52,4 +59,4 @@ jobs:
     - name: Upload jar to GCS
       if: ${{ env.ACTION == 'build_and_deploy'}}
       run: |
-        gsutil -m cp ./target/scala-2.12/${{ env.JAR_NAME }} ${{ env.DEMOS_BUCKET }}/jars/
+        gsutil -m cp ./target/scala-2.12/${{ env.JAR_NAME }} ${{ env.DEPLOY_PATH }}

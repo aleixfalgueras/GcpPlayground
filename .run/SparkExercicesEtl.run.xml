@@ -1,8 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Demo1" type="Application" factoryName="Application">
+  <configuration default="false" name="SparkExercicesEtl" type="Application" factoryName="Application">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
-    <option name="MAIN_CLASS_NAME" value="com.demos.quickstart.DataprocHelloWorld" />
+    <option name="MAIN_CLASS_NAME" value="com.demos.sparkexercices.SparkExercicesEtl" />
     <module name="GcpPlayground" />
+    <option name="PROGRAM_PARAMETERS" value="--env=dev --executionMode=local" />
+    <shortenClasspath name="MANIFEST" />
     <option name="VM_PARAMETERS" value="-Dlog4j.configurationFile=src/main/resources/log4j2.properties" />
     <extension name="coverage">
       <pattern>
