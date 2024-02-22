@@ -13,9 +13,9 @@ jobs:
         spark.dynamicAllocation.enabled: "false"
         # properties to enable and save spark history logs
         spark.eventLog.enabled: "true"
-        spark.eventLog.dir: "gs://spark-history-bucket/SparkExercicesEtl/spark-job-history"
-        spark.hadoop.yarn.nodemanager.remote-app-log-dir: "gs://spark-history-bucket/SparkExercicesEtl/yarn-logs"
-        spark.history.fs.logDirectory: "gs://spark-history-bucket/SparkExercicesEtl/spark-job-history"
+        spark.eventLog.dir: "gs://spark-history-bucket/spark-exercices-etl/spark-job-history"
+        spark.hadoop.yarn.nodemanager.remote-app-log-dir: "gs://spark-history-bucket/spark-exercices-etl/yarn-logs"
+        spark.history.fs.logDirectory: "gs://spark-history-bucket/spark-exercices-etl/spark-job-history"
         spark.history.fs.gs.outputstream.type: "FLUSHABLE_COMPOSITE"
         spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
     stepId: compute
