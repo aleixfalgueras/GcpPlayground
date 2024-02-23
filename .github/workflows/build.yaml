@@ -3,27 +3,23 @@ name: Build
 on:
   workflow_call:
     inputs:
-      action:
-        description: 'Action to perform'
+      deploy:
+        description: 'Deploy'
         required: true
-        type: string
-        default: 'build_and_deploy'
+        type: boolean
+        default: true
   workflow_dispatch:
     inputs:
-      action:
-        description: 'Action to perform'
+      deploy:
+        description: 'Deploy'
         required: true
-        type: choice
-        options:
-          - build
-          - build_and_deploy
-        default: 'build_and_deploy'
+        type: boolean
+        default: true
 
 permissions:
   contents: read
 
 env:
-  ACTION: ${{ inputs.action || 'build_and_deploy' }}
   PROJECT_ID: industrial-keep-410516
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
   REGION: us-central1
@@ -56,7 +52,7 @@ jobs:
       - name: Run sbt clean compile assembly
         run: sbt clean compile assembly
 
-      - name: Upload jar to GCS
-        if: ${{ env.ACTION == 'build_and_deploy'}}
+      - name: Deploy - Upload jar to GCS
+        if: inputs.deploy == true
         run: |
           gsutil -m cp ./target/scala-2.12/${{ env.JAR_NAME }} ${{ env.DEPLOY_PATH }}
