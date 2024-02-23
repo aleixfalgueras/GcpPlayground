@@ -6,11 +6,8 @@ on:
       build:
         description: 'Build before run workflow?'
         required: true
-        type: choice
-        options:
-          - yes
-          - no
-        default: no
+        type: boolean
+        default: false
 permissions:
   contents: read
 
@@ -22,7 +19,7 @@ env:
 
 jobs:
   call-build-workflow:
-    if: inputs.build == 'yes'
+    if: inputs.build == true
     uses: ./.github/workflows/build.yaml
     with:
       action: "build_and_deploy"
