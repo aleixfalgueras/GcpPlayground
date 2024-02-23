@@ -4,6 +4,9 @@ jobs:
       jarFileUris:
         - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
       mainClass: com.demos.sparkexercices.SparkExercicesEtl
+      args:
+        - "--env=dev"
+        - "--executionMode=GCP"
       properties:
         spark.driver.cores: "2"
         spark.driver.memory: "2G"
