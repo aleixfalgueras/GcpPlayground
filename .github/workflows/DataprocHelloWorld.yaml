@@ -24,6 +24,7 @@ jobs:
     with:
       deploy: true
     secrets: inherit
+
   deploy:
     needs: call-build-workflow
     if: always()

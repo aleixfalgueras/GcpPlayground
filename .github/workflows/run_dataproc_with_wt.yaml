@@ -1,0 +1,62 @@
+name: Run Dataproc with a workflow-template file
+
+on:
+  workflow_call:
+    inputs:
+      region:
+        description: 'Region'
+        required: true
+        type: string
+      workflowTemplateFilePath:
+        description: 'Workflow file path'
+        required: true
+        type: string
+      workflowTemplateId:
+        description: 'Workflow template id'
+        required: true
+        type: string
+      sparkHistoryBucket:
+        description: 'Spark History bucket path'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  call-build-workflow:
+    if: inputs.build == true
+    uses: ./.github/workflows/build.yaml
+    with:
+      deploy: true
+    secrets: inherit
+  deploy:
+    needs: call-build-workflow
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_DEMOSSAK }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Init spark history logs folders in GCS
+        run: |
+          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}/spark-job-history
+          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}/yarn-logs
+
+      - name: Customize workflow-template
+        run: | 
+          sed "s/@@CLUSTER_NAME/${{ inputs.workflowTemplateId }}/g" ${{ inputs.workflowTemplateFilePath }}
+
+      - name: Run dataproc import
+        run: |
+          gcloud dataproc workflow-templates import ${{ inputs.workflowTemplateId }} --region=${{ inputs.region }} --source=${{ inputs.workflowTemplateFilePath }} --quiet
+
+      - name: Run dataproc instantiate
+        run: |
+          gcloud dataproc workflow-templates instantiate ${{ inputs.workflowTemplateId }} --region=${{ inputs.region }}

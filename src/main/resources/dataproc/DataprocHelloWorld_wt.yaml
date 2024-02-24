@@ -24,7 +24,7 @@ jobs:
     stepId: compute
 placement:
   managedCluster:
-    clusterName: 'dataproc-hello-world'
+    clusterName: @@CLUSTER_NAME
     config:
       endpointConfig:
         enableHttpPortAccess: true  # --enable-component-gateway

@@ -11,12 +11,6 @@ on:
 permissions:
   contents: read
 
-env:
-  REGION: us-central1
-  WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
-  WORKFLOW_TEMPLATE_ID: spark-exercices-etl
-  SPARK_HISTORY_BUCKET: spark-history-bucket
-
 jobs:
   call-build-workflow:
     if: inputs.build == true
@@ -24,29 +18,14 @@ jobs:
     with:
       deploy: true
     secrets: inherit
-  deploy:
+
+  call-run-dataproc-with-wt-workflow:
     needs: call-build-workflow
     if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.GCP_DEMOSSAK }}'
-
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-
-      - name: Init spark history logs folders in GCS
-        run: |
-          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_BUCKET }}/${{ env.WORKFLOW_TEMPLATE_ID }}/spark-job-history
-          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_BUCKET }}/${{ env.WORKFLOW_TEMPLATE_ID }}/yarn-logs
-
-      - name: Run dataproc import
-        run: |
-          gcloud dataproc workflow-templates import ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }} --source=${{ env.WORKFLOW_TEMPLATE_FILE_PATH }} --quiet
-
-      - name: Run dataproc instantiate
-        run: |
-          gcloud dataproc workflow-templates instantiate ${{ env.WORKFLOW_TEMPLATE_ID }} --region=${{ env.REGION }}
+    uses: ./.github/workflows/run_dataproc_with_wt.yaml
+    with:
+      region: us-central1
+      workflowTemplateFilePath: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
+      workflowTemplateId: spark-exercices-etl
+      sparkHistoryBucket: spark-history-bucket
+    secrets: inherit
