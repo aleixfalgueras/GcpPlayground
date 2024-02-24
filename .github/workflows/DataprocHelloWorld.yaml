@@ -1,4 +1,4 @@
-name: SparkExercicesEtl
+name: DataprocHelloWorld
 
 on:
   workflow_dispatch:
@@ -13,8 +13,8 @@ permissions:
 
 env:
   REGION: us-central1
-  WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/spark_exercices_etl_wt.yaml
-  WORKFLOW_TEMPLATE_ID: spark-exercices-etl
+  WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/DataprocHelloWorld_wt.yaml
+  WORKFLOW_TEMPLATE_ID: dataproc-hello-world
   SPARK_HISTORY_BUCKET: spark-history-bucket
 
 jobs:
