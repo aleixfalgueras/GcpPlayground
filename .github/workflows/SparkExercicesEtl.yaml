@@ -12,15 +12,15 @@ permissions:
   contents: read
 
 jobs:
-  call-build-workflow:
+  call_build_workflow:
     if: inputs.build == true
     uses: ./.github/workflows/build.yaml
     with:
       deploy: true
     secrets: inherit
 
-  call-run-dataproc-with-wt-workflow:
-    needs: call-build-workflow
+  call_run_dataproc_with_wt_workflow:
+    needs: call_build_workflow
     if: always()
     uses: ./.github/workflows/run_dataproc_with_wt.yaml
     with:

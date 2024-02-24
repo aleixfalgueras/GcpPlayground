@@ -24,15 +24,7 @@ permissions:
   contents: read
 
 jobs:
-  call-build-workflow:
-    if: inputs.build == true
-    uses: ./.github/workflows/build.yaml
-    with:
-      deploy: true
-    secrets: inherit
-  deploy:
-    needs: call-build-workflow
-    if: always()
+  deploy_on_dataproc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -49,9 +41,11 @@ jobs:
           sh ./src/main/resources/bin/init_GCS_folder.sh ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}/spark-job-history
           sh ./src/main/resources/bin/init_GCS_folder.sh ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}/yarn-logs
 
-      - name: Customize workflow-template
+      - name: Customize workflow-template (clusterName = spark history logs folder = workflow template ID)
+        env:
+          SPARK_HISTORY_PATH: ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}
         run: | 
-          sed "s/@@CLUSTER_NAME/${{ inputs.workflowTemplateId }}/g" ${{ inputs.workflowTemplateFilePath }}
+          sed -i 's/@@CLUSTER_NAME/${{ inputs.workflowTemplateId }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflowTemplateFilePath }}
 
       - name: Run dataproc import
         run: |

@@ -18,15 +18,15 @@ env:
   SPARK_HISTORY_BUCKET: spark-history-bucket
 
 jobs:
-  call-build-workflow:
+  call_build_workflow:
     if: inputs.build == true
     uses: ./.github/workflows/build.yaml
     with:
       deploy: true
     secrets: inherit
 
-  deploy:
-    needs: call-build-workflow
+  deploy_on_dataproc:
+    needs: call_build_workflow
     if: always()
     runs-on: ubuntu-latest
     steps:
