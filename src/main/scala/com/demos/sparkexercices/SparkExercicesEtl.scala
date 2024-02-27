@@ -1,6 +1,6 @@
 package com.demos.sparkexercices
 
-import com.configs.SparkExercicesConfig
+import com.configs.SparkExercicesEtlConfig
 import com.demos.utils.StandardCmdLineArgs
 import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.SparkSessionUtils.getSparkSession
@@ -14,14 +14,15 @@ object SparkExercicesEtl {
   private val logger: Logger = Logger.getLogger(getClass)
 
   // adding type annotation crash the code
-  implicit val sparkExercicesConfigReader = pureconfig.ConfigReader[SparkExercicesConfig]
+  implicit val sparkExercicesEtlConfigReader = pureconfig.ConfigReader[SparkExercicesEtlConfig]
+  val configFilePath = "config/spark_exercices_etl.conf"
 
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
     val argsParsed = new StandardCmdLineArgs(args)
     val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
 
-    val sparkExercicesConfig = readConfigFromFile(argsParsed.env(), "config/spark_exercices.conf")
+    val sparkExercicesConfig = readConfigFromFile(argsParsed.env(), configFilePath)
     logger.info(sparkExercicesConfig.toString)
 
     val spark = getSparkSession("SparkExercices", executionMode)

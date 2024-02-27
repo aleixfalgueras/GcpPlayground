@@ -25,7 +25,7 @@ jobs:
     uses: ./.github/workflows/run_dataproc_with_wt.yaml
     with:
       region: us-central1
-      workflowTemplateFilePath: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
-      workflowTemplateId: spark-exercices-etl
-      sparkHistoryBucket: spark-history-bucket
+      workflow_template_file_path: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
+      workflow_template_id: spark-exercices-etl
+      spark_history_bucket: spark-history-bucket
     secrets: inherit

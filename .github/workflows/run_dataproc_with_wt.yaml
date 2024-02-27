@@ -7,21 +7,24 @@ on:
         description: 'Region'
         required: true
         type: string
-      workflowTemplateFilePath:
+      workflow_template_file_path:
         description: 'Workflow file path'
         required: true
         type: string
-      workflowTemplateId:
+      workflow_template_id:
         description: 'Workflow template id'
         required: true
         type: string
-      sparkHistoryBucket:
+      spark_history_bucket:
         description: 'Spark History bucket path'
         required: true
         type: string
 
 permissions:
   contents: read
+  
+env:
+  SPARK_HISTORY_PATH: ${{ inputs.spark_history_bucket }}/${{ inputs.workflow_template_id }}
 
 jobs:
   deploy_on_dataproc:
@@ -38,19 +41,17 @@ jobs:
 
       - name: Init spark history logs folders in GCS
         run: |
-          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}/spark-job-history
-          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}/yarn-logs
+          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_PATH }}/spark-job-history
+          sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_PATH }}/yarn-logs
 
       - name: Customize workflow-template (clusterName = spark history logs folder = workflow template ID)
-        env:
-          SPARK_HISTORY_PATH: ${{ inputs.sparkHistoryBucket }}/${{ inputs.workflowTemplateId }}
         run: | 
-          sed -i 's/@@CLUSTER_NAME/${{ inputs.workflowTemplateId }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflowTemplateFilePath }}
+          sed -i 's/@@CLUSTER_NAME/${{ inputs.workflow_template_id }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflow_template_file_path }}
 
       - name: Run dataproc import
         run: |
-          gcloud dataproc workflow-templates import ${{ inputs.workflowTemplateId }} --region=${{ inputs.region }} --source=${{ inputs.workflowTemplateFilePath }} --quiet
+          gcloud dataproc workflow-templates import ${{ inputs.workflow_template_id }} --region=${{ inputs.region }} --source=${{ inputs.workflow_template_file_path }} --quiet
 
       - name: Run dataproc instantiate
         run: |
-          gcloud dataproc workflow-templates instantiate ${{ inputs.workflowTemplateId }} --region=${{ inputs.region }}
+          gcloud dataproc workflow-templates instantiate ${{ inputs.workflow_template_id }} --region=${{ inputs.region }}
