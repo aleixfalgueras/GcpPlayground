@@ -1,36 +1,45 @@
 package com.demos.sparkexercices
 
+import com.bq.BqType
 import com.configs.SparkExercicesEtlConfig
-import com.demos.utils.StandardCmdLineArgs
-import com.demos.utils.PureConfigUtils.readConfigFromFile
-import com.spark.SparkSessionUtils.getSparkSession
-import com.spark.ExecutionMode
-import com.spark.SparkIO.readFromGcs
-import org.apache.log4j.Logger
-import pureconfig.generic.auto._
-
+import com.demos.sparkexercices.domain.Product
+import com.spark.SparkBq.{getSparkType, writeInBq}
+import com.spark.SparkGCS.readFromGcs
+import org.apache.spark.sql.{SaveMode, SparkSession}
+import org.apache.spark.sql.functions.{col, to_date}
 
 object SparkExercicesEtl {
-  private val logger: Logger = Logger.getLogger(getClass)
 
-  // adding type annotation crash the code
-  implicit val sparkExercicesEtlConfigReader = pureconfig.ConfigReader[SparkExercicesEtlConfig]
-  val configFilePath = "config/spark_exercices_etl.conf"
+  def etlSellers()(implicit spark: SparkSession, config: SparkExercicesEtlConfig): Unit = {
+    val sellers = readFromGcs(spark, config.sellersPath)
 
-  def main(args: Array[String]): Unit = {
-    logger.info("Args: " + args.mkString(", "))
-    val argsParsed = new StandardCmdLineArgs(args)
-    val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
+    val transformedSellers = sellers
+      .withColumn("daily_target", col("daily_target").cast(getSparkType(BqType.INT64)))
 
-    val sparkExercicesConfig = readConfigFromFile(argsParsed.env(), configFilePath)
-    logger.info(sparkExercicesConfig.toString)
+    writeInBq(transformedSellers, config.sellersTable, SaveMode.Overwrite, config.gcp.bqTmpBucket)
 
-    val spark = getSparkSession("SparkExercices", executionMode)
-    val df = readFromGcs(spark, sparkExercicesConfig.sellersPath)
+  }
 
-    df.cache()
-    logger.info(df.count())
-    df.show()
+  def etlProducts()(implicit spark: SparkSession, config: SparkExercicesEtlConfig): Unit = {
+    val productsDf = readFromGcs(spark, config.productsPath)
+
+    import spark.implicits._
+    val productDs = productsDf
+      .withColumn("price", col("price").cast(getSparkType(BqType.NUMERIC)))
+      .as[Product]
+
+    writeInBq(productDs, config.productsTable, SaveMode.Overwrite, config.gcp.bqTmpBucket)
+
+  }
+
+  def etlSales()(implicit spark: SparkSession, config: SparkExercicesEtlConfig): Unit = {
+    val sales = readFromGcs(spark, config.salesPath)
+
+    val transformedSales = sales
+      .withColumn("num_pieces_sold", col("num_pieces_sold").cast(getSparkType(BqType.INT64)))
+      .withColumn("date", to_date(col("date"), "yyyy-MM-dd"))
+
+    writeInBq(transformedSales, config.salesTable, SaveMode.Overwrite, config.gcp.bqTmpBucket)
 
   }
 

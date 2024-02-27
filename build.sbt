@@ -5,8 +5,6 @@ ThisBuild / scalaVersion := "2.12.18" // Spark 3 is pre-built with Scala 2.12
 
 val sparkVersion = "3.5.0" // local version: Spark 3.5.0 built for Hadoop 3.3.4
 
-// TODO: really not needed? a priori not if you use .format(bigquery) instead of read.bigquery(...)
-// "com.google.cloud.spark" %% "spark-bigquery-with-dependencies_2.12" % "0.36.1" % "provided",
 
 lazy val root = (project in file("."))
   .settings(
@@ -16,7 +14,10 @@ lazy val root = (project in file("."))
       "com.github.pureconfig" %% "pureconfig" % "0.17.5",
       "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
       "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
-      "com.google.cloud.bigdataoss" % "gcs-connector" % "hadoop3-2.2.19" % "provided"
+      "com.google.cloud.bigdataoss" % "gcs-connector" % "hadoop3-2.2.19" % "provided",
+      // required for executing in local with "fake" spark for windows
+      "com.google.cloud.spark" %% "spark-bigquery-with-dependencies" % "0.35.1" % "provided",
+      "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided"
     )
   )
 

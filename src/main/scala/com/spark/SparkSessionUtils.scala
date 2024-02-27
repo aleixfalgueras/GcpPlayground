@@ -1,10 +1,11 @@
 package com.spark
 
+import com.spark.ExecutionMode.ExecutionMode
 import org.apache.spark.sql.SparkSession
 
 object SparkSessionUtils {
 
-  def getSparkSession(appName: String, executionMode: ExecutionMode.Value = ExecutionMode.GCP): SparkSession = {
+  def getSparkSession(appName: String, executionMode: ExecutionMode = ExecutionMode.GCP): SparkSession = {
     if (executionMode == ExecutionMode.local) {
       SparkSession.builder
         .master("local[*]")

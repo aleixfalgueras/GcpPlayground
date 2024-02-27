@@ -19,6 +19,10 @@ on:
         description: 'Spark History bucket path'
         required: true
         type: string
+      custom_sed:
+        description: 'Custom workflow template sed'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -44,7 +48,11 @@ jobs:
           sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_PATH }}/spark-job-history
           sh ./src/main/resources/bin/init_GCS_folder.sh ${{ env.SPARK_HISTORY_PATH }}/yarn-logs
 
-      - name: Customize workflow-template (clusterName = spark history logs folder = workflow template ID)
+      - name: Custom workflow template sed
+        if: inputs.custom_sed != ''
+        run: sed -i '${{ inputs.custom_sed }}' ${{ inputs.workflow_template_file_path }}
+
+      - name: Set clusterName and spark history folder path (clusterName = spark history folder path = workflow template ID)
         run: | 
           sed -i 's/@@CLUSTER_NAME/${{ inputs.workflow_template_id }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflow_template_file_path }}
 

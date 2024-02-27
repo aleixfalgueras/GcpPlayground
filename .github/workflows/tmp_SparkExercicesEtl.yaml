@@ -1,6 +1,9 @@
-name: SparkExercicesEtl
+name: Tmp SparkExercicesEtl
 
 on:
+#  push:
+#    branches:
+#      - master
   workflow_dispatch:
     inputs:
       build:
@@ -42,5 +45,5 @@ jobs:
       workflow_template_file_path: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
       workflow_template_id: spark-exercices-etl
       spark_history_bucket: spark-history-bucket
-      custom_sed: s/@@ETL/${{ inputs.etl }}/g;
+      custom_sed: s/@@ETL/products/g;
     secrets: inherit
