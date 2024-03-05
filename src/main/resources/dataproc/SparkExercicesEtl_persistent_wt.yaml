@@ -1,0 +1,29 @@
+dagTimeout: 1200s
+jobs:
+  - sparkJob:
+      jarFileUris:
+        - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+      mainClass: com.demos.sparkexercices.SparkExercicesEtlApp
+      args:
+        - "--env=dev"
+        - "--executionMode=GCP"
+        - "--etl=@@ETL"
+      properties:
+        spark.driver.cores: "2"
+        spark.driver.memory: "2G"
+        spark.executor.instances: "2"
+        spark.executor.memory: "2G"
+        spark.executor.cores: "2"
+        spark.dynamicAllocation.enabled: "false"
+        # properties to enable and save spark history logs
+        spark.eventLog.enabled: "true"
+        spark.eventLog.dir: "gs://@@SPARK_HISTORY_PATH/spark-job-history"
+        spark.hadoop.yarn.nodemanager.remote-app-log-dir: "gs://@@SPARK_HISTORY_PATH/yarn-logs"
+        spark.history.fs.logDirectory: "gs://@@SPARK_HISTORY_PATH/spark-job-history"
+        spark.history.fs.gs.outputstream.type: "FLUSHABLE_COMPOSITE"
+        spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
+    stepId: compute
+placement:
+  clusterSelector:
+    clusterLabels:
+      goog-dataproc-cluster-name: @@CLUSTER_NAME

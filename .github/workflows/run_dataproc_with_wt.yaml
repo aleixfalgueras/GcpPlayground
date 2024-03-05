@@ -7,7 +7,7 @@ on:
         description: 'Region'
         required: true
         type: string
-      workflow_template_file_path:
+      workflow_template_path:
         description: 'Workflow file path'
         required: true
         type: string
@@ -50,15 +50,15 @@ jobs:
 
       - name: Custom workflow template sed
         if: inputs.custom_sed != ''
-        run: sed -i '${{ inputs.custom_sed }}' ${{ inputs.workflow_template_file_path }}
+        run: sed -i '${{ inputs.custom_sed }}' ${{ inputs.workflow_template_path }}
 
       - name: Set clusterName and spark history folder path (clusterName = spark history folder path = workflow template ID)
         run: | 
-          sed -i 's/@@CLUSTER_NAME/${{ inputs.workflow_template_id }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflow_template_file_path }}
+          sed -i 's/@@CLUSTER_NAME/${{ inputs.workflow_template_id }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflow_template_path }}
 
       - name: Run dataproc import
         run: |
-          gcloud dataproc workflow-templates import ${{ inputs.workflow_template_id }} --region=${{ inputs.region }} --source=${{ inputs.workflow_template_file_path }} --quiet
+          gcloud dataproc workflow-templates import ${{ inputs.workflow_template_id }} --region=${{ inputs.region }} --source=${{ inputs.workflow_template_path }} --quiet
 
       - name: Run dataproc instantiate
         run: |

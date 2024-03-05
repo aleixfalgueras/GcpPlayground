@@ -17,13 +17,24 @@ on:
           - sellers
           - sales
           - all
-        default: products
+        default:
+      cluster_type:
+        description: 'Select cluster'
+        required: true
+        type: choice
+        options:
+          - ephemeral
+          - persistent (spark-exercices-etl-persistent)
+        default: ephemeral
 
 permissions:
   contents: read
 
 env:
-  WORKFLOW_TEMPLATE_FILE_PATH: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
+  ephemeral: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
+  ephemeral_id: spark-exercices-etl
+  persistent: ./src/main/resources/dataproc/SparkExercicesEtl_persistent_wt.yaml
+  persistent_id: spark-exercices-etl-persistent
 
 jobs:
   call_build_workflow:
@@ -33,14 +44,31 @@ jobs:
       deploy: true
     secrets: inherit
 
+  prepare_params:
+    runs-on: ubuntu-latest
+    outputs:
+      workflow_template_path: ${{ steps.set_workflow_template_params.outputs.workflow_template_path }}
+      workflow_template_id: ${{ steps.set_workflow_template_params.outputs.workflow_template_id }}
+    steps:
+      - id: set_workflow_template_params
+        name: Set workflow template params output values
+        run: |
+          if [ "${{ github.event.inputs.cluster_type }}" == "ephemeral" ]; then
+            echo "workflow_template_path=${{ env.ephemeral }}" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_id=${{ env.ephemeral_id }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "workflow_template_path=${{ env.persistent }}" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_id=${{ env.persistent_id }}" >> "$GITHUB_OUTPUT"
+          fi
+
   call_run_dataproc_with_wt_workflow:
-    needs: call_build_workflow
+    needs: [call_build_workflow, prepare_params]
     if: always()
     uses: ./.github/workflows/run_dataproc_with_wt.yaml
     with:
       region: us-central1
-      workflow_template_file_path: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
-      workflow_template_id: spark-exercices-etl
+      workflow_template_path: ${{ needs.prepare_params.outputs.workflow_template_path }}
+      workflow_template_id: ${{ needs.prepare_params.outputs.workflow_template_id }}
       spark_history_bucket: spark-history-bucket
       custom_sed: s/@@ETL/${{ inputs.etl }}/g;
     secrets: inherit
