@@ -15,6 +15,10 @@ on:
         description: 'Workflow template id'
         required: true
         type: string
+      cluster_name:
+        description: 'Cluster name'
+        required: true
+        type: string
       spark_history_bucket:
         description: 'Spark History bucket path'
         required: true
@@ -26,14 +30,28 @@ on:
 
 permissions:
   contents: read
-  
+
 env:
-  SPARK_HISTORY_PATH: ${{ inputs.spark_history_bucket }}/${{ inputs.workflow_template_id }}
+  SPARK_HISTORY_PATH: ${{ inputs.spark_history_bucket }}/${{ inputs.cluster_name }}
 
 jobs:
   deploy_on_dataproc:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Validate cluster name'
+        run: |
+          if ! [[ "${{ github.event.inputs.cluster_name }}" =~ ^[a-z]([-a-z0-9]{0,34}[a-z0-9])$ ]]; then
+            cat << EOF
+            Error: The cluster_name does not meet the regular expresion: [a-z]([-a-z0-9]{0,34}[a-z0-9]).
+            The cluster_name must:
+            - Contain only lower-case letters (a-z), numbers (0-9), and hyphens (-).
+            - Must begin with a letter. Cannot begin or end with hyphen.
+            - Must consist of between 2 and 35 characters.
+          EOF
+          exit 1
+          fi
+        shell: bash
+
       - uses: actions/checkout@v3
 
       - uses: 'google-github-actions/auth@v2'
@@ -52,9 +70,9 @@ jobs:
         if: inputs.custom_sed != ''
         run: sed -i '${{ inputs.custom_sed }}' ${{ inputs.workflow_template_path }}
 
-      - name: Set clusterName and spark history folder path (clusterName = spark history folder path = workflow template ID)
+      - name: Set clusterName and spark history folder path (clusterName = spark history folder)
         run: | 
-          sed -i 's/@@CLUSTER_NAME/${{ inputs.workflow_template_id }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflow_template_path }}
+          sed -i 's/@@CLUSTER_NAME/${{ inputs.cluster_name }}/g; s|@@SPARK_HISTORY_PATH|${{ env.SPARK_HISTORY_PATH }}|g' ${{ inputs.workflow_template_path }}
 
       - name: Run dataproc import
         run: |

@@ -17,15 +17,20 @@ on:
           - sellers
           - sales
           - all
-        default:
+        default: sellers
       cluster_type:
-        description: 'Select cluster'
+        description: 'Select cluster type'
         required: true
         type: choice
         options:
           - ephemeral
           - persistent (spark-exercices-etl-persistent)
         default: ephemeral
+      cluster_name:
+        description: 'Cluster name (ignored if cluster_type is persistent)'
+        required: true
+        type: string
+        default: spark-exercices-etl
 
 permissions:
   contents: read
@@ -49,6 +54,7 @@ jobs:
     outputs:
       workflow_template_path: ${{ steps.set_workflow_template_params.outputs.workflow_template_path }}
       workflow_template_id: ${{ steps.set_workflow_template_params.outputs.workflow_template_id }}
+      cluster_name: ${{ steps.set_workflow_template_params.outputs.cluster_name }}
     steps:
       - id: set_workflow_template_params
         name: Set workflow template params output values
@@ -56,9 +62,11 @@ jobs:
           if [ "${{ github.event.inputs.cluster_type }}" == "ephemeral" ]; then
             echo "workflow_template_path=${{ env.ephemeral }}" >> "$GITHUB_OUTPUT"
             echo "workflow_template_id=${{ env.ephemeral_id }}" >> "$GITHUB_OUTPUT"
+            echo "cluster_name=${{ inputs.cluster_name }}" >> "$GITHUB_OUTPUT"
           else
             echo "workflow_template_path=${{ env.persistent }}" >> "$GITHUB_OUTPUT"
             echo "workflow_template_id=${{ env.persistent_id }}" >> "$GITHUB_OUTPUT"
+            echo "cluster_name=spark-exercices-etl-persistent" >> "$GITHUB_OUTPUT"
           fi
 
   call_run_dataproc_with_wt_workflow:
@@ -69,6 +77,7 @@ jobs:
       region: us-central1
       workflow_template_path: ${{ needs.prepare_params.outputs.workflow_template_path }}
       workflow_template_id: ${{ needs.prepare_params.outputs.workflow_template_id }}
+      cluster_name: ${{ needs.prepare_params.outputs.cluster_name }}
       spark_history_bucket: spark-history-bucket
       custom_sed: s/@@ETL/${{ inputs.etl }}/g;
     secrets: inherit
