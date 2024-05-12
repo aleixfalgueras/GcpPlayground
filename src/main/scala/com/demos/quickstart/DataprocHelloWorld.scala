@@ -1,7 +1,6 @@
 package com.demos.quickstart
 
-import com.demos.utils.StandardArgs
-import com.spark.ExecutionMode
+import com.demos.utils.{ExecutionMode, StandardArgs}
 import com.spark.SparkSessionUtils.getSparkSession
 import org.apache.log4j.Logger
 

@@ -18,6 +18,15 @@ on:
           - sales
           - all
         default: sellers
+      targetRepo:
+        description: 'Target repo'
+        required: true
+        type: choice
+        options:
+          - bq
+          - avro
+          - parquet
+        default: bq
       cluster_type:
         description: 'Select cluster type'
         required: true

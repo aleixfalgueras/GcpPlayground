@@ -10,8 +10,11 @@ package object configs {
                                      productsTable: String,
                                      sellersTable: String,
                                      salesTable: String,
-                                     productsPath: String,
-                                     sellersPath: String,
-                                     salesPath: String)
+                                     productsSourceGcsPath: String,
+                                     sellersSourceGcsPath: String,
+                                     salesSourceGcsPath: String,
+                                     productsTargetGcsPath: String,
+                                     sellersTargetGcsPath: String,
+                                     salesTargetGcsPath: String)
 
 }

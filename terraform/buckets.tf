@@ -1,3 +1,4 @@
+
 resource "google_storage_bucket" "dataproc_stg_bucket" {
   name = "dataproc-stg-bucket"
   location = var.multiregion

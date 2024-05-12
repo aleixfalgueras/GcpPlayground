@@ -1,4 +1,4 @@
-package com.spark
+package com.demos.utils
 
 object ExecutionMode extends Enumeration {
   type ExecutionMode = Value

@@ -1,3 +1,4 @@
+
 resource "google_bigquery_dataset" "BQ_dataset_spark_exercices" {
   dataset_id  = "spark_exercices"
   location    = var.multiregion

@@ -29,7 +29,7 @@ without granting broad access or using the default service account directly.
 
 In this particular case, if you don't gran the role serviceAccountUser to demos_sa, the following error is promted:
 
-User (demos_sa) not authorized to act as service account  '321560073577-compute@developer.gserviceaccount.com' (default DCESA).
+User (demos_sa) not authorized to act as service account '321560073577-compute@developer.gserviceaccount.com' (default DCESA).
 To act as a service account, user must have one of [Owner, Editor, Service Account Actor] roles.
 */
 
