@@ -4,7 +4,7 @@ import com.spark.repo.GcsSparkRepo
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
-class AvroGcsSparkRepo(val gcsPath: String)(implicit spark: SparkSession)  extends GcsSparkRepo(gcsPath) {
+class AvroGcsSparkRepo(val gcsPath: String)(implicit spark: SparkSession) extends GcsSparkRepo(gcsPath) {
 
   private val logger: Logger = Logger.getLogger(getClass)
 

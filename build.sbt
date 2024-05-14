@@ -12,9 +12,9 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.rogach" %% "scallop" % "5.0.1",
       "com.github.pureconfig" %% "pureconfig" % "0.17.5",
+      "org.apache.spark" %% "spark-avro" % sparkVersion,
       "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
       "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
-      "org.apache.spark" %% "spark-avro" % sparkVersion % "provided",
       "com.google.cloud.bigdataoss" % "gcs-connector" % "hadoop3-2.2.19" % "provided",
       // required for executing in local with "fake" spark for windows
       "com.google.cloud.spark" %% "spark-bigquery-with-dependencies" % "0.35.1" % "provided",
