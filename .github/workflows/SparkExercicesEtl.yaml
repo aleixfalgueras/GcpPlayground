@@ -45,9 +45,9 @@ permissions:
   contents: read
 
 env:
-  ephemeral: ./src/main/resources/dataproc/SparkExercicesEtl_wt.yaml
+  ephemeral: ./src/main/resources/dataproc/workflowtemplate/SparkExercicesEtl_wt.yaml
   ephemeral_id: spark-exercices-etl
-  persistent: ./src/main/resources/dataproc/SparkExercicesEtl_persistent_wt.yaml
+  persistent: ./src/main/resources/dataproc/workflowtemplate/SparkExercicesEtl_persistent_wt.yaml
   persistent_id: spark-exercices-etl-persistent
 
 jobs:
@@ -88,5 +88,5 @@ jobs:
       workflow_template_id: ${{ needs.prepare_params.outputs.workflow_template_id }}
       cluster_name: ${{ needs.prepare_params.outputs.cluster_name }}
       spark_history_bucket: spark-history-bucket
-      custom_sed: s/@@ETL/${{ inputs.etl }}/g;
+      custom_sed: s/@@ETL/${{ inputs.etl }}/g; s/@@TARGET_REPO/${{ inputs.targetRepo }}/g;
     secrets: inherit

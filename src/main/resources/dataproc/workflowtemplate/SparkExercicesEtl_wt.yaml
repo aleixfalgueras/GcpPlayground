@@ -8,6 +8,7 @@ jobs:
         - "--env=dev"
         - "--executionMode=GCP"
         - "--etl=@@ETL"
+        - "--targetRepo=@@TARGET_REPO"
       properties:
         spark.driver.cores: "2"
         spark.driver.memory: "2G"
