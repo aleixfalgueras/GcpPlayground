@@ -1,7 +1,7 @@
 package com.demos.sparkexercices
 
 import com.demos.utils.StandardArgs
-import com.spark.sparkrepo.SparkRepoType
+import com.spark.repo.SparkRepoType
 import org.rogach.scallop.ScallopOption
 
 class SparkExercicesEtlArgs(args: Seq[String]) extends StandardArgs(args) {

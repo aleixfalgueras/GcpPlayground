@@ -5,11 +5,11 @@ import com.demos.sparkexercices.SparkExercicesEtl.{etlProducts, etlSales, etlSel
 import com.demos.utils.ExecutionMode
 import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.SparkSessionUtils.getSparkSession
-import com.spark.sparkrepo.GcsSparkRepo.getGcsSparkRepo
-import com.spark.sparkrepo.SparkRepo.getSparkRepo
-import com.spark.sparkrepo.SparkRepoType.getSparkRepoType
-import com.spark.sparkrepo.gcssparkrepo.{AvroGcsSparkRepo, ParquetGcsSparkRepo}
-import com.spark.sparkrepo.{SparkRepo, SparkRepoType}
+import com.spark.repo.GcsSparkRepo.getGcsSparkRepo
+import com.spark.repo.SparkRepo.getSparkRepo
+import com.spark.repo.SparkRepoType.getSparkRepoType
+import com.spark.repo.gcs.{AvroGcsSparkRepo, ParquetGcsSparkRepo}
+import com.spark.repo.{SparkRepo, SparkRepoType}
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession
 import pureconfig.generic.auto._

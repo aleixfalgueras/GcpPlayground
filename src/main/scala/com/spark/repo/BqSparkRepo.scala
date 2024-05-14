@@ -1,4 +1,4 @@
-package com.spark.sparkrepo
+package com.spark.repo
 import com.bq.BqType
 import org.apache.log4j.Logger
 import org.apache.spark.sql.types._

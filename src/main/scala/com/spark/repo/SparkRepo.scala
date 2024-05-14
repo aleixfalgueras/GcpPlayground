@@ -1,6 +1,6 @@
-package com.spark.sparkrepo
+package com.spark.repo
 
-import com.spark.sparkrepo.GcsSparkRepo.getGcsSparkRepo
+import com.spark.repo.GcsSparkRepo.getGcsSparkRepo
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
 trait SparkRepo {

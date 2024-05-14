@@ -1,4 +1,4 @@
-package com.spark.sparkrepo
+package com.spark.repo
 
 
 object SparkRepoType extends Enumeration {

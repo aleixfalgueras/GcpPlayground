@@ -1,6 +1,6 @@
-package com.spark.sparkrepo
+package com.spark.repo
 
-import com.spark.sparkrepo.gcssparkrepo.{AvroGcsSparkRepo, ParquetGcsSparkRepo}
+import com.spark.repo.gcs.{AvroGcsSparkRepo, ParquetGcsSparkRepo}
 import org.apache.spark.sql.SparkSession
 
 abstract class GcsSparkRepo(val path: String) extends SparkRepo

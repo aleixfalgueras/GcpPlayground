@@ -1,6 +1,6 @@
-package com.spark.sparkrepo.gcssparkrepo
+package com.spark.repo.gcs
 
-import com.spark.sparkrepo.GcsSparkRepo
+import com.spark.repo.GcsSparkRepo
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 

@@ -1,7 +1,7 @@
 package com.demos.sparkexercices
 
 import com.demos.sparkexercices.domain.Product
-import com.spark.sparkrepo.{GcsSparkRepo, SparkRepo}
+import com.spark.repo.{GcsSparkRepo, SparkRepo}
 import org.apache.spark.sql.functions.{col, to_date}
 import org.apache.spark.sql.types.{DecimalType, IntegerType}
 import org.apache.spark.sql.{SaveMode, SparkSession}
