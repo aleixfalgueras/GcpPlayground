@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="SparkExercicesEtlBq" type="Application" factoryName="Application" folderName="SparkExercicesEtl">
+  <configuration default="false" name="SparkExercicesEtlSellersAvro" type="Application" factoryName="Application" folderName="SparkExercicesEtl">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.demos.sparkexercices.SparkExercicesEtlApp" />
     <module name="GcpPlayground" />
-    <option name="PROGRAM_PARAMETERS" value="--env=dev --executionMode=local --etl=sellers" />
+    <option name="PROGRAM_PARAMETERS" value="--env=dev --executionMode=local --etl=sellers --targetRepo=avro" />
     <shortenClasspath name="MANIFEST" />
-    <option name="VM_PARAMETERS" value="-Dlog4j.configurationFile=src/main/resources/log4j2.properties" />
+    <option name="VM_PARAMETERS" value="-Dlog4j.configurationFile=src/main/resources/log4j2.properties -Duser.timezone=Europe/Sofia" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.*" />
