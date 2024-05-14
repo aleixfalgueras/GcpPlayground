@@ -38,8 +38,8 @@ object SparkExercicesEtlApp {
     val targetRepo = getSparkRepoType(argsParsed.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepo")
 
-    implicit val spark: SparkSession = getSparkSession("SparkExercicesEtl", executionMode)
     implicit val config: SparkExercicesEtlConfig = readConfigFromFile(argsParsed.env(), configFilePath)
+    implicit val spark: SparkSession = getSparkSession("SparkExercicesEtl", executionMode, config.timezone)
 
     logger.info(config.toString)
 

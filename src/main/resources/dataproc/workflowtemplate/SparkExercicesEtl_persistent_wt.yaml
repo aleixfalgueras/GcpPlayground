@@ -16,6 +16,9 @@ jobs:
         spark.executor.memory: "2G"
         spark.executor.cores: "2"
         spark.dynamicAllocation.enabled: "false"
+        # jvm logs timezone config
+        spark.driver.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
+        spark.executor.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
         # properties to enable and save spark history logs
         spark.eventLog.enabled: "true"
         spark.eventLog.dir: "gs://@@SPARK_HISTORY_PATH/spark-job-history"

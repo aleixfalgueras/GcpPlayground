@@ -6,9 +6,9 @@ import org.apache.spark.sql.SparkSession
 
 object SparkSessionUtils {
 
-  def getSparkSession(appName: String, executionMode: ExecutionMode = ExecutionMode.GCP): SparkSession = {
-    val timezone = "Europe/Sofia"
-
+  def getSparkSession(appName: String,
+                      executionMode: ExecutionMode = ExecutionMode.GCP,
+                      timezone: String = "Europe/Madrid"): SparkSession = {
     if (executionMode == ExecutionMode.local) {
       SparkSession.builder
         .master("local[*]")

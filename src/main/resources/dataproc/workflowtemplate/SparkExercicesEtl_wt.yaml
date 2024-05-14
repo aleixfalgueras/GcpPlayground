@@ -16,7 +16,7 @@ jobs:
         spark.executor.memory: "2G"
         spark.executor.cores: "2"
         spark.dynamicAllocation.enabled: "false"
-        # jvm
+        # jvm logs timezone config
         spark.driver.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
         spark.executor.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
         # properties to enable and save spark history logs
@@ -31,6 +31,9 @@ placement:
   managedCluster:
     clusterName: @@CLUSTER_NAME
     config:
+      initializationActions:
+        "executableFile": "gs://aleix-demos-bucket/init_actions/set_timezone.sh"
+        "executionTimeout": "300s"
       endpointConfig:
         enableHttpPortAccess: true
       configBucket: dataproc-stg-bucket

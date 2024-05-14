@@ -7,6 +7,7 @@ package object configs {
                  bqTmpBucket: String)
 
   case class SparkExercicesEtlConfig(gcp: GCP,
+                                     timezone: String,
                                      productsTable: String,
                                      sellersTable: String,
                                      salesTable: String,
