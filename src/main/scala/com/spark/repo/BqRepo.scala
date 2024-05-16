@@ -4,7 +4,7 @@ import org.apache.log4j.Logger
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
-class BqSparkRepo(tableName: String, gcsTmpBucket: String)(implicit spark: SparkSession) extends SparkRepo {
+class BqRepo(tableName: String, gcsTmpBucket: String)(implicit spark: SparkSession) extends SparkRepo {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
@@ -14,11 +14,11 @@ class BqSparkRepo(tableName: String, gcsTmpBucket: String)(implicit spark: Spark
 
   }
 
-  override def write[T](data: Dataset[T], mode: SaveMode): Unit = {
+  override def write[T](data: Dataset[T], saveMode: SaveMode): Unit = {
     logger.info(s"Writing $tableName in BigQuery...")
     data.write
       .format("bigquery")
-      .mode(mode)
+      .mode(saveMode)
       .option("temporaryGcsBucket", gcsTmpBucket)
       .save(tableName)
 

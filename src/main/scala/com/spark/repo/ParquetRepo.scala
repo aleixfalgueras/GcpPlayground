@@ -1,11 +1,10 @@
-package com.spark.repo.gcs
+package com.spark.repo
 
-import com.spark.repo.GcsSparkRepo
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
 
-class ParquetGcsSparkRepo(val gcsPath: String)(implicit spark: SparkSession) extends GcsSparkRepo(gcsPath) {
+class ParquetRepo(val path: String)(implicit spark: SparkSession) extends SparkRepo {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
@@ -15,8 +14,8 @@ class ParquetGcsSparkRepo(val gcsPath: String)(implicit spark: SparkSession) ext
 
   }
 
-  override def write[T](data: Dataset[T], mode: SaveMode): Unit = {
-    data.write.mode(mode).parquet(path)
+  override def write[T](data: Dataset[T], saveMode: SaveMode): Unit = {
+    data.write.mode(saveMode).parquet(path)
     logger.info(s"PARQUET write performed in $path (no guarantee of success)")
   }
 

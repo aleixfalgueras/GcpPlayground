@@ -5,11 +5,9 @@ import com.demos.sparkexercices.SparkExercicesEtl.{etlProducts, etlSales, etlSel
 import com.demos.utils.ExecutionMode
 import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.SparkSessionUtils.getSparkSession
-import com.spark.repo.GcsSparkRepo.getGcsSparkRepo
-import com.spark.repo.SparkRepo.getSparkRepo
+import com.spark.repo.SparkRepo.{getGcsSparkRepo, getSparkRepo}
 import com.spark.repo.SparkRepoType.getSparkRepoType
-import com.spark.repo.gcs.{AvroGcsSparkRepo, ParquetGcsSparkRepo}
-import com.spark.repo.{SparkRepo, SparkRepoType}
+import com.spark.repo.{AvroRepo, ParquetRepo, SparkRepo, SparkRepoType}
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession
 import pureconfig.generic.auto._
@@ -26,8 +24,8 @@ object SparkExercicesEtlApp {
   val configFilePath = "config/spark_exercices_etl.conf"
 
   def updateGcsPathWithFormat(targetRepo: SparkRepo)(implicit spark: SparkSession): SparkRepo = targetRepo match {
-    case repo: AvroGcsSparkRepo => new AvroGcsSparkRepo(repo.path + "avro/")
-    case repo: ParquetGcsSparkRepo => new ParquetGcsSparkRepo(repo.path + "parquet/")
+    case repo: AvroRepo => new AvroRepo(repo.path + "avro/")
+    case repo: ParquetRepo => new ParquetRepo(repo.path + "parquet/")
     case _ => targetRepo
   }
 
