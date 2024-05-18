@@ -3,6 +3,8 @@ import com.spark.repo.BqRepo.ONLY_READ_REPO
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
+import scala.util.{Success, Try, Failure}
+
 class BqRepo(tableName: String, gcsTmpBucket: String = ONLY_READ_REPO)(implicit spark: SparkSession) extends SparkRepo {
 
   private val logger: Logger = Logger.getLogger(getClass)
@@ -20,6 +22,23 @@ class BqRepo(tableName: String, gcsTmpBucket: String = ONLY_READ_REPO)(implicit 
       .mode(saveMode)
       .option("temporaryGcsBucket", gcsTmpBucket)
       .save(tableName)
+
+  }
+
+  def readExternalTable(): DataFrame = {
+    spark.conf.set("materializationDataset", tableName.split('.')(1))
+    val query = s"SELECT * FROM `$tableName`"
+
+    Try {
+      logger.info(s"Reading from external table $tableName with query $query...")
+      spark.read
+        .format("bigquery")
+        .options(Map("viewsEnabled" -> "true", "query" -> query))
+        .load()
+    } match {
+      case Failure(exc) => logger.error(s"Error trying to read external table $tableName"); throw exc;
+      case Success(df) => df
+    }
 
   }
 

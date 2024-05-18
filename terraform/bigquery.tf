@@ -94,3 +94,39 @@ resource "google_bigquery_table" "BQ_table_sales" {
     }
   ])
 }
+
+resource "google_bigquery_table" "BQ_table_sellers_external_table" {
+  dataset_id = google_bigquery_dataset.BQ_dataset_spark_exercices.dataset_id
+  table_id   = "sellers_external_table"
+
+  schema = jsonencode([
+    {
+      name = "seller_id"
+      type = "STRING"
+      mode = "REQUIRED"
+    },
+    {
+      name = "seller_name"
+      type = "STRING"
+      mode = "NULLABLE"
+    },
+    {
+      name = "daily_target"
+      type = "INT64"
+      mode = "NULLABLE"
+    }
+  ])
+
+  external_data_configuration {
+    source_uris = ["gs://aleix-demos-bucket/data/external_tables/sellers_external_table.csv"]
+    source_format = "CSV"
+
+    csv_options {
+      skip_leading_rows = 1
+      field_delimiter   = ","
+      quote             = ""
+    }
+
+    autodetect = false
+  }
+}
