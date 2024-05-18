@@ -8,7 +8,7 @@
     <option name="VM_PARAMETERS" value="-Dlog4j.configurationFile=src/main/resources/log4j2.properties -Duser.timezone=Europe/Sofia" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.*" />
+        <option name="PATTERN" value="com.spark.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

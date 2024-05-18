@@ -5,7 +5,8 @@ import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
 import scala.util.{Success, Try, Failure}
 
-class BqRepo(tableName: String, gcsTmpBucket: String = ONLY_READ_REPO)(implicit spark: SparkSession) extends SparkRepo {
+class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(implicit spark: SparkSession)
+  extends SparkRepo {
 
   private val logger: Logger = Logger.getLogger(getClass)
 

@@ -1,14 +1,14 @@
-package com.spark.demos.sparkexercices
+package com.spark.demos.sparkexercices.etl
 
-import com.configs.SparkExercicesEtlConfig
-import SparkExercicesEtl.{etlProducts, etlSales, etlSellers}
-import com.spark.demos.utils.PureConfigUtils.readConfigFromFile
-import com.spark.utils.SparkSessionUtils.getSparkSession
+import com.configs.SparkExercicesConfig
+import com.spark.demos.sparkexercices.etl.Etl.{etlProducts, etlSales, etlSellers}
 import com.spark.demos.utils
 import com.spark.demos.utils.ExecutionMode
+import com.spark.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.repo.SparkRepo.{getGcsSparkRepo, getSparkRepo}
 import com.spark.repo.SparkRepoType.getSparkRepoType
-import com.spark.repo.{AvroRepo, CsvRepo, ParquetRepo, SparkRepo, SparkRepoType}
+import com.spark.repo._
+import com.spark.utils.SparkSessionUtils.getSparkSession
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession
 import pureconfig.generic.auto._
@@ -17,12 +17,12 @@ import pureconfig.generic.auto._
  * Simple Spark-Dataproc ETL examples.
  *
  */
-object SparkExercicesEtlApp {
+object EtlApp {
   private val logger: Logger = Logger.getLogger(getClass)
 
   // ! adding type annotation crash the code
-  implicit val sparkExercicesEtlConfigReader = pureconfig.ConfigReader[SparkExercicesEtlConfig]
-  val configFilePath = "config/spark_exercices_etl.conf"
+  implicit val sparkExercicesEtlConfigReader = pureconfig.ConfigReader[SparkExercicesConfig]
+  val configFilePath = "config/spark_exercices.conf"
 
   def updateGcsPathWithFormat(targetRepo: SparkRepo)(implicit spark: SparkSession): SparkRepo = targetRepo match {
     case repo: AvroRepo => new AvroRepo(repo.path + "avro/")
@@ -33,12 +33,12 @@ object SparkExercicesEtlApp {
 
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
-    val argsParsed = new SparkExercicesEtlArgs(args)
+    val argsParsed = new EtlArgs(args)
     val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
     val targetRepoType = getSparkRepoType(argsParsed.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
 
-    implicit val config: SparkExercicesEtlConfig = readConfigFromFile(argsParsed.env(), configFilePath)
+    implicit val config: SparkExercicesConfig = readConfigFromFile(argsParsed.env(), configFilePath)
     implicit val spark: SparkSession = getSparkSession("SparkExercicesEtl", executionMode, config.timezone)
 
     logger.info(config.toString)

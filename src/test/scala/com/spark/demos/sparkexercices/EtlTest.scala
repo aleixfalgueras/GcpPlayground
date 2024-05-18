@@ -1,13 +1,13 @@
-package com.demos.sparkexercices
+package com.spark.demos.sparkexercices
 
-import com.SparkTest
-import com.spark.demos.sparkexercices.SparkExercicesEtl.getSellersDailyTargetByTeam
-import com.demos.sparkexercices.SparkExercicesEtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
+import com.spark.demos.sparkexercices.etl.Etl.getSellersDailyTargetByTeam
+import EtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
+import com.spark.SparkTest
 import com.spark.utils.BqSparkSchema.getSparkSchema
 import com.spark.repo.CsvRepo
 import org.apache.spark.sql.types.{IntegerType, StructField, StructType}
 
-class SparkExercicesEtlTest extends SparkTest {
+class EtlTest extends SparkTest {
 
   val sellersSourceSchema: StructType = getSparkSchema(sellersSchemaPath)
   val sellersSourceRepo = new CsvRepo(sellersSourcePath, Some(sellersSourceSchema))
@@ -27,7 +27,7 @@ class SparkExercicesEtlTest extends SparkTest {
 
 }
 
-object SparkExercicesEtlTest {
+object EtlTest {
 
   val sellersDir = "src/test/resources/sparkexercices/sellers"
 
