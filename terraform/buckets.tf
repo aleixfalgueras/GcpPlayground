@@ -68,3 +68,21 @@ resource "google_storage_bucket" "spark_history_bucket" {
     }
   }
 }
+
+resource "google_storage_bucket" "aleix_downloader_bucket" {
+  name = "aleix-downloader-bucket"
+  location = var.multiregion
+
+  uniform_bucket_level_access = true
+  force_destroy = true
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+
+    condition {
+      age = 7 # days
+    }
+  }
+}

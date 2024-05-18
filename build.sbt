@@ -4,7 +4,7 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "2.12.18" // Spark 3 is pre-built with Scala 2.12
 
 val sparkVersion = "3.5.0" // local version: Spark 3.5.0 built for Hadoop 3.3.4
-val sparkTestingVersion = ""
+val sparkTestingVersion = "3.5.0_1.5.3"
 
 lazy val root = (project in file("."))
   .settings(
@@ -17,6 +17,7 @@ lazy val root = (project in file("."))
       "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
       "com.google.cloud.bigdataoss" % "gcs-connector" % "hadoop3-2.2.19" % "provided",
       // testing
+      "org.mockito" %% "mockito-scala-scalatest" % "1.16.15" % Test,
       "com.holdenkarau" %% "spark-testing-base" % sparkTestingVersion % Test,
       // required for executing in local with "fake" spark for windows
       "com.google.cloud.spark" %% "spark-bigquery-with-dependencies" % "0.35.1" % "provided",

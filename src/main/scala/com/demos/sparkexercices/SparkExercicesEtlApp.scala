@@ -7,7 +7,7 @@ import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.SparkSessionUtils.getSparkSession
 import com.spark.repo.SparkRepo.{getGcsSparkRepo, getSparkRepo}
 import com.spark.repo.SparkRepoType.getSparkRepoType
-import com.spark.repo.{AvroRepo, ParquetRepo, SparkRepo, SparkRepoType}
+import com.spark.repo.{AvroRepo, CsvRepo, ParquetRepo, SparkRepo, SparkRepoType}
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession
 import pureconfig.generic.auto._
@@ -26,6 +26,7 @@ object SparkExercicesEtlApp {
   def updateGcsPathWithFormat(targetRepo: SparkRepo)(implicit spark: SparkSession): SparkRepo = targetRepo match {
     case repo: AvroRepo => new AvroRepo(repo.path + "avro/")
     case repo: ParquetRepo => new ParquetRepo(repo.path + "parquet/")
+    case repo: CsvRepo => new CsvRepo(repo.path + "csv/", repo.someSchema, repo.readOptions, repo.writeOptions)
     case _ => targetRepo
   }
 
@@ -33,8 +34,8 @@ object SparkExercicesEtlApp {
     logger.info("Args: " + args.mkString(", "))
     val argsParsed = new SparkExercicesEtlArgs(args)
     val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
-    val targetRepo = getSparkRepoType(argsParsed.targetRepo())
-    logger.info(s"Execution mode: $executionMode, target repo: $targetRepo")
+    val targetRepoType = getSparkRepoType(argsParsed.targetRepo())
+    logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
 
     implicit val config: SparkExercicesEtlConfig = readConfigFromFile(argsParsed.env(), configFilePath)
     implicit val spark: SparkSession = getSparkSession("SparkExercicesEtl", executionMode, config.timezone)
@@ -45,25 +46,28 @@ object SparkExercicesEtlApp {
     val productsSourceRepo = getGcsSparkRepo(SparkRepoType.parquet, config.productsSourceGcsPath)
     val salesSourceRepo = getGcsSparkRepo(SparkRepoType.parquet, config.salesSourceGcsPath)
 
-    val someGcsTmpBucket = Some(config.gcp.bqTmpBucket)
-
-    val sellersTargetRepo = updateGcsPathWithFormat(getSparkRepo(targetRepo,
-      Some(config.sellersTable),
-      someGcsTmpBucket,
-      Some(config.sellersTargetGcsPath)
+    val sellersTargetRepo = updateGcsPathWithFormat(getSparkRepo(
+      sparkRepoType = targetRepoType,
+      bqTableName = Some(config.sellersTable),
+      gcsTmpBucket = Some(config.gcp.bqTmpBucket),
+      dataPath = Some(config.sellersTargetGcsPath),
+      isGcsPath = true
     ))
 
     val productsTargetRepo = updateGcsPathWithFormat(getSparkRepo(
-      targetRepo,
-      Some(config.productsTable),
-      someGcsTmpBucket,
-      Some(config.productsTargetGcsPath)
+      sparkRepoType = targetRepoType,
+      bqTableName = Some(config.productsTable),
+      gcsTmpBucket = Some(config.gcp.bqTmpBucket),
+      dataPath = Some(config.productsTargetGcsPath),
+      isGcsPath = true
     ))
 
-    val salesTargetRepo = updateGcsPathWithFormat(getSparkRepo(targetRepo,
-      Some(config.salesTable),
-      someGcsTmpBucket,
-      Some(config.salesTargetGcsPath)
+    val salesTargetRepo = updateGcsPathWithFormat(getSparkRepo(
+      sparkRepoType = targetRepoType,
+      bqTableName = Some(config.salesTable),
+      gcsTmpBucket = Some(config.gcp.bqTmpBucket),
+      dataPath = Some(config.salesTargetGcsPath),
+      isGcsPath = true
     ))
 
     logger.info(s"Executing ${argsParsed.etl()} ETL...")
@@ -85,7 +89,7 @@ object SparkExercicesEtlApp {
         throw new Exception(s"ETL ${argsParsed.etl()} not known")
     }
 
-    logger.info(s"ETL ${argsParsed.etl()} ($targetRepo flavour) finished.")
+    logger.info(s"ETL ${argsParsed.etl()} ($targetRepoType flavour) finished.")
 
   }
 

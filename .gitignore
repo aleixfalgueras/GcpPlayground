@@ -262,3 +262,4 @@ terraform.rc
 notas.txt
 oauth_playground_credentials.json
 /src/main/scala/com/QuickTest.scala
+/src/main/resources/downloader/*

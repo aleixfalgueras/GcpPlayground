@@ -2,17 +2,25 @@ package com.demos.sparkexercices
 
 import com.demos.sparkexercices.domain.Product
 import com.spark.repo.SparkRepo
-import org.apache.spark.sql.functions.{col, to_date}
+import org.apache.spark.sql.functions.{col, lit, to_date, when, sum}
 import org.apache.spark.sql.types.{DecimalType, IntegerType}
-import org.apache.spark.sql.{SaveMode, SparkSession}
+import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
 object SparkExercicesEtl {
 
+  def getSellersDailyTargetByTeam(sellersData: DataFrame): DataFrame = {
+    sellersData
+      .withColumn("daily_target", col("daily_target").cast(IntegerType))
+      .withColumn("team", when(col("seller_id").cast(IntegerType) < lit(5), 0).otherwise(1))
+      .groupBy("team")
+      .agg(sum("daily_target").as("daily_target_by_team"))
+      .select("team", "daily_target_by_team")
+
+  }
+
   def etlSellers(sourceRepo: SparkRepo, targetRepo: SparkRepo)(implicit spark: SparkSession): Unit = {
     val transformedSellers = sourceRepo.read()
-      .withColumn("daily_target",
-        col("daily_target").cast(IntegerType)
-      )
+      .withColumn("daily_target", col("daily_target").cast(IntegerType))
 
     targetRepo.write(transformedSellers, SaveMode.Overwrite)
 
