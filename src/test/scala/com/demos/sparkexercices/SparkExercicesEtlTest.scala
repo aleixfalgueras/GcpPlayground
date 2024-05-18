@@ -1,9 +1,9 @@
 package com.demos.sparkexercices
 
 import com.SparkTest
-import com.demos.sparkexercices.SparkExercicesEtl.getSellersDailyTargetByTeam
+import com.spark.demos.sparkexercices.SparkExercicesEtl.getSellersDailyTargetByTeam
 import com.demos.sparkexercices.SparkExercicesEtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
-import com.spark.BqSparkSchema.getSparkSchema
+import com.spark.utils.BqSparkSchema.getSparkSchema
 import com.spark.repo.CsvRepo
 import org.apache.spark.sql.types.{IntegerType, StructField, StructType}
 

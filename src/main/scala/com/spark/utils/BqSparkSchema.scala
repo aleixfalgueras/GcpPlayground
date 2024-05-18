@@ -1,4 +1,4 @@
-package com.spark
+package com.spark.utils
 
 import com.bq.BqType
 import com.bq.BqType.getBqType

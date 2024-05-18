@@ -1,4 +1,4 @@
-package com.demos.utils
+package com.spark.demos.utils
 
 import org.rogach.scallop.{ScallopConf, ScallopOption}
 

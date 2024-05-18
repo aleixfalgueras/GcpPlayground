@@ -9,7 +9,6 @@ case object JavaDateUtils {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
-
   /*
   * Converts String dateString to a Some[LocalDate] if there's any format in dateFormats that matches dateString.
   * Returns None in any other case.

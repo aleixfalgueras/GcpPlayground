@@ -1,6 +1,6 @@
-package com.demos.sparkexercices
+package com.spark.demos.sparkexercices
 
-import com.demos.utils.StandardArgs
+import com.spark.demos.utils.StandardArgs
 import com.spark.repo.SparkRepoType
 import org.rogach.scallop.ScallopOption
 

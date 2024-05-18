@@ -1,10 +1,11 @@
-package com.demos.sparkexercices
+package com.spark.demos.sparkexercices
 
 import com.configs.SparkExercicesEtlConfig
-import com.demos.sparkexercices.SparkExercicesEtl.{etlProducts, etlSales, etlSellers}
-import com.demos.utils.ExecutionMode
-import com.demos.utils.PureConfigUtils.readConfigFromFile
-import com.spark.SparkSessionUtils.getSparkSession
+import SparkExercicesEtl.{etlProducts, etlSales, etlSellers}
+import com.spark.demos.utils.PureConfigUtils.readConfigFromFile
+import com.spark.utils.SparkSessionUtils.getSparkSession
+import com.spark.demos.utils
+import com.spark.demos.utils.ExecutionMode
 import com.spark.repo.SparkRepo.{getGcsSparkRepo, getSparkRepo}
 import com.spark.repo.SparkRepoType.getSparkRepoType
 import com.spark.repo.{AvroRepo, CsvRepo, ParquetRepo, SparkRepo, SparkRepoType}
@@ -77,10 +78,10 @@ object SparkExercicesEtlApp {
       case "sales" => etlSales(salesSourceRepo, salesTargetRepo)
       case "all" =>
         executionMode match {
-          case com.demos.utils.ExecutionMode.local =>
+          case utils.ExecutionMode.local =>
             etlSellers(sellersSourceRepo, sellersTargetRepo)
             etlProducts(productsSourceRepo, productsTargetRepo)
-          case com.demos.utils.ExecutionMode.GCP =>
+          case utils.ExecutionMode.GCP =>
             etlSellers(sellersSourceRepo, sellersTargetRepo)
             etlProducts(productsSourceRepo, productsTargetRepo)
             etlSales(salesSourceRepo, salesTargetRepo)

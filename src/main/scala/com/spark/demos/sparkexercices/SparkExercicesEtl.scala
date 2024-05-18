@@ -1,8 +1,8 @@
-package com.demos.sparkexercices
+package com.spark.demos.sparkexercices
 
-import com.demos.sparkexercices.domain.Product
+import com.spark.demos.sparkexercices.domain.Product
 import com.spark.repo.SparkRepo
-import org.apache.spark.sql.functions.{col, lit, to_date, when, sum}
+import org.apache.spark.sql.functions.{col, lit, sum, to_date, when}
 import org.apache.spark.sql.types.{DecimalType, IntegerType}
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 

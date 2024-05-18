@@ -1,7 +1,7 @@
-package com.spark
+package com.spark.utils
 
-import com.demos.utils.ExecutionMode
-import com.demos.utils.ExecutionMode.ExecutionMode
+import com.spark.demos.utils.ExecutionMode
+import com.spark.demos.utils.ExecutionMode.ExecutionMode
 import org.apache.spark.sql.SparkSession
 
 object SparkSessionUtils {
