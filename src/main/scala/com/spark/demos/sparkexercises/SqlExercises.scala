@@ -1,7 +1,6 @@
-package com.spark.demos.sparkexercices
+package com.spark.demos.sparkexercises
 
-import com.configs.SparkExercicesConfig
-import com.spark.demos.sparkexercices.etl.EtlApp.configFilePath
+import com.configs.SparkExercisesConfig
 import com.spark.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.repo.ParquetRepo
 import com.spark.utils.SparkSessionUtils.getSparkSession
@@ -9,14 +8,19 @@ import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+import pureconfig.generic.auto._
 
 import scala.collection.immutable.Seq
 
 
-object SqlExercices {
+object SqlExercises {
 
   val PRODUCT_ID = "product_id"
   val PIECES_SOLD = "num_pieces_sold"
+
+  // ! adding type annotation crash the code
+  implicit val sparkExercisesEtlConfigReader = pureconfig.ConfigReader[SparkExercisesConfig]
+  val configFilePath = "config/spark_exercises.conf"
 
   /* WARM-UP 1: Which is the product contained in more orders? */
   def warmUp1(products: DataFrame, sales: DataFrame, sellers: DataFrame): Unit = {
@@ -110,33 +114,6 @@ object SqlExercices {
 
   }
 
-  def create_rdd_df_ds(sparkSession: SparkSession): Unit = {
-    val myDfSchema = StructType(Seq(
-      StructField("numbers", IntegerType, nullable = true),
-      StructField("letters", StringType)))
-
-    val data = Seq(
-      Row(0, "b"),
-      Row(1, "a"))
-
-    // rdd to df
-    val myRdd = sparkSession.sparkContext.parallelize(data)
-    val myDf = sparkSession.createDataFrame(myRdd, myDfSchema)
-    myDf.show()
-
-    // df to ds
-    case class Persona(edad: Integer, nombre: String)
-    import sparkSession.implicits._
-    val myDs = myDf.as[Persona]
-    myDs.show()
-
-    // rdd to ds
-    val myDsFromRdd = myRdd.map { (row: Row) => // first step is get and RDD of the type of the future DS
-      Persona(row.getAs[Integer](0), row.getAs[String](1))
-    }.toDS()
-    myDsFromRdd.show()
-  }
-
   def explode_example(spark: SparkSession): Unit = {
     val schema = StructType(Seq(
       StructField("name", StringType, nullable = true),
@@ -177,8 +154,9 @@ object SqlExercices {
   }
 
   def main(args: Array[String]): Unit = {
-    implicit val spark: SparkSession = getSparkSession("SqlExercices")
-    implicit val config: SparkExercicesConfig = readConfigFromFile("dev", configFilePath)
+    implicit val spark: SparkSession = getSparkSession("SqlExercises")
+
+    implicit val config = readConfigFromFile("dev", configFilePath)
 
     val products = new ParquetRepo(config.productsSourceGcsPath).read()
     val sales = new ParquetRepo(config.salesSourceGcsPath).read()
@@ -194,7 +172,6 @@ object SqlExercices {
     ex3(sales)
     ex4(spark)
     joinExamples(products, sales, sellers)
-    create_rdd_df_ds(spark)
     explode_example(spark)
     pivot_example(spark)
 

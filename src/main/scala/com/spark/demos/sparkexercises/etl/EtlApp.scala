@@ -1,7 +1,7 @@
-package com.spark.demos.sparkexercices.etl
+package com.spark.demos.sparkexercises.etl
 
-import com.configs.SparkExercicesConfig
-import com.spark.demos.sparkexercices.etl.Etl.{etlProducts, etlSales, etlSellers}
+import com.configs.SparkExercisesConfig
+import com.spark.demos.sparkexercises.etl.Etl.{etlProducts, etlSales, etlSellers}
 import com.spark.demos.utils
 import com.spark.demos.utils.ExecutionMode
 import com.spark.demos.utils.PureConfigUtils.readConfigFromFile
@@ -21,8 +21,8 @@ object EtlApp {
   private val logger: Logger = Logger.getLogger(getClass)
 
   // ! adding type annotation crash the code
-  implicit val sparkExercicesEtlConfigReader = pureconfig.ConfigReader[SparkExercicesConfig]
-  val configFilePath = "config/spark_exercices.conf"
+  implicit val sparkExercisesEtlConfigReader = pureconfig.ConfigReader[SparkExercisesConfig]
+  val configFilePath = "config/spark_exercises.conf"
 
   def updateGcsPathWithFormat(targetRepo: SparkRepo)(implicit spark: SparkSession): SparkRepo = targetRepo match {
     case repo: AvroRepo => new AvroRepo(repo.path + "avro/")
@@ -38,8 +38,8 @@ object EtlApp {
     val targetRepoType = getSparkRepoType(argsParsed.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
 
-    implicit val config: SparkExercicesConfig = readConfigFromFile(argsParsed.env(), configFilePath)
-    implicit val spark: SparkSession = getSparkSession("SparkExercicesEtl", executionMode, config.timezone)
+    implicit val config: SparkExercisesConfig = readConfigFromFile(argsParsed.env(), configFilePath)
+    implicit val spark: SparkSession = getSparkSession("SparkExercisesEtl", executionMode, config.timezone)
 
     logger.info(config.toString)
 

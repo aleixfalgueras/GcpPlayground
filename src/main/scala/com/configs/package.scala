@@ -6,7 +6,7 @@ package object configs {
                  demosBucket: String,
                  bqTmpBucket: String)
 
-  case class SparkExercicesConfig(gcp: GCP,
+  case class SparkExercisesConfig(gcp: GCP,
                                   timezone: String,
                                   productsTable: String,
                                   sellersTable: String,

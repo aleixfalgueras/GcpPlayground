@@ -1,4 +1,4 @@
-name: SparkExercicesEtl
+name: SparkExercisesEtl
 
 on:
   workflow_dispatch:
@@ -33,22 +33,22 @@ on:
         type: choice
         options:
           - ephemeral
-          - persistent (spark-exercices-etl-persistent)
+          - persistent (spark-exercises-etl-persistent)
         default: ephemeral
       cluster_name:
         description: 'Cluster name (ignored if cluster_type is persistent)'
         required: true
         type: string
-        default: spark-exercices-etl
+        default: spark-exercises-etl
 
 permissions:
   contents: read
 
 env:
-  ephemeral: ./src/main/resources/dataproc/workflowtemplate/SparkExercicesEtl_wt.yaml
-  ephemeral_id: spark-exercices-etl
-  persistent: ./src/main/resources/dataproc/workflowtemplate/SparkExercicesEtl_persistent_wt.yaml
-  persistent_id: spark-exercices-etl-persistent
+  ephemeral: ./src/main/resources/dataproc/workflowtemplate/SparkExercisesEtl_wt.yaml
+  ephemeral_id: spark-exercises-etl
+  persistent: ./src/main/resources/dataproc/workflowtemplate/SparkExercisesEtl_persistent_wt.yaml
+  persistent_id: spark-exercises-etl-persistent
 
 jobs:
   call_build_workflow:
@@ -75,7 +75,7 @@ jobs:
           else
             echo "workflow_template_path=${{ env.persistent }}" >> "$GITHUB_OUTPUT"
             echo "workflow_template_id=${{ env.persistent_id }}" >> "$GITHUB_OUTPUT"
-            echo "cluster_name=spark-exercices-etl-persistent" >> "$GITHUB_OUTPUT"
+            echo "cluster_name=spark-exercises-etl-persistent" >> "$GITHUB_OUTPUT"
           fi
 
   call_run_dataproc_with_wt_workflow:

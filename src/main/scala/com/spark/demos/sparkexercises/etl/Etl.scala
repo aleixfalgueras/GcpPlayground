@@ -1,6 +1,6 @@
-package com.spark.demos.sparkexercices.etl
+package com.spark.demos.sparkexercises.etl
 
-import com.spark.demos.sparkexercices.domain.Product
+import com.spark.demos.sparkexercises.domain.Product
 import com.spark.repo.SparkRepo
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{DecimalType, IntegerType}

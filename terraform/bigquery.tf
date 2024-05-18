@@ -1,13 +1,13 @@
 
-resource "google_bigquery_dataset" "BQ_dataset_spark_exercices" {
-  dataset_id  = "spark_exercices"
+resource "google_bigquery_dataset" "BQ_dataset_spark_exercises" {
+  dataset_id  = "spark_exercises"
   location    = var.multiregion
-  description = "Dataset for tables used in Spark Exercices"
+  description = "Dataset for tables used in Spark Exercises"
 }
 
 resource "google_bigquery_table" "BQ_table_products" {
   project             = var.project_id
-  dataset_id          = google_bigquery_dataset.BQ_dataset_spark_exercices.dataset_id
+  dataset_id          = google_bigquery_dataset.BQ_dataset_spark_exercises.dataset_id
   table_id            = "products"
   deletion_protection = false
 
@@ -32,7 +32,7 @@ resource "google_bigquery_table" "BQ_table_products" {
 
 resource "google_bigquery_table" "BQ_table_sellers" {
   project             = var.project_id
-  dataset_id          = google_bigquery_dataset.BQ_dataset_spark_exercices.dataset_id
+  dataset_id          = google_bigquery_dataset.BQ_dataset_spark_exercises.dataset_id
   table_id            = "sellers"
   deletion_protection = false
 
@@ -57,7 +57,7 @@ resource "google_bigquery_table" "BQ_table_sellers" {
 
 resource "google_bigquery_table" "BQ_table_sales" {
   project             = var.project_id
-  dataset_id          = google_bigquery_dataset.BQ_dataset_spark_exercices.dataset_id
+  dataset_id          = google_bigquery_dataset.BQ_dataset_spark_exercises.dataset_id
   table_id            = "sales"
   deletion_protection = false
 
@@ -96,8 +96,9 @@ resource "google_bigquery_table" "BQ_table_sales" {
 }
 
 resource "google_bigquery_table" "BQ_table_sellers_external_table" {
-  dataset_id = google_bigquery_dataset.BQ_dataset_spark_exercices.dataset_id
+  dataset_id = google_bigquery_dataset.BQ_dataset_spark_exercises.dataset_id
   table_id   = "sellers_external_table"
+  deletion_protection = false
 
   schema = jsonencode([
     {

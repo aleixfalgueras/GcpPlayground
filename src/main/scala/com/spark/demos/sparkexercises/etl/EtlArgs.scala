@@ -1,4 +1,4 @@
-package com.spark.demos.sparkexercices.etl
+package com.spark.demos.sparkexercises.etl
 
 import com.spark.demos.utils.StandardArgs
 import com.spark.repo.SparkRepoType

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="SparkExercicesEtlTest" type="ScalaTestRunConfiguration" factoryName="ScalaTest" nameIsGenerated="true" show_console_on_std_err="false" show_console_on_std_out="false">
+  <configuration default="false" name="SparkExercisesEtlTest" type="ScalaTestRunConfiguration" factoryName="ScalaTest" show_console_on_std_err="false" show_console_on_std_out="false">
     <module name="GcpPlayground" />
     <option name="allowRunningInParallel" value="false" />
     <option name="projectPathOnTarget" />
@@ -8,7 +8,7 @@
     </option>
     <option name="testKind" value="Class" />
     <option name="shortenClasspath" value="ARGS_FILE" />
-    <option name="testClassPath" value="com.demos.sparkexercices.SparkExercicesEtlTest" />
+    <option name="testClassPath" value="com.spark.demos.sparkexercises.etl.EtlTest" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

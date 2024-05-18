@@ -3,7 +3,7 @@
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.spark.downloader.Downloader" />
     <module name="GcpPlayground" />
-    <option name="PROGRAM_PARAMETERS" value="--sourceRepo=parquet --source=gs://aleix-demos-bucket/data/spark_exercices/sellers_parquet/* --targetRepo=csv --targetPath=gs://aleix-downloader-bucket/sellers/" />
+    <option name="PROGRAM_PARAMETERS" value="--sourceRepo=parquet --source=gs://aleix-demos-bucket/data/spark_exercises/sellers_parquet/* --targetRepo=csv --targetPath=gs://aleix-downloader-bucket/sellers/" />
     <shortenClasspath name="MANIFEST" />
     <option name="VM_PARAMETERS" value="-Dlog4j.configurationFile=src/main/resources/log4j2.properties -Duser.timezone=Europe/Sofia" />
     <extension name="coverage">

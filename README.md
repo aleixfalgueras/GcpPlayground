@@ -9,9 +9,9 @@ Disk usage in GCS:
     products: 779 MB
     sales: 10.2 GB
 
-#### SparkExercicesEtl timezone
+#### SparkExercisesEtl timezone
 
-If you want to use another timezone, modify the current value in the config file (spark_exercices_etl.conf), 
+If you want to use another timezone, modify the current value in the config file (spark_exercises_etl.conf), 
 the workflowtemplate being used, and in the initialization action that the Dataproc cluster execute.
 
 code -> spark session timezone (used for internal Spark SQL and Dataframe operations)
