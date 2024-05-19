@@ -8,6 +8,7 @@ import org.apache.log4j.Logger
 object DataprocHelloWorld {
 
   private val logger: Logger = Logger.getLogger(getClass)
+
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
     val argsParsed = new StandardArgs(args)

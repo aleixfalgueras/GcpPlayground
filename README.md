@@ -12,7 +12,7 @@ Disk usage in GCS:
 #### SparkExercisesEtl timezone
 
 If you want to use another timezone, modify the current value in the config file (spark_exercises_etl.conf), 
-the workflowtemplate being used, and in the initialization action that the Dataproc cluster execute.
+the workflowtemplate being used, and in the initialization action that the Dataproc cluster executes.
 
 code -> spark session timezone (used for internal Spark SQL and Dataframe operations)
 workflowtemplate -> JVM timezone (used for logging, if not informed Spark JVM uses the system timezone)
