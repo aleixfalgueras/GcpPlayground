@@ -40,7 +40,7 @@ resource "google_bigquery_table" "BQ_table_sellers" {
     {
       name = "seller_id"
       type = "STRING"
-      mode = "REQUIRED"
+      mode = "NULLABLE"
     },
     {
       name = "seller_name"
@@ -49,7 +49,7 @@ resource "google_bigquery_table" "BQ_table_sellers" {
     },
     {
       name = "daily_target"
-      type = "INT64"
+      type = "INTEGER"
       mode = "NULLABLE"
     }
   ])
@@ -130,4 +130,10 @@ resource "google_bigquery_table" "BQ_table_sellers_external_table" {
 
     autodetect = false
   }
+}
+
+resource "google_bigquery_dataset" "BQ_dataset_dataflow_exercises" {
+  dataset_id  = "dataflow_exercises"
+  location    = var.multiregion
+  description = "Dataset for tables used in Dataflow Exercises"
 }
