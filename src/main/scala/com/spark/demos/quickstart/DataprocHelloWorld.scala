@@ -4,7 +4,6 @@ import com.spark.utils.SparkSessionUtils.getSparkSession
 import com.spark.demos.utils.{ExecutionMode, StandardArgs}
 import org.apache.log4j.Logger
 
-
 object DataprocHelloWorld {
 
   private val logger: Logger = Logger.getLogger(getClass)

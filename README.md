@@ -2,6 +2,10 @@
 
 Personal project to learn and explore GCP.
 
+### Dataflow
+
+SCIO plugin is required: https://github.com/spotify/scio-idea-plugin
+
 ### Demos (WIP 🔨)
 
 Disk usage in GCS: 

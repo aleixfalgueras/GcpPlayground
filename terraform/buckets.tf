@@ -69,8 +69,8 @@ resource "google_storage_bucket" "spark_history_bucket" {
   }
 }
 
-resource "google_storage_bucket" "aleix_downloader_bucket" {
-  name = "aleix-downloader-bucket"
+resource "google_storage_bucket" "aleix_tmp_bucket" {
+  name = "aleix-tmp-bucket"
   location = var.multiregion
 
   uniform_bucket_level_access = true
