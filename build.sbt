@@ -28,7 +28,6 @@ lazy val root = (project in file("."))
       "org.slf4j" % "slf4j-simple" % "1.7.32",
       "com.spotify" %% "scio-core" % scioVersion,
       "com.spotify" %% "scio-google-cloud-platform" % scioVersion,
-      "com.spotify" %% "scio-extra" % scioVersion,
       "com.spotify" %% "scio-test" % scioVersion % Test,
       "org.apache.beam" % "beam-runners-direct-java" % beamVersion,
       "org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion,
