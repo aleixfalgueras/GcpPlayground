@@ -1,4 +1,4 @@
-name: DataprocHelloWorld
+name: Run DataprocHelloWorld
 
 on:
   workflow_dispatch:

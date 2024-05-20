@@ -1,0 +1,85 @@
+name: Run Dataflow job using flex template
+
+on:
+  workflow_dispatch:
+    inputs:
+      build:
+        description: 'Build jar before run workflow'
+        required: true
+        type: boolean
+        default: false
+      job_name:
+        description: 'Dataflow job name'
+        required: true
+        type: string
+        default: hello-world
+      template_location:
+        description: 'Flex template file path'
+        required: true
+        type: string
+        default: gs://aleix-demos-bucket/dataflow_templates/dataflow_hello_world_template.json
+      java_main_class:
+        description: 'Java main class'
+        required: true
+        type: string
+        default: com.dataflow.DataflowHelloWorld
+      image_name:
+        description: 'Image name'
+        required: true
+        type: string
+        default: dataflow-hello-world
+
+permissions:
+  contents: read
+
+env:
+  REGION: us-central1
+  REMOTE_JAR_PATH: gs://aleix-demos-bucket/jars
+  JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+  LOCAL_JAR_PATH: .
+  DOCKER_REPO: us-docker.pkg.dev/industrial-keep-410516/docker-repo
+  DATAFLOW_STAGING_PATH: gs://aleix-tmp-bucket/dataflow/staging
+  DATAFLOW_TMP_PATH: gs://aleix-tmp-bucket/dataflow/tmp
+  CLOUDBUILD_LOGS_PATH: gs://aleix-tmp-bucket/dataflow/cloudbuild_logs
+
+jobs:
+  call_build_workflow:
+    if: inputs.build == true
+    uses: ./.github/workflows/build.yaml
+    with:
+      deploy: true
+    secrets: inherit
+
+  deploy_on_dataflow:
+    needs: call_build_workflow
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_DEMOSSAK }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Download jar from GCS
+        run: |
+          gsutil cp ${{ env.REMOTE_JAR_PATH }}/${{ env.JAR_NAME }} ${{ env.LOCAL_JAR_PATH }}
+
+      - name: Build flex template
+        run: |
+          gcloud dataflow flex-template build ${{ inputs.template_location }} \
+          --image-gcr-path=${{ env.DOCKER_REPO }}/${{ inputs.image_name }}:latest \
+          --sdk-language=JAVA --flex-template-base-image=JAVA11 \
+          --jar=${{ env.LOCAL_JAR_PATH }}/${{ env.JAR_NAME }} \
+          --env FLEX_TEMPLATE_JAVA_MAIN_CLASS=${{ inputs.java_main_class }} \
+          --staging-location=${{ env.DATAFLOW_STAGING_PATH }} --temp-location=${{ env.DATAFLOW_TMP_PATH }} \
+          --gcs-log-dir=${{ env.CLOUDBUILD_LOGS_PATH }}
+
+      - name: Run flex template
+        run: |
+          gcloud dataflow flex-template run ${{ inputs.job_name }} \
+          --template-file-gcs-location=${{ inputs.template_location }} --region=${{ env.REGION }} \
+          --staging-location=${{ env.DATAFLOW_STAGING_PATH }} --temp-location=${{ env.DATAFLOW_TMP_PATH }}

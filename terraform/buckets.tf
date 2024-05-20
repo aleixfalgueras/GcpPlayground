@@ -86,3 +86,21 @@ resource "google_storage_bucket" "aleix_tmp_bucket" {
     }
   }
 }
+
+resource "google_storage_bucket" "project_id_cloudbuild"{
+  name = "${var.project_id}_cloudbuild"
+  location = var.region
+
+  uniform_bucket_level_access = true
+  force_destroy = true
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+
+    condition {
+      age = 1 # days
+    }
+  }
+}

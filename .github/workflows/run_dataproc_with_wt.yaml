@@ -1,4 +1,4 @@
-name: Run Dataproc with a workflow-template file
+name: Run Dataproc job using workflow template
 
 on:
   workflow_call:

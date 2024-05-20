@@ -7,6 +7,24 @@ resource "google_project_iam_member" "demosSA_dataproc_editor" {
   member  = "serviceAccount:${google_service_account.demosSA.email}"
 }
 
+resource "google_project_iam_member" "demosSA_bigquery_admin" {
+  project = var.project_id
+  role    = "roles/bigquery.admin"
+  member  = "serviceAccount:${google_service_account.demosSA.email}"
+}
+
+resource "google_project_iam_member" "demosSA_cloudbuild_builds_editor" {
+  project = var.project_id
+  role    = "roles/cloudbuild.builds.editor"
+  member  = "serviceAccount:${google_service_account.demosSA.email}"
+}
+
+resource "google_project_iam_member" "demosSA_dataflow_service_agent" {
+  project = var.project_id
+  role    = "roles/dataflow.serviceAgent"
+  member  = "serviceAccount:${google_service_account.demosSA.email}"
+}
+
 # buckets
 
 resource "google_storage_bucket_iam_member" "demosSA_demos_bucket_admin" {
@@ -20,6 +38,13 @@ resource "google_storage_bucket_iam_member" "demosSA_spark_history_bucket_admin"
   role   = "roles/storage.admin"
   member = "serviceAccount:${google_service_account.demosSA.email}"
 }
+
+resource "google_storage_bucket_iam_member" "demosSA_project_id_cloudbuild_bucket_admin" {
+  bucket = google_storage_bucket.project_id_cloudbuild.name
+  role   = "roles/storage.admin"
+  member = "serviceAccount:${google_service_account.demosSA.email}"
+}
+
 
 /*
 The next configuration allows demos_sa SA to assume roles or perform actions on behalf of the

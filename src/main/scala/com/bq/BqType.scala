@@ -10,7 +10,7 @@ object BqType extends Enumeration {
 
   def getBqType(bqType: String): BqType.Value = {
     Try(withName(bqType)) match {
-      case Failure(exception) => throw new Exception(s"BigQuery type $bqType not known")
+      case Failure(_) => throw new Exception(s"BigQuery type $bqType not known")
       case Success(bqTypeValue) => bqTypeValue
     }
   }

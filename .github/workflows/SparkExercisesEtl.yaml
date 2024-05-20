@@ -1,4 +1,4 @@
-name: SparkExercisesEtl
+name: Run SparkExercisesEtl
 
 on:
   workflow_dispatch:

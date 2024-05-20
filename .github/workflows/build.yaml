@@ -1,4 +1,4 @@
-name: Build
+name: Build and deploy fat jar
 
 on:
   workflow_call:
@@ -50,7 +50,7 @@ jobs:
           cache: 'sbt'
 
       - name: Run sbt clean compile assembly
-        run: sbt clean compile assembly
+        run: sbt clean compile assembly -Dbigquery.project=${{ env.PROJECT_ID }} -Dbigquery.cache.enabled=false -Dbigquery.types.debug=false
 
       - name: Deploy - Upload jar to GCS
         if: inputs.deploy == true

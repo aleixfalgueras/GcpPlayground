@@ -137,3 +137,10 @@ resource "google_bigquery_dataset" "BQ_dataset_dataflow_exercises" {
   location    = var.multiregion
   description = "Dataset for tables used in Dataflow Exercises"
 }
+
+resource "google_bigquery_dataset" "BQ_dataset_scio_staging_us" {
+  dataset_id  = "scio_bigquery_staging_us"
+  location    = var.multiregion
+  description = "Dataset for SCIO staging tables in US"
+  default_table_expiration_ms = 3600000 // minum value (1 hour)
+}

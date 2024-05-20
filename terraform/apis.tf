@@ -15,3 +15,8 @@ resource "google_project_service" "monitoring_api" {
   service = "monitoring.googleapis.com"
   project = var.project_id
 }
+
+resource "google_project_service" "dataflow_api" {
+  service = "dataflow.googleapis.com"
+  project = var.project_id
+}

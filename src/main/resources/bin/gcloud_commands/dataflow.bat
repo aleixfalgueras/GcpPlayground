@@ -1,0 +1,5 @@
+REM dataflow hello world template
+gcloud dataflow flex-template build gs://aleix-demos-bucket/dataflow_templates/dataflow_hello_world_template.json --image-gcr-path "us-docker.pkg.dev/industrial-keep-410516/docker-repo/dataflow-hello-world:latest" --sdk-language "JAVA" --flex-template-base-image JAVA11 --jar "target/scala-2.12/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar" --env FLEX_TEMPLATE_JAVA_MAIN_CLASS="com.dataflow.DataflowHelloWorld" --staging-location "gs://aleix-tmp-bucket/dataflow/staging" --temp-location "gs://aleix-tmp-bucket/dataflow/tmp" --gcs-log-dir "gs://aleix-tmp-bucket/dataflow/cloudbuild_logs"
+
+REM dataflow hello world run
+gcloud dataflow flex-template run "hello-world-fat" --template-file-gcs-location "gs://aleix-demos-bucket/dataflow_templates/dataflow_hello_world_template.json" --region "us-central1" --staging-location "gs://aleix-tmp-bucket/dataflow/staging" --temp-location "gs://aleix-tmp-bucket/dataflow/tmp"
