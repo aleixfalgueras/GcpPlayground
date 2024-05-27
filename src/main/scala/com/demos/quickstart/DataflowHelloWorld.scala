@@ -1,4 +1,4 @@
-package com.dataflow
+package com.demos.quickstart
 
 import com.spotify.scio.ContextAndArgs
 import com.spotify.scio.bigquery.types.BigQueryType

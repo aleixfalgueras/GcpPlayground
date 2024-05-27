@@ -1,10 +1,10 @@
-package com.spark.demos.sparkexercises.etl
+package com.demos.sparkexercises.etl
 
 import com.configs.SparkExercisesConfig
-import com.spark.demos.sparkexercises.etl.Etl.{etlProducts, etlSales, etlSellers}
-import com.spark.demos.utils
-import com.spark.demos.utils.ExecutionMode
-import com.spark.demos.utils.PureConfigUtils.readConfigFromFile
+import Etl.{etlProducts, etlSales, etlSellers}
+import com.demos.utils
+import com.demos.utils.ExecutionMode
+import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.repo.SparkRepo.{getGcsSparkRepo, getSparkRepo}
 import com.spark.repo.SparkRepoType.getSparkRepoType
 import com.spark.repo._

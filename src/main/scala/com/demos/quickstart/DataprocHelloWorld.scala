@@ -1,7 +1,7 @@
-package com.spark.demos.quickstart
+package com.demos.quickstart
 
+import com.demos.utils.{ExecutionMode, StandardArgs}
 import com.spark.utils.SparkSessionUtils.getSparkSession
-import com.spark.demos.utils.{ExecutionMode, StandardArgs}
 import org.apache.log4j.Logger
 
 object DataprocHelloWorld {

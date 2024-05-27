@@ -8,7 +8,7 @@
     </option>
     <option name="testKind" value="Class" />
     <option name="shortenClasspath" value="ARGS_FILE" />
-    <option name="testClassPath" value="com.spark.demos.sparkexercises.etl.EtlTest" />
+    <option name="testClassPath" value="com.demos.sparkexercises.etl.EtlTest" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

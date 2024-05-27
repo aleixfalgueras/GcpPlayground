@@ -1,4 +1,4 @@
-package com.spark
+package com.demos.sparkexercises.etl
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.SparkSession

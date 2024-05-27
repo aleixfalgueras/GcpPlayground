@@ -1,4 +1,4 @@
-package com.dataflow
+package com.demos.quickstart
 
 import com.spotify.scio.bigquery._
 import com.spotify.scio.testing._
@@ -17,7 +17,7 @@ class DataflowHelloWorldTest extends PipelineSpec {
       DataflowHelloWorld.BadSeller("Charlie is a bad seller")
     )
 
-    JobTest[com.dataflow.DataflowHelloWorld.type]
+    JobTest[DataflowHelloWorld.type]
       .input(BigQueryIO[DataflowHelloWorld.Seller]("select * from spark_exercises.sellers"), sellers)
       .output(BigQueryIO[DataflowHelloWorld.BadSeller]("dataflow_exercises.bad_sellers")) { badSellers =>
         badSellers should containInAnyOrder(expectedBadSellers)

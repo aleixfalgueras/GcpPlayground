@@ -1,7 +1,7 @@
 package com.spark.downloader
 
+import com.demos.utils.ExecutionMode
 import com.spark.utils.SparkSessionUtils.getSparkSession
-import com.spark.demos.utils.ExecutionMode
 import com.spark.repo.SparkRepo.getSparkRepo
 import com.spark.repo.SparkRepoType.getSparkRepoType
 import org.apache.log4j.Logger

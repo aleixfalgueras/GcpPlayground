@@ -1,4 +1,4 @@
-package com.spark.demos.utils
+package com.demos.utils
 
 import org.apache.log4j.Logger
 import pureconfig.{ConfigReader, ConfigSource}

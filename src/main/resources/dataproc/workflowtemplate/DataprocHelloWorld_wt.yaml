@@ -3,7 +3,7 @@ jobs:
   - sparkJob:
       jarFileUris:
         - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
-      mainClass: com.spark.demos.quickstart.DataprocHelloWorld
+      mainClass: com.demos.quickstart.DataprocHelloWorld
       args:
         - "--env=dev"
         - "--executionMode=GCP"

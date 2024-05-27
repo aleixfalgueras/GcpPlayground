@@ -1,8 +1,7 @@
-package com.spark.demos.sparkexercises.etl
+package com.demos.sparkexercises.etl
 
-import com.spark.SparkTest
-import com.spark.demos.sparkexercises.etl.Etl.getSellersDailyTargetByTeam
-import com.spark.demos.sparkexercises.etl.EtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
+import com.demos.sparkexercises.etl.Etl.getSellersDailyTargetByTeam
+import EtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
 import com.spark.repo.CsvRepo
 import com.spark.utils.BqSparkSchema.getSparkSchema
 import org.apache.spark.sql.types.{IntegerType, StructField, StructType}
