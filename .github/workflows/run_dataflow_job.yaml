@@ -28,6 +28,16 @@ on:
         required: true
         type: string
         default: dataflow-hello-world
+      num_workers:
+        description: 'Num. workers'
+        required: true
+        type: number
+        default: 1
+      max_workers:
+        description: 'Max. workers'
+        required: true
+        type: number
+        default: 1
 
 permissions:
   contents: read
@@ -82,4 +92,5 @@ jobs:
         run: |
           gcloud dataflow flex-template run ${{ inputs.job_name }} \
           --template-file-gcs-location=${{ inputs.template_location }} --region=${{ env.REGION }} \
-          --staging-location=${{ env.DATAFLOW_STAGING_PATH }} --temp-location=${{ env.DATAFLOW_TMP_PATH }}
+          --staging-location=${{ env.DATAFLOW_STAGING_PATH }} --temp-location=${{ env.DATAFLOW_TMP_PATH }} \
+          --num-workers=${{ inputs.num_workers }} --max-workers=${{ inputs.max_workers }}

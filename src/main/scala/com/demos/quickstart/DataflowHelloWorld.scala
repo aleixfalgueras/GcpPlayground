@@ -2,7 +2,7 @@ package com.demos.quickstart
 
 import com.spotify.scio.ContextAndArgs
 import com.spotify.scio.bigquery.types.BigQueryType
-import com.spotify.scio.bigquery.{Query, Table, WRITE_APPEND, bigQueryScioContextOps, description}
+import com.spotify.scio.bigquery.{Query, Table, WRITE_TRUNCATE, bigQueryScioContextOps, description}
 import org.slf4j.{Logger, LoggerFactory}
 
 object DataflowHelloWorld {
@@ -34,7 +34,7 @@ object DataflowHelloWorld {
     goodSellers.map(goodSeller => logger.info(goodSeller.toString))
     badSellers.map(badSeller => logger.warn(badSeller.toString))
 
-    badSellers.saveAsTypedBigQueryTable(Table.Spec("dataflow_exercises.bad_sellers"), writeDisposition = WRITE_APPEND)
+    badSellers.saveAsTypedBigQueryTable(Table.Spec("dataflow_exercises.bad_sellers"), writeDisposition = WRITE_TRUNCATE)
 
     scioContext.run
 
