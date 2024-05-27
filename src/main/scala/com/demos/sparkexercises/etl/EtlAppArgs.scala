@@ -4,7 +4,7 @@ import com.demos.utils.StandardArgs
 import com.spark.repo.SparkRepoType
 import org.rogach.scallop.ScallopOption
 
-class EtlArgs(args: Seq[String]) extends StandardArgs(args) {
+class EtlAppArgs(args: Seq[String]) extends StandardArgs(args) {
 
   val etl: ScallopOption[String] = choice(
     name = "etl",

@@ -8,9 +8,11 @@ object DataprocHelloWorld {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
+  class DataprocHelloWorldArgs(args: Seq[String]) extends StandardArgs(args) { verify() }
+
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
-    val argsParsed = new StandardArgs(args)
+    val argsParsed = new DataprocHelloWorldArgs(args)
     val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
 
     val spark = getSparkSession("Dataproc - Hello world", executionMode)
@@ -23,6 +25,8 @@ object DataprocHelloWorld {
     )
 
     spark.createDataFrame(data).toDF("id", "cat", "valor", "not_important").show()
+
+    spark.stop()
 
   }
 

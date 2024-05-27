@@ -33,7 +33,7 @@ object EtlApp {
 
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
-    val argsParsed = new EtlArgs(args)
+    val argsParsed = new EtlAppArgs(args)
     val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
     val targetRepoType = getSparkRepoType(argsParsed.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
