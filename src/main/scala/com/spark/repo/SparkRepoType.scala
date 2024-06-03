@@ -8,7 +8,7 @@ object SparkRepoType extends Enumeration {
 
   def getSparkRepoType(sparkRepoType: String): SparkRepoType.Value = {
     Try(withName(sparkRepoType.toUpperCase())) match {
-      case Failure(exception) => throw new Exception(s"SparkRepoType for $sparkRepoType not known")
+      case Failure(_) => throw new Exception(s"SparkRepoType for $sparkRepoType not known")
       case Success(sparkRepoTypeValue) => sparkRepoTypeValue
     }
   }

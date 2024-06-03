@@ -8,16 +8,14 @@ import org.apache.log4j.Logger
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import utils.SparkTestUtils.getDf
 import utils.{SparkTest, TestingConfig}
 
 class BqRepoWritePartitionDateTest extends SparkTest {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
-  def getDf(data: Seq[Row], schema: StructType): DataFrame =
-    spark.createDataFrame(spark.sparkContext.parallelize(data), schema)
-
-  def getPartitionIdAndRows(partitionsInfo: DataFrame): Set[(String, Int)] = {
+  def getPartitionIdAndTotalRows(partitionsInfo: DataFrame): Set[(String, Int)] = {
     partitionsInfo
       .select("partition_id", "total_rows")
       .collect()
@@ -132,7 +130,7 @@ class BqRepoWritePartitionDateTest extends SparkTest {
       datePartition = oneStudentMonthlyDatePartition
     )
 
-    val partitionIdAndRows = getPartitionIdAndRows(studentsMonthlyRepo.readPartitionsInfo())
+    val partitionIdAndRows = getPartitionIdAndTotalRows(studentsMonthlyRepo.readPartitionsInfo())
     val expectedPartitionIdAndRows = Set(("202101", 1), ("202303", 1), ("202202",1))
 
     expectedPartitionIdAndRows shouldEqual partitionIdAndRows
@@ -162,7 +160,7 @@ class BqRepoWritePartitionDateTest extends SparkTest {
       datePartition = oneStudentYearDatePartition
     )
 
-    val partitionIdAndRows = getPartitionIdAndRows(studentsYearlyRepo.readPartitionsInfo())
+    val partitionIdAndRows = getPartitionIdAndTotalRows(studentsYearlyRepo.readPartitionsInfo())
     val expectedPartitionIdAndRows = Set(("2021", 2), ("2023", 1), ("2022", 1))
 
     expectedPartitionIdAndRows shouldEqual partitionIdAndRows
@@ -194,7 +192,7 @@ class BqRepoWritePartitionDateTest extends SparkTest {
       datePartition = oneStudentHourDatePartition
     )
 
-    val partitionIdAndRows = getPartitionIdAndRows(studentsHourlyRepo.readPartitionsInfo())
+    val partitionIdAndRows = getPartitionIdAndTotalRows(studentsHourlyRepo.readPartitionsInfo())
     val expectedPartitionIdAndRows = Set(("2021010101", 2), ("2023030303", 1), ("2022020202", 1))
 
     expectedPartitionIdAndRows shouldEqual partitionIdAndRows

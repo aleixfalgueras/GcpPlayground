@@ -8,7 +8,7 @@ object PartitionType extends Enumeration {
 
   def apply(partitionType: String): PartitionType.Value = {
     Try(withName(partitionType.toUpperCase())) match {
-      case Failure(exception) => throw new Exception(s"PartitionType for $partitionType not known")
+      case Failure(_) => throw new Exception(s"PartitionType for $partitionType not known")
       case Success(sparkRepoTypeValue) => sparkRepoTypeValue
     }
   }
