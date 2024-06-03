@@ -27,7 +27,7 @@ class DownloaderArgs(args: Seq[String]) extends ScallopConf(args) {
 
   val targetRepo: ScallopOption[String] = choice(
     name = "targetRepo",
-    choices = Seq(SparkRepoType.csv.toString, SparkRepoType.avro.toString, SparkRepoType.parquet.toString),
+    choices = Seq(SparkRepoType.CSV.toString, SparkRepoType.AVRO.toString, SparkRepoType.PARQUET.toString),
     required = true,
     descr = "Format of the downloaded file"
   )

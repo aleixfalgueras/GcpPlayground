@@ -16,7 +16,7 @@ class EtlAppArgs(args: Seq[String]) extends StandardArgs(args) {
   val targetRepo: ScallopOption[String] = choice(
     name = "targetRepo",
     choices = SparkRepoType.values.toSeq.map(_.toString),
-    default = Some(SparkRepoType.bq.toString),
+    default = Some(SparkRepoType.BQ.toString),
     required = true,
     descr = "Target repo type"
   )

@@ -6,7 +6,7 @@ object BqType extends Enumeration {
   type BqType = Value
 
   val BOOLEAN, STRING, INT64, INT, SMALLINT, INTEGER, BIGINT, TINYINT, BYTEINT,
-  NUMERIC, DECIMAL, BIGNUMERIC, BIGDECIMAL, FLOAT64, DATE, TIMESTAMP = Value
+  NUMERIC, DECIMAL, BIGNUMERIC, BIGDECIMAL, FLOAT64, DATE, DATETIME, TIMESTAMP = Value
 
   def getBqType(bqType: String): BqType.Value = {
     Try(withName(bqType)) match {

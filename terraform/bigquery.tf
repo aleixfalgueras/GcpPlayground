@@ -144,3 +144,10 @@ resource "google_bigquery_dataset" "BQ_dataset_scio_staging_us" {
   description = "Dataset for SCIO staging tables in US"
   default_table_expiration_ms = 3600000 // minum value (1 hour)
 }
+
+resource "google_bigquery_dataset" "BQ_dataset_testing" {
+  dataset_id  = "testing"
+  location    = var.region
+  description = "Dataset for testing ephemeral tables"
+  default_table_expiration_ms = 3600000 // minum value (1 hour)
+}

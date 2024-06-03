@@ -4,10 +4,10 @@ import scala.util.{Failure, Success, Try}
 
 object SparkRepoType extends Enumeration {
 
-  val bq, csv, avro, parquet = Value
+  val BQ, CSV, AVRO, PARQUET = Value
 
   def getSparkRepoType(sparkRepoType: String): SparkRepoType.Value = {
-    Try(withName(sparkRepoType)) match {
+    Try(withName(sparkRepoType.toUpperCase())) match {
       case Failure(exception) => throw new Exception(s"SparkRepoType for $sparkRepoType not known")
       case Success(sparkRepoTypeValue) => sparkRepoTypeValue
     }

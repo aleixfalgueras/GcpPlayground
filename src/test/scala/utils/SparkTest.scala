@@ -1,4 +1,4 @@
-package com.demos.sparkexercises.etl
+package utils
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.SparkSession
@@ -12,5 +12,7 @@ trait SparkTest extends AnyFlatSpec with DataFrameSuiteBase {
     .appName("Spark tests")
     .master("local[*]")
     .getOrCreate()
+
+  spark.conf.set("viewsEnabled","true")
 
 }

@@ -43,9 +43,9 @@ object EtlApp {
 
     logger.info(config.toString)
 
-    val sellersSourceRepo = getGcsSparkRepo(SparkRepoType.parquet, config.sellersSourceGcsPath)
-    val productsSourceRepo = getGcsSparkRepo(SparkRepoType.parquet, config.productsSourceGcsPath)
-    val salesSourceRepo = getGcsSparkRepo(SparkRepoType.parquet, config.salesSourceGcsPath)
+    val sellersSourceRepo = getGcsSparkRepo(SparkRepoType.PARQUET, config.sellersSourceGcsPath)
+    val productsSourceRepo = getGcsSparkRepo(SparkRepoType.PARQUET, config.productsSourceGcsPath)
+    val salesSourceRepo = getGcsSparkRepo(SparkRepoType.PARQUET, config.salesSourceGcsPath)
 
     val sellersTargetRepo = updateGcsPathWithFormat(getSparkRepo(
       sparkRepoType = targetRepoType,

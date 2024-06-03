@@ -43,9 +43,9 @@ object SparkRepo {
     def getGcsPath(path: String): String = if (path.startsWith("gs://")) path else s"gs://$path"
 
     sparkRepoType match {
-      case SparkRepoType.bq =>
+      case SparkRepoType.BQ =>
         val tableName = bqTableName.getOrElse(
-          throw new IllegalArgumentException(s"bqTableName parameter must be provided for ${SparkRepoType.bq} " +
+          throw new IllegalArgumentException(s"bqTableName parameter must be provided for ${SparkRepoType.BQ} " +
             s"spark repo type")
         )
         gcsTmpBucket match {
@@ -53,16 +53,16 @@ object SparkRepo {
           case None => new BqRepo(tableName)
         }
 
-      case SparkRepoType.csv | SparkRepoType.avro | SparkRepoType.parquet =>
+      case SparkRepoType.CSV | SparkRepoType.AVRO | SparkRepoType.PARQUET =>
         val path = dataPath match {
           case Some(path) => if (isGcsPath) getGcsPath(path) else path
           case None => throw new IllegalArgumentException("dataPath parameter must be provided for " +
-            s"${SparkRepoType.csv}, ${SparkRepoType.avro} and ${SparkRepoType.parquet} spark repo types")
+            s"${SparkRepoType.CSV}, ${SparkRepoType.AVRO} and ${SparkRepoType.PARQUET} spark repo types")
         }
         sparkRepoType match {
-          case SparkRepoType.csv => new CsvRepo(path, schema, readOptions, writeOptions)
-          case SparkRepoType.avro => new AvroRepo(path)
-          case SparkRepoType.parquet => new ParquetRepo(path)
+          case SparkRepoType.CSV => new CsvRepo(path, schema, readOptions, writeOptions)
+          case SparkRepoType.AVRO => new AvroRepo(path)
+          case SparkRepoType.PARQUET => new ParquetRepo(path)
         }
 
       case _ => throw new Exception(s"SparkRepo for $sparkRepoType not implemented")

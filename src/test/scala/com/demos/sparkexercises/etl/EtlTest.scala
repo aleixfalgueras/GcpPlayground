@@ -5,6 +5,7 @@ import EtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
 import com.spark.repo.CsvRepo
 import com.spark.utils.BqSparkSchema.getSparkSchema
 import org.apache.spark.sql.types.{IntegerType, StructField, StructType}
+import utils.SparkTest
 
 class EtlTest extends SparkTest {
 

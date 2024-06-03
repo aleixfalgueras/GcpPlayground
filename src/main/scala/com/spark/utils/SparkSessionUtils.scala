@@ -9,19 +9,23 @@ object SparkSessionUtils {
   def getSparkSession(appName: String,
                       executionMode: ExecutionMode = ExecutionMode.GCP,
                       timezone: String = "Europe/Sofia"): SparkSession = {
-    if (executionMode == ExecutionMode.local) {
+    val spark = if (executionMode == ExecutionMode.local) {
       SparkSession.builder
         .master("local[*]")
         .appName(appName)
-        .config("spark.sql.session.timeZone", timezone)
         .getOrCreate()
     }
     else {
       SparkSession.builder
         .appName(appName)
-        .config("spark.sql.session.timeZone", timezone)
         .getOrCreate()
     }
+
+    // common config
+    spark.conf.set("viewsEnabled","true")
+    spark.conf.set("spark.sql.session.timeZone", timezone)
+
+    spark
 
   }
 
