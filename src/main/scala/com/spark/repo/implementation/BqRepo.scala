@@ -63,7 +63,7 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
    *
    * @param partitionField partitioning field of the table
    * @param partitionType partition type of the table, possible values: HOUR, DAY, MONTH, YEAR
-   * @param datePartition date of the specific partition to write
+   * @param datePartition date of the specific partition to write, valid formats: yyyyMMddHH, yyyyMMdd, yyyyMM, yyyy
    */
   def writePartitionDate[T](data: Dataset[T],
                             saveMode: SaveMode,
