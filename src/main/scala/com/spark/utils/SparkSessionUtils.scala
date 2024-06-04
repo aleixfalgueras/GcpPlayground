@@ -1,13 +1,12 @@
 package com.spark.utils
 
 import com.demos.utils.ExecutionMode
-import ExecutionMode.ExecutionMode
 import org.apache.spark.sql.SparkSession
 
 object SparkSessionUtils {
 
   def getSparkSession(appName: String,
-                      executionMode: ExecutionMode = ExecutionMode.GCP,
+                      executionMode: ExecutionMode.Value = ExecutionMode.GCP,
                       timezone: String = "Europe/Sofia"): SparkSession = {
     val spark = if (executionMode == ExecutionMode.local) {
       SparkSession.builder

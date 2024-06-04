@@ -23,10 +23,10 @@ on:
         required: true
         type: choice
         options:
-          - bq
-          - avro
-          - parquet
-        default: bq
+          - BQ
+          - AVRO
+          - PARQUET
+        default: BQ
       cluster_type:
         description: 'Select cluster type'
         required: true

@@ -1,8 +1,8 @@
-package com.demos.sparkexercises
+package com.demos.dataproc.sparkexercises
 
 import com.configs.SparkExercisesConfig
 import com.demos.utils.PureConfigUtils.readConfigFromFile
-import com.spark.repo.ParquetRepo
+import com.spark.repo.implementation.ParquetRepo
 import com.spark.utils.SparkSessionUtils.getSparkSession
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
@@ -11,7 +11,6 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import pureconfig.generic.auto._
 
 import scala.collection.immutable.Seq
-
 
 object SqlExercises {
 

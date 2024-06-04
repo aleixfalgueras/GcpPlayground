@@ -1,5 +1,6 @@
-package com.spark.repo
+package com.spark.repo.implementation
 
+import com.spark.repo.SparkRepo
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 

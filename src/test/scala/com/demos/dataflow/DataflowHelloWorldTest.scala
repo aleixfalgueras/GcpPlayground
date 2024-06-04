@@ -1,4 +1,4 @@
-package com.demos.quickstart
+package com.demos.dataflow
 
 import com.spotify.scio.bigquery._
 import com.spotify.scio.testing._

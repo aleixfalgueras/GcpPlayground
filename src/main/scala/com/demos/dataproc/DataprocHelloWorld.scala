@@ -1,4 +1,4 @@
-package com.demos.quickstart
+package com.demos.dataproc
 
 import com.demos.utils.{ExecutionMode, StandardArgs}
 import com.spark.utils.SparkSessionUtils.getSparkSession

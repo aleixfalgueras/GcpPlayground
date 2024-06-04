@@ -22,7 +22,7 @@ on:
         description: 'Java main class'
         required: true
         type: string
-        default: com.demos.quickstart.DataflowHelloWorld
+        default: com.demos.dataflow.DataflowHelloWorld
       image_name:
         description: 'Image name'
         required: true

@@ -1,4 +1,4 @@
-package com.demos.sparkexercises.etl
+package com.demos.dataproc.sparkexercises.etl
 
 import com.configs.SparkExercisesConfig
 import Etl.{etlProducts, etlSales, etlSellers}
@@ -7,6 +7,7 @@ import com.demos.utils.ExecutionMode
 import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.repo.SparkRepo.{getGcsSparkRepo, getSparkRepo}
 import com.spark.repo._
+import com.spark.repo.implementation.{AvroRepo, CsvRepo, ParquetRepo}
 import com.spark.utils.SparkSessionUtils.getSparkSession
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession

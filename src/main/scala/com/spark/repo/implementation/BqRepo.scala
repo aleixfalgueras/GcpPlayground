@@ -1,5 +1,7 @@
-package com.spark.repo
-import com.spark.repo.BqRepo.ONLY_READ_REPO
+package com.spark.repo.implementation
+
+import com.spark.repo.implementation.BqRepo.ONLY_READ_REPO
+import com.spark.repo.{PartitionType, SparkRepo}
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 

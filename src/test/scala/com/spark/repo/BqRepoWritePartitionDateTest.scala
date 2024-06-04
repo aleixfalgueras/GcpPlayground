@@ -4,6 +4,7 @@ import com.bq.BqClient
 import com.demos.utils.DateTimeUtils
 import com.google.cloud.spark.bigquery.repackaged.com.google.cloud.bigquery.TimePartitioning
 import com.spark.repo.BqRepoWritePartitionDateTest._
+import com.spark.repo.implementation.BqRepo
 import org.apache.log4j.Logger
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SaveMode}

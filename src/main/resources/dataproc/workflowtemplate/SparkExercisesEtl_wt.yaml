@@ -3,7 +3,7 @@ jobs:
   - sparkJob:
       jarFileUris:
         - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
-      mainClass: com.demos.sparkexercises.etl.EtlApp
+      mainClass: com.demos.dataproc.sparkexercises.etl.EtlApp
       args:
         - "--env=dev"
         - "--executionMode=GCP"
