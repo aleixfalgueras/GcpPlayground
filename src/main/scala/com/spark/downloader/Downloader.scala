@@ -3,7 +3,7 @@ package com.spark.downloader
 import com.demos.utils.ExecutionMode
 import com.spark.utils.SparkSessionUtils.getSparkSession
 import com.spark.repo.SparkRepo.getSparkRepo
-import com.spark.repo.SparkRepoType.getSparkRepoType
+import com.spark.repo.SparkRepoType
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
@@ -21,8 +21,8 @@ object Downloader {
     logger.info("Args: " + args.mkString(", "))
     val argsParsed = new DownloaderArgs(args)
     val source = argsParsed.source.toOption
-    val sourceRepoType = getSparkRepoType(argsParsed.sourceRepo())
-    val targetRepoType = getSparkRepoType(argsParsed.targetRepo())
+    val sourceRepoType = SparkRepoType(argsParsed.sourceRepo())
+    val targetRepoType = SparkRepoType(argsParsed.targetRepo())
     val targetPath = argsParsed.targetPath()
 
     implicit val spark: SparkSession = getSparkSession("Downloader", ExecutionMode.local)

@@ -1,7 +1,6 @@
 package com.spark.utils
 
 import com.bq.BqType
-import com.bq.BqType.getBqType
 import com.google.cloud.spark.bigquery.repackaged.com.google.cloud.bigquery.{Field, Schema, StandardSQLTypeName}
 import org.apache.spark.sql.types._
 import org.json4s._
@@ -35,7 +34,7 @@ object BqSparkSchema {
     }
   }
 
-  def bqTypeToSparkType(bqType: String): DataType = bqTypeToSparkType(getBqType(bqType))
+  def bqTypeToSparkType(bqType: String): DataType = bqTypeToSparkType(BqType(bqType))
 
   /**
    * Converts a BigQuery JSON schema definition into a Spark StructType schema.

@@ -6,7 +6,6 @@ import com.demos.utils
 import com.demos.utils.ExecutionMode
 import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.repo.SparkRepo.{getGcsSparkRepo, getSparkRepo}
-import com.spark.repo.SparkRepoType.getSparkRepoType
 import com.spark.repo._
 import com.spark.utils.SparkSessionUtils.getSparkSession
 import org.apache.log4j.Logger
@@ -35,7 +34,7 @@ object EtlApp {
     logger.info("Args: " + args.mkString(", "))
     val argsParsed = new EtlAppArgs(args)
     val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
-    val targetRepoType = getSparkRepoType(argsParsed.targetRepo())
+    val targetRepoType = SparkRepoType(argsParsed.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
 
     implicit val config: SparkExercisesConfig = readConfigFromFile(argsParsed.env(), configFilePath)
