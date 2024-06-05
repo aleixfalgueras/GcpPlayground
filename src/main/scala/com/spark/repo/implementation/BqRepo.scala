@@ -1,5 +1,6 @@
 package com.spark.repo.implementation
 
+import com.bq.BqClient
 import com.spark.repo.implementation.BqRepo.ONLY_READ_REPO
 import com.spark.repo.{PartitionType, SparkRepo}
 import org.apache.log4j.Logger
@@ -25,23 +26,6 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
       .mode(saveMode)
       .option("temporaryGcsBucket", gcsTmpBucket)
       .save(tableName)
-
-  }
-
-  def readExternalTable(): DataFrame = {
-    spark.conf.set("materializationDataset", tableName.split('.')(1))
-    val query = s"SELECT * FROM `$tableName`"
-
-    Try {
-      logger.info(s"Reading from external table $tableName with query $query...")
-      spark.read
-        .format("bigquery")
-        .options(Map("viewsEnabled" -> "true", "query" -> query))
-        .load()
-    } match {
-      case Failure(exc) => logger.error(s"Error trying to read external table $tableName"); throw exc;
-      case Success(df) => df
-    }
 
   }
 
@@ -100,12 +84,27 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
 
   }
 
+  def truncateRepo(): Unit = BqClient.truncateTable(tableName)
+
+  def readExternalTable(): DataFrame = {
+    spark.conf.set("materializationDataset", tableName.split('.')(1))
+    val query = s"SELECT * FROM `$tableName`"
+
+    Try {
+      logger.info(s"Reading from external table $tableName with query $query...")
+      spark.read
+        .format("bigquery")
+        .options(Map("viewsEnabled" -> "true", "query" -> query))
+        .load()
+    } match {
+      case Failure(exc) => logger.error(s"Error trying to read external table $tableName"); throw exc;
+      case Success(df) => df
+    }
+
+  }
+
   def readPartitionsInfo(): DataFrame = {
     val tableNameSplit = tableName.split('.')
-
-    spark.conf.set("viewsEnabled","true")
-    spark.conf.set("materializationDataset", tableNameSplit(1))
-
     val query =
       s"""
       SELECT partition_id, total_rows, total_logical_bytes, last_modified_time
@@ -114,7 +113,16 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
       ORDER BY last_modified_time DESC
       """
 
-    logger.info(s"Reading partitions info of BigQuery table $tableName with query: \n $query")
+    logger.info(s"Reading partitions info of BigQuery table $tableName")
+    runQuery(query)
+
+  }
+
+  def runQuery(query: String): DataFrame = {
+    spark.conf.set("viewsEnabled", "true")
+    spark.conf.set("materializationDataset", tableName.split('.')(1))
+
+    logger.info(s"Running query: \n$query")
     spark.read
       .format("bigquery")
       .option("query", query)

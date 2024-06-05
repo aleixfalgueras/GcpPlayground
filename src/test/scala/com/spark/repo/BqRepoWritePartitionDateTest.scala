@@ -57,30 +57,40 @@ class BqRepoWritePartitionDateTest extends SparkTest {
   // ######## TESTS ########
 
   override def beforeAll(): Unit = {
-    BqClient.createOrOverwritePartitionedTable(
-      studentsDailyTableName,
-      studentsDateSchema,
-      studentsDatePartitionField
-    )
-    BqClient.createOrOverwritePartitionedTable(
-      studentsMonthlyTableName,
-      studentsDateSchema,
-      studentsDatePartitionField,
-      TimePartitioning.Type.MONTH
-    )
-    BqClient.createOrOverwritePartitionedTable(
-      studentsYearlyTableName,
-      studentsDateSchema,
-      studentsDatePartitionField,
-      TimePartitioning.Type.YEAR
-    )
-    BqClient.createOrOverwritePartitionedTable(
-      studentsHourlyTableName,
-      studentsTimestampSchema,
-      studentsTimestampPartitionField,
-      TimePartitioning.Type.HOUR
-    )
-    super.beforeAll()
+    if (TestingConfig.createTables) {
+      BqClient.createOrOverwritePartitionedTable(
+        studentsDailyTableName,
+        studentsDateSchema,
+        studentsDatePartitionField
+      )
+      BqClient.createOrOverwritePartitionedTable(
+        studentsMonthlyTableName,
+        studentsDateSchema,
+        studentsDatePartitionField,
+        TimePartitioning.Type.MONTH
+      )
+      BqClient.createOrOverwritePartitionedTable(
+        studentsYearlyTableName,
+        studentsDateSchema,
+        studentsDatePartitionField,
+        TimePartitioning.Type.YEAR
+      )
+      BqClient.createOrOverwritePartitionedTable(
+        studentsHourlyTableName,
+        studentsTimestampSchema,
+        studentsTimestampPartitionField,
+        TimePartitioning.Type.HOUR
+      )
+      super.beforeAll()
+    }
+    else {
+      studentsDailyRepo.truncateRepo()
+      studentsMonthlyRepo.truncateRepo()
+      studentsYearlyRepo.truncateRepo()
+      studentsHourlyRepo.truncateRepo()
+      super.beforeAll()
+    }
+
   }
 
   behavior of "Function writePartitionDate(...) with different arguments"
@@ -106,8 +116,6 @@ class BqRepoWritePartitionDateTest extends SparkTest {
       studentsDatePartitionField,
       datePartition = oneStudentDailyDatePartition
     )
-
-    studentsDailyRepo.readPartitionsInfo().show(truncate = false)
 
     val expectedData = oneStudentDatePartition.union(oneStudentDatePartition).union(multipleStudentsDatePartition)
 
@@ -200,11 +208,15 @@ class BqRepoWritePartitionDateTest extends SparkTest {
   }
 
   override def afterAll(): Unit = {
-    BqClient.deleteTable(studentsDailyTableName)
-    BqClient.deleteTable(studentsMonthlyTableName)
-    BqClient.deleteTable(studentsYearlyTableName)
-    BqClient.deleteTable(studentsHourlyTableName)
-    super.afterAll()
+    if (TestingConfig.createTables) {
+      BqClient.deleteTable(studentsDailyTableName)
+      BqClient.deleteTable(studentsMonthlyTableName)
+      BqClient.deleteTable(studentsYearlyTableName)
+      BqClient.deleteTable(studentsHourlyTableName)
+      super.afterAll()
+    }
+    else super.afterAll()
+
   }
 
 }

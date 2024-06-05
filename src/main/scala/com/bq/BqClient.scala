@@ -103,4 +103,26 @@ object BqClient {
 
   }
 
+  def truncateTable(tableName: String): Unit = {
+    logger.info(s"Truncating table $tableName")
+    runQuery(s"TRUNCATE TABLE $tableName")
+
+  }
+
+  private def runQuery(query: String): Unit = {
+    val queryConfig = QueryJobConfiguration.newBuilder(query).build()
+    val job = bigQuery.create(JobInfo.of(queryConfig))
+    job.waitFor()
+
+    logger.info(s"Executing BigQuery query: \n$query")
+
+    if (job.getStatus.getError != null) {
+      throw new RuntimeException(s"BigQuery job failed: ${job.getStatus.getError.getMessage}")
+    } else {
+      println(s"Query executed successfully.")
+    }
+
+  }
+
+
 }
