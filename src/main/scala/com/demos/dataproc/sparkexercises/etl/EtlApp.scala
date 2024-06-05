@@ -34,7 +34,7 @@ object EtlApp {
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
     val argsParsed = new EtlAppArgs(args)
-    val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
+    val executionMode = ExecutionMode(argsParsed.executionMode())
     val targetRepoType = SparkRepoType(argsParsed.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
 
@@ -78,7 +78,7 @@ object EtlApp {
       case "sales" => etlSales(salesSourceRepo, salesTargetRepo)
       case "all" =>
         executionMode match {
-          case utils.ExecutionMode.local =>
+          case utils.ExecutionMode.LOCAL =>
             etlSellers(sellersSourceRepo, sellersTargetRepo)
             etlProducts(productsSourceRepo, productsTargetRepo)
           case utils.ExecutionMode.GCP =>

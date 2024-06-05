@@ -8,7 +8,7 @@ object SparkSessionUtils {
   def getSparkSession(appName: String,
                       executionMode: ExecutionMode.Value = ExecutionMode.GCP,
                       timezone: String = "Europe/Sofia"): SparkSession = {
-    val spark = if (executionMode == ExecutionMode.local) {
+    val spark = if (executionMode == ExecutionMode.LOCAL) {
       SparkSession.builder
         .master("local[*]")
         .appName(appName)

@@ -13,7 +13,7 @@ object DataprocHelloWorld {
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
     val argsParsed = new DataprocHelloWorldArgs(args)
-    val executionMode = if (argsParsed.executionMode() == "local") ExecutionMode.local else ExecutionMode.GCP
+    val executionMode = ExecutionMode(argsParsed.executionMode())
 
     val spark = getSparkSession("Dataproc - Hello world", executionMode)
 

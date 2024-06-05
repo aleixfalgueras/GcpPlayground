@@ -25,7 +25,7 @@ object Downloader {
     val targetRepoType = SparkRepoType(argsParsed.targetRepo())
     val targetPath = argsParsed.targetPath()
 
-    implicit val spark: SparkSession = getSparkSession("Downloader", ExecutionMode.local)
+    implicit val spark: SparkSession = getSparkSession("Downloader", ExecutionMode.LOCAL)
 
     val sourceRepo = getSparkRepo(
       sparkRepoType = sourceRepoType,
