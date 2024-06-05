@@ -13,7 +13,7 @@ class StandardArgs(args: Seq[String]) extends ScallopConf(args) {
 
   val executionMode: ScallopOption[String] = choice(
     name = "executionMode",
-    choices = Seq("local", "GCP"),
+    choices = ExecutionMode.values.toSeq.map(_.toString),
     required = true,
     descr = "Execution mode: local, GCP"
   )
