@@ -64,14 +64,21 @@ object BqClient {
   def createPartitionedTable(tableName: String,
                              sparkSchema: StructType,
                              partitionField: String,
-                             partitionType: TimePartitioning.Type = TimePartitioning.Type.DAY): Unit = {
+                             partitionType: TimePartitioning.Type = TimePartitioning.Type.DAY,
+                             partitionExpirationDays: Long = 0,
+                             requirePartitionFilter: Boolean = false): Unit = {
 
     val bqSchema = BqSparkSchema.getBqSchema(sparkSchema)
     val tableId = getTableIdByTableName(tableName)
-    val timePartitioning = TimePartitioning.newBuilder(partitionType)
+    val timePartitioningBuilder = TimePartitioning.newBuilder(partitionType)
       .setField(partitionField)
-      .build()
+      .setRequirePartitionFilter(requirePartitionFilter)
 
+    if (partitionExpirationDays > 0) {
+      timePartitioningBuilder.setExpirationMs(partitionExpirationDays * 24 * 60 * 60 * 1000) // convert days to ms
+    }
+
+    val timePartitioning = timePartitioningBuilder.build()
     val tableDefinition = StandardTableDefinition.newBuilder()
       .setSchema(bqSchema)
       .setTimePartitioning(timePartitioning)
@@ -79,7 +86,8 @@ object BqClient {
 
     val tableInfo = TableInfo.newBuilder(tableId, tableDefinition).build()
 
-    logger.info(s"Creating partitioned table $tableName of type $partitionType by $partitionField")
+    logger.info(s"Creating partitioned table $tableName of type $partitionType by $partitionField " +
+      s"(partitionExpirationDays: $partitionExpirationDays, requirePartitionFilter: $requirePartitionFilter)")
     bigQuery.create(tableInfo)
 
   }
@@ -87,9 +95,20 @@ object BqClient {
   def createOrOverwritePartitionedTable(tableName: String,
                                         sparkSchema: StructType,
                                         partitionField: String,
-                                        partitionType: TimePartitioning.Type = TimePartitioning.Type.DAY): Unit = {
+                                        partitionType: TimePartitioning.Type = TimePartitioning.Type.DAY,
+                                        partitionExpirationDays: Long = 0,
+                                        requirePartitionFilter: Boolean = false): Unit = {
+
     if (bigQuery.getTable(getTableIdByTableName(tableName)) != null) deleteTable(tableName)
-    createPartitionedTable(tableName, sparkSchema, partitionField, partitionType)
+
+    createPartitionedTable(
+      tableName,
+      sparkSchema,
+      partitionField,
+      partitionType,
+      partitionExpirationDays,
+      requirePartitionFilter
+    )
 
   }
 

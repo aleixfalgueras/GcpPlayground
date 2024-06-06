@@ -11,8 +11,16 @@ object DateTimeUtils {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
+  // date
+
   val SIMPLE_DATE_FORMAT = "dd-MM-yyyy"
+  val ISO8601_DATE_FORMAT = "yyyy-MM-dd"
+
+  // timestamp
+
   val SIMPLE_TIMESTAMP_FORMAT = "dd-MM-yyyy HH:mm:ss"
+  val ISO8601_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss"
+
 
   // ############ java.time ############
 
@@ -30,6 +38,9 @@ object DateTimeUtils {
 
   def getDate(stringDate: String, format: String = SIMPLE_DATE_FORMAT): LocalDate =
     LocalDate.parse(stringDate, DateTimeFormatter.ofPattern(format))
+
+  def formatDate(date: LocalDate, format: String = ISO8601_DATE_FORMAT): String =
+    DateTimeFormatter.ofPattern(format).format(date)
 
   def toDateMultipleFormats(stringDate: String, formats: Seq[String]): Option[LocalDate] = {
     formats.map { format => Try(getDate(stringDate, format)) }.find(_.isSuccess) match {
