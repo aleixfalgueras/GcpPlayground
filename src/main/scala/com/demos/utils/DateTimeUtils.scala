@@ -12,15 +12,16 @@ object DateTimeUtils {
   private val logger: Logger = Logger.getLogger(getClass)
 
   // date
-
   val SIMPLE_DATE_FORMAT = "dd-MM-yyyy"
   val ISO8601_DATE_FORMAT = "yyyy-MM-dd"
 
   // timestamp
-
   val SIMPLE_TIMESTAMP_FORMAT = "dd-MM-yyyy HH:mm:ss"
   val ISO8601_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
+  // BQ
+  val BQ_DATE_PARTITION_FORMAT = "yyyyMMdd"
+  val BQ_HOUR_PARTITION_FORMAT = "yyyyMMddHH"
 
   // ############ java.time ############
 
@@ -36,11 +37,24 @@ object DateTimeUtils {
   currentTimestampZoned -> 2024-06-02T09:53:18.560716800Z
   */
 
+  // format methods
+
+  def formatDate(date: LocalDate, format: String): String = {
+    formatDateTime(date.atStartOfDay(), format)
+  }
+
+  def formatDateISO8601(date: LocalDate): String = formatDate(date, ISO8601_DATE_FORMAT)
+
+  def formatDateTime(dateTime: LocalDateTime, format: String): String = {
+    DateTimeFormatter.ofPattern(format).format(dateTime)
+  }
+
+  def formatDateTimeISO8601(dateTime: LocalDateTime): String = formatDateTime(dateTime, ISO8601_TIMESTAMP_FORMAT)
+
+  // parse methods
+
   def getDate(stringDate: String, format: String = SIMPLE_DATE_FORMAT): LocalDate =
     LocalDate.parse(stringDate, DateTimeFormatter.ofPattern(format))
-
-  def formatDate(date: LocalDate, format: String = ISO8601_DATE_FORMAT): String =
-    DateTimeFormatter.ofPattern(format).format(date)
 
   def toDateMultipleFormats(stringDate: String, formats: Seq[String]): Option[LocalDate] = {
     formats.map { format => Try(getDate(stringDate, format)) }.find(_.isSuccess) match {
@@ -73,6 +87,5 @@ object DateTimeUtils {
   def getTimestampSqlFromString(timestampString: String, format: String = SIMPLE_TIMESTAMP_FORMAT): Timestamp = {
     Timestamp.valueOf(LocalDateTime.parse(timestampString, DateTimeFormatter.ofPattern(format)))
   }
-
 
 }

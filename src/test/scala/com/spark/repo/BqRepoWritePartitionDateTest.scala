@@ -2,8 +2,9 @@ package com.spark.repo
 
 import com.bq.BqClient
 import com.demos.utils.DateTimeUtils
-import com.demos.utils.DateTimeUtils.currentDate
+import com.demos.utils.DateTimeUtils.{currentDate, formatDateISO8601}
 import com.google.cloud.spark.bigquery.repackaged.com.google.cloud.bigquery.TimePartitioning
+import com.spark.repo.BqRepoTestUtils.getPartitionIdAndTotalRows
 import com.spark.repo.BqRepoWritePartitionDateTest._
 import com.spark.repo.implementation.BqRepo
 import org.apache.log4j.Logger
@@ -21,21 +22,6 @@ class BqRepoWritePartitionDateTest extends SparkTest {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
-  def getPartitionIdAndTotalRows(partitionsInfo: DataFrame): Set[(String, Int)] = {
-    partitionsInfo
-      .select("partition_id", "total_rows")
-      .collect()
-      .map(row => (row.getAs[String](0), row.getAs[Int](1)))
-      .toSet
-
-  }
-
-  val studentsDailyRepo = new BqRepo(studentsDailyTableName, TestingConfig.gcsTmpBucket)
-  val studentsDailyOptionsRepo = new BqRepo(studentsDailyOptionsTableName, TestingConfig.gcsTmpBucket)
-  val studentsMonthlyRepo = new BqRepo(studentsMonthlyTableName, TestingConfig.gcsTmpBucket)
-  val studentsYearlyRepo = new BqRepo(studentsYearlyTableName, TestingConfig.gcsTmpBucket)
-  val studentsHourlyRepo = new BqRepo(studentsHourlyTableName, TestingConfig.gcsTmpBucket)
-
   // ######## DATA ########
 
   // date
@@ -43,7 +29,6 @@ class BqRepoWritePartitionDateTest extends SparkTest {
   val oneStudentCurrentDatePartition: DataFrame = getDf(Seq(
     Row("Pep", "Melós", 20, DateTimeUtils.currentDateSql)
   ), studentsDateSchema)
-
 
   val oneStudentDatePartition: DataFrame = getDf(Seq(
     Row("Pep", "Melós", 20, DateTimeUtils.getDateSql("01-01-2021"))
@@ -67,51 +52,57 @@ class BqRepoWritePartitionDateTest extends SparkTest {
 
   // ######## TESTS ########
 
+  val studentsDailyRepo = new BqRepo(studentsDailyTableName, TestingConfig.gcsTmpBucket)
+  val studentsDailyOptionsRepo = new BqRepo(studentsDailyOptionsTableName, TestingConfig.gcsTmpBucket)
+  val studentsMonthlyRepo = new BqRepo(studentsMonthlyTableName, TestingConfig.gcsTmpBucket)
+  val studentsYearlyRepo = new BqRepo(studentsYearlyTableName, TestingConfig.gcsTmpBucket)
+  val studentsHourlyRepo = new BqRepo(studentsHourlyTableName, TestingConfig.gcsTmpBucket)
+
+
   override def beforeAll(): Unit = {
     if (TestingConfig.createTables) {
       BqClient.createOrOverwritePartitionedTable(
         studentsDailyTableName,
         studentsDateSchema,
-        studentsDatePartitionField
+        Some(studentsDatePartitionField)
       )
       BqClient.createOrOverwritePartitionedTable(
         studentsDailyOptionsTableName,
         studentsDateSchema,
-        studentsDatePartitionField,
+        Some(studentsDatePartitionField),
         partitionExpirationDays = 2,
         requirePartitionFilter = true
       )
       BqClient.createOrOverwritePartitionedTable(
         studentsMonthlyTableName,
         studentsDateSchema,
-        studentsDatePartitionField,
+        Some(studentsDatePartitionField),
         TimePartitioning.Type.MONTH
       )
       BqClient.createOrOverwritePartitionedTable(
         studentsYearlyTableName,
         studentsDateSchema,
-        studentsDatePartitionField,
+        Some(studentsDatePartitionField),
         TimePartitioning.Type.YEAR
       )
       BqClient.createOrOverwritePartitionedTable(
         studentsHourlyTableName,
         studentsTimestampSchema,
-        studentsTimestampPartitionField,
+        Some(studentsTimestampPartitionField),
         TimePartitioning.Type.HOUR
       )
-      super.beforeAll()
     }
     else {
       studentsDailyRepo.truncateRepo()
       studentsMonthlyRepo.truncateRepo()
       studentsYearlyRepo.truncateRepo()
       studentsHourlyRepo.truncateRepo()
-      super.beforeAll()
     }
+    super.beforeAll()
 
   }
 
-  behavior of "Function writePartitionDate(...) with different arguments"
+  behavior of "Function BqRepo.writePartitionDate with different arguments"
 
   it must "behave as expected for a daily partitioned table" in {
     val oneStudentDailyDatePartition = Some("20210101")
@@ -237,7 +228,7 @@ class BqRepoWritePartitionDateTest extends SparkTest {
       studentsDatePartitionField
     )
 
-    val partitionFilter = s"birth_date = '${DateTimeUtils.formatDate(currentDate)}'"
+    val partitionFilter = s"birth_date = '${formatDateISO8601(currentDate)}'"
     val expectedData = studentsDailyOptionsRepo.read().where(partitionFilter)
 
     logger.info(s"Partition filter: $partitionFilter")
@@ -252,9 +243,8 @@ class BqRepoWritePartitionDateTest extends SparkTest {
       BqClient.deleteTable(studentsMonthlyTableName)
       BqClient.deleteTable(studentsYearlyTableName)
       BqClient.deleteTable(studentsHourlyTableName)
-      super.afterAll()
     }
-    else super.afterAll()
+    super.afterAll()
 
   }
 

@@ -1,6 +1,7 @@
 
 package com.bq
 
+import scala.Option
 import com.google.cloud.spark.bigquery.repackaged.com.google.cloud.bigquery._
 import com.spark.utils.BqSparkSchema
 import org.apache.spark.sql.types.StructType
@@ -61,9 +62,16 @@ object BqClient {
 
   }
 
+  /**
+   * If the table is partitioned by ingestion time, fields "_PARTITIONTIME" and "_PARTITIONDATE" (Type.DAY)
+   * will be add to the schema.
+   *
+   * @param partitionField if None, ingestion time is used as a partition field
+   * @param requirePartitionFilter forces you to always provide a filter for partitions
+   */
   def createPartitionedTable(tableName: String,
                              sparkSchema: StructType,
-                             partitionField: String,
+                             partitionField: Option[String] = None,
                              partitionType: TimePartitioning.Type = TimePartitioning.Type.DAY,
                              partitionExpirationDays: Long = 0,
                              requirePartitionFilter: Boolean = false): Unit = {
@@ -71,8 +79,11 @@ object BqClient {
     val bqSchema = BqSparkSchema.getBqSchema(sparkSchema)
     val tableId = getTableIdByTableName(tableName)
     val timePartitioningBuilder = TimePartitioning.newBuilder(partitionType)
-      .setField(partitionField)
       .setRequirePartitionFilter(requirePartitionFilter)
+
+    if (partitionField.isDefined) {
+      timePartitioningBuilder.setField(partitionField.get)
+    }
 
     if (partitionExpirationDays > 0) {
       timePartitioningBuilder.setExpirationMs(partitionExpirationDays * 24 * 60 * 60 * 1000) // convert days to ms
@@ -86,15 +97,16 @@ object BqClient {
 
     val tableInfo = TableInfo.newBuilder(tableId, tableDefinition).build()
 
-    logger.info(s"Creating partitioned table $tableName of type $partitionType by $partitionField " +
-      s"(partitionExpirationDays: $partitionExpirationDays, requirePartitionFilter: $requirePartitionFilter)")
+    logger.info(s"Creating partitioned table $tableName: \n" +
+      s"[partition type = $partitionType, partition field = ${partitionField.getOrElse("_PARTITIONTIME (ingestion time)")}, " +
+      s"partitionExpirationDays = $partitionExpirationDays, requirePartitionFilter = $requirePartitionFilter]")
     bigQuery.create(tableInfo)
 
   }
 
   def createOrOverwritePartitionedTable(tableName: String,
                                         sparkSchema: StructType,
-                                        partitionField: String,
+                                        partitionField: Option[String] = None,
                                         partitionType: TimePartitioning.Type = TimePartitioning.Type.DAY,
                                         partitionExpirationDays: Long = 0,
                                         requirePartitionFilter: Boolean = false): Unit = {

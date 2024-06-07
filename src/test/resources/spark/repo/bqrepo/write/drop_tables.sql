@@ -1,0 +1,2 @@
+DROP TABLE testing.students_ingestion_time_daily;
+DROP TABLE testing.students_ingestion_time_hourly;
