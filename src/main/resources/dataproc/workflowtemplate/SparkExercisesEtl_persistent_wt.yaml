@@ -16,7 +16,6 @@ jobs:
         spark.executor.memory: "2G"
         spark.executor.cores: "2"
         spark.dynamicAllocation.enabled: "false"
-        spark.app.name: "ALEIX IS THE KING"
         # jvm logs timezone config
         spark.driver.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
         spark.executor.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
@@ -30,6 +29,7 @@ jobs:
         # scheduling CONTROL strategy
         spark.scheduler.minRegisteredResourcesRatio: "1.0"
         spark.scheduler.mode: "FIFO"
+        spark.scheduler.maxRegisteredResourcesWaitingTime: "7200s" # 2 hours
     stepId: compute
 placement:
   clusterSelector:

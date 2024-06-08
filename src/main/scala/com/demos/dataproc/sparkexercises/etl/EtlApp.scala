@@ -33,13 +33,13 @@ object EtlApp {
 
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
-    val argsParsed = new EtlAppArgs(args)
-    val executionMode = ExecutionMode(argsParsed.executionMode())
-    val targetRepoType = SparkRepoType(argsParsed.targetRepo())
+    val etlAppArgs = new EtlAppArgs(args)
+    val executionMode = ExecutionMode(etlAppArgs.executionMode())
+    val targetRepoType = SparkRepoType(etlAppArgs.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
 
-    implicit val config: SparkExercisesConfig = readConfigFromFile(argsParsed.env(), configFilePath)
-    implicit val spark: SparkSession = getSparkSession("SparkExercisesEtl", executionMode, config.timezone)
+    implicit val config: SparkExercisesConfig = readConfigFromFile(etlAppArgs.env(), configFilePath)
+    implicit val spark: SparkSession = getSparkSession(s"SparkExercisesEtl_${etlAppArgs.etl()}", executionMode, config.timezone)
 
     logger.info(config.toString)
 
@@ -71,8 +71,8 @@ object EtlApp {
       isGcsPath = true
     ))
 
-    logger.info(s"Executing ${argsParsed.etl()} ETL...")
-    argsParsed.etl() match {
+    logger.info(s"Executing ${etlAppArgs.etl()} ETL...")
+    etlAppArgs.etl() match {
       case "sellers" => etlSellers(sellersSourceRepo, sellersTargetRepo)
       case "products" => etlProducts(productsSourceRepo, productsTargetRepo)
       case "sales" => etlSales(salesSourceRepo, salesTargetRepo)
@@ -87,10 +87,10 @@ object EtlApp {
             etlSales(salesSourceRepo, salesTargetRepo)
         }
       case _ =>
-        throw new Exception(s"ETL ${argsParsed.etl()} not known")
+        throw new Exception(s"ETL ${etlAppArgs.etl()} not known")
     }
 
-    logger.info(s"ETL ${argsParsed.etl()} ($targetRepoType flavour) finished.")
+    logger.info(s"ETL ${etlAppArgs.etl()} ($targetRepoType flavour) finished.")
 
   }
 
