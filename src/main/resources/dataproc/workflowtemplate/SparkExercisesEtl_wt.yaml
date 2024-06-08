@@ -9,7 +9,7 @@ jobs:
         - "--executionMode=GCP"
         - "--etl=@@ETL"
         - "--targetRepo=@@TARGET_REPO"
-      properties:
+      properties: # [2e, 2C, 2G, 6C (4 + 2), 6G (4 + 2)]
         spark.driver.cores: "2"
         spark.driver.memory: "2G"
         spark.executor.instances: "2"
