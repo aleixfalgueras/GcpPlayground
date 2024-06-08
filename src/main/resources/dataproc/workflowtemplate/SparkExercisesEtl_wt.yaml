@@ -26,6 +26,9 @@ jobs:
         spark.history.fs.logDirectory: "gs://@@SPARK_HISTORY_PATH/spark-job-history"
         spark.history.fs.gs.outputstream.type: "FLUSHABLE_COMPOSITE"
         spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
+        # scheduling CAOS strategy
+        spark.scheduler.minRegisteredResourcesRatio: "0.5"
+        spark.scheduler.mode: "FAIR"
     stepId: compute
 placement:
   managedCluster:

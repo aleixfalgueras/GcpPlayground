@@ -16,6 +16,7 @@ jobs:
         spark.executor.memory: "2G"
         spark.executor.cores: "2"
         spark.dynamicAllocation.enabled: "false"
+        spark.app.name: "ALEIX IS THE KING"
         # jvm logs timezone config
         spark.driver.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
         spark.executor.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
@@ -26,7 +27,7 @@ jobs:
         spark.history.fs.logDirectory: "gs://@@SPARK_HISTORY_PATH/spark-job-history"
         spark.history.fs.gs.outputstream.type: "FLUSHABLE_COMPOSITE"
         spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
-        # testing
+        # scheduling CONTROL strategy
         spark.scheduler.minRegisteredResourcesRatio: "1.0"
         spark.scheduler.mode: "FIFO"
     stepId: compute
