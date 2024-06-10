@@ -15,6 +15,7 @@ object BqSparkSchema {
    * BQ type "BIGNUMERIC" (aka "BIGDECIMAL") precision is 76.76 (the 77th digit is partial), however Spark DecimalType
    * maximum precision allowed is 38.
    *
+   * https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#data-types
    * https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types
    * https://spark.apache.org/docs/latest/sql-ref-datatypes.html
    */
@@ -22,13 +23,13 @@ object BqSparkSchema {
     bqType match {
       case BqType.BOOLEAN => BooleanType
       case BqType.STRING => StringType
-      case BqType.INT64 | BqType.INT | BqType.SMALLINT | BqType.INTEGER |
-           BqType.BIGINT | BqType.TINYINT | BqType.BYTEINT => IntegerType
+      case BqType.INT64 | BqType.INT | BqType.SMALLINT | BqType.INTEGER | BqType.BIGINT | BqType.TINYINT |
+           BqType.BYTEINT => IntegerType
       case BqType.NUMERIC | BqType.DECIMAL => DecimalType(38, 9)
       case BqType.BIGNUMERIC | BqType.BIGDECIMAL => DecimalType(38, 38)
       case BqType.FLOAT64 => DoubleType
       case BqType.DATE => DateType
-      case BqType.DATETIME => TimestampType
+      case BqType.DATETIME => TimestampNTZType
       case BqType.TIMESTAMP => TimestampType
       case _ => throw new Exception(s"Spark type for BigQuery type $bqType not known")
     }
