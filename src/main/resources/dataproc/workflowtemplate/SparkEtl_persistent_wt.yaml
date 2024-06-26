@@ -3,7 +3,7 @@ jobs:
   - sparkJob:
       jarFileUris:
         - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
-      mainClass: com.demos.dataproc.sparkexercises.etl.EtlApp
+      mainClass: com.demos.dataproc.etl.SparkEtlApp
       args:
         - "--env=dev"
         - "--executionMode=GCP"
@@ -28,25 +28,6 @@ jobs:
         spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
     stepId: compute
 placement:
-  managedCluster:
-    clusterName: @@CLUSTER_NAME
-    config:
-      initializationActions:
-        "executableFile": "gs://aleix-demos-bucket/init_actions/set_timezone.sh"
-        "executionTimeout": "300s"
-      endpointConfig:
-        enableHttpPortAccess: true
-      configBucket: dataproc-stg-bucket
-      tempBucket: dataproc-tmp-bucket
-      softwareConfig:
-        imageVersion: 2.2.2-debian12
-      masterConfig:
-        numInstances: 1
-        machineTypeUri: 'e2-standard-2'
-        diskConfig:
-          bootDiskSizeGb: 100
-      workerConfig:
-        numInstances: 2
-        machineTypeUri: 'e2-standard-2'
-        diskConfig:
-          bootDiskSizeGb: 100
+  clusterSelector:
+    clusterLabels:
+      goog-dataproc-cluster-name: @@CLUSTER_NAME

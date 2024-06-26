@@ -1,10 +1,10 @@
-package com.demos.dataproc.sparkexercises.etl
+package com.demos.dataproc.etl
 
 import com.demos.utils.StandardArgs
 import com.spark.repo.SparkRepoType
 import org.rogach.scallop.ScallopOption
 
-class EtlAppArgs(args: Seq[String]) extends StandardArgs(args) {
+class SparkEtlAppArgs(args: Seq[String]) extends StandardArgs(args) {
 
   val etl: ScallopOption[String] = choice(
     name = "etl",

@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="EtlSellersAvro" type="Application" factoryName="Application" folderName="SparkExercisesEtl">
+  <configuration default="false" name="EtlSellersAvro" type="Application" factoryName="Application" folderName="Dataproc">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
-    <option name="MAIN_CLASS_NAME" value="com.demos.dataproc.sparkexercises.etl.EtlApp" />
+    <option name="MAIN_CLASS_NAME" value="com.demos.dataproc.etl.SparkEtlApp" />
     <module name="GcpPlayground" />
     <option name="PROGRAM_PARAMETERS" value="--env=dev --executionMode=LOCAL --etl=sellers --targetRepo=AVRO" />
     <shortenClasspath name="MANIFEST" />

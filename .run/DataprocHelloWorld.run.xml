@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DataprocHelloWorld" type="Application" factoryName="Application" folderName="SparkExercisesEtl">
+  <configuration default="false" name="DataprocHelloWorld" type="Application" factoryName="Application" folderName="Dataproc">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.demos.dataproc.DataprocHelloWorld" />
     <module name="GcpPlayground" />

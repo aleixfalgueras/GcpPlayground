@@ -1,12 +1,12 @@
-package com.demos.dataproc.sparkexercises.etl
+package com.demos.dataproc.etl
 
-import com.demos.dataproc.sparkexercises.domain.Product
+import com.demos.dataproc.etl.domain.Product
 import com.spark.repo.SparkRepo
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{DecimalType, IntegerType}
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
-object Etl {
+object SparkEtl {
 
   def getSellersDailyTargetByTeam(sellersData: DataFrame): DataFrame = {
     sellersData

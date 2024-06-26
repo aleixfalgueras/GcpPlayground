@@ -1,7 +1,7 @@
-package com.demos.dataproc.sparkexercises.etl
+package com.demos.dataproc.etl
 
-import com.configs.SparkExercisesConfig
-import Etl.{etlProducts, etlSales, etlSellers}
+import com.configs.SparkEtlConfig
+import com.demos.dataproc.etl.SparkEtl.{etlProducts, etlSales, etlSellers}
 import com.demos.utils
 import com.demos.utils.ExecutionMode
 import com.demos.utils.PureConfigUtils.readConfigFromFile
@@ -17,12 +17,12 @@ import pureconfig.generic.auto._
  * Simple Spark-Dataproc ETL examples.
  *
  */
-object EtlApp {
+object SparkEtlApp {
   private val logger: Logger = Logger.getLogger(getClass)
 
   // ! adding type annotation crash the code
-  implicit val sparkExercisesEtlConfigReader = pureconfig.ConfigReader[SparkExercisesConfig]
-  val configFilePath = "config/spark_exercises.conf"
+  implicit val sparkEtlConfigReader = pureconfig.ConfigReader[SparkEtlConfig]
+  val configFilePath = "config/spark_etl.conf"
 
   def updateGcsPathWithFormat(targetRepo: SparkRepo)(implicit spark: SparkSession): SparkRepo = targetRepo match {
     case repo: AvroRepo => new AvroRepo(repo.path + "avro/")
@@ -33,13 +33,13 @@ object EtlApp {
 
   def main(args: Array[String]): Unit = {
     logger.info("Args: " + args.mkString(", "))
-    val etlAppArgs = new EtlAppArgs(args)
-    val executionMode = ExecutionMode(etlAppArgs.executionMode())
-    val targetRepoType = SparkRepoType(etlAppArgs.targetRepo())
+    val sparkEtlAppArgs = new SparkEtlAppArgs(args)
+    val executionMode = ExecutionMode(sparkEtlAppArgs.executionMode())
+    val targetRepoType = SparkRepoType(sparkEtlAppArgs.targetRepo())
     logger.info(s"Execution mode: $executionMode, target repo: $targetRepoType")
 
-    implicit val config: SparkExercisesConfig = readConfigFromFile(etlAppArgs.env(), configFilePath)
-    implicit val spark: SparkSession = getSparkSession(s"SparkExercisesEtl_${etlAppArgs.etl()}", executionMode, config.timezone)
+    implicit val config: SparkEtlConfig = readConfigFromFile(sparkEtlAppArgs.env(), configFilePath)
+    implicit val spark: SparkSession = getSparkSession(s"SparkEtl_${sparkEtlAppArgs.etl()}", executionMode, config.timezone)
 
     logger.info(config.toString)
 
@@ -71,8 +71,8 @@ object EtlApp {
       isGcsPath = true
     ))
 
-    logger.info(s"Executing ${etlAppArgs.etl()} ETL...")
-    etlAppArgs.etl() match {
+    logger.info(s"Executing ${sparkEtlAppArgs.etl()} ETL...")
+    sparkEtlAppArgs.etl() match {
       case "sellers" => etlSellers(sellersSourceRepo, sellersTargetRepo)
       case "products" => etlProducts(productsSourceRepo, productsTargetRepo)
       case "sales" => etlSales(salesSourceRepo, salesTargetRepo)
@@ -87,10 +87,10 @@ object EtlApp {
             etlSales(salesSourceRepo, salesTargetRepo)
         }
       case _ =>
-        throw new Exception(s"ETL ${etlAppArgs.etl()} not known")
+        throw new Exception(s"ETL ${sparkEtlAppArgs.etl()} not known")
     }
 
-    logger.info(s"ETL ${etlAppArgs.etl()} ($targetRepoType flavour) finished.")
+    logger.info(s"ETL ${sparkEtlAppArgs.etl()} ($targetRepoType flavour) finished.")
 
   }
 

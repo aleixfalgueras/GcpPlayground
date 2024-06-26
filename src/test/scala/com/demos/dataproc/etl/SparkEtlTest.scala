@@ -1,13 +1,13 @@
-package com.demos.dataproc.sparkexercises.etl
+package com.demos.dataproc.etl
 
-import com.demos.dataproc.sparkexercises.etl.Etl.getSellersDailyTargetByTeam
-import EtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
+import com.demos.dataproc.etl.SparkEtl.getSellersDailyTargetByTeam
+import SparkEtlTest.{sellersExpectedTargetPath, sellersSchemaPath, sellersSourcePath}
 import com.spark.repo.implementation.CsvRepo
 import com.spark.utils.BqSparkSchema.getSparkSchema
 import org.apache.spark.sql.types.{IntegerType, StructField, StructType}
 import utils.SparkTest
 
-class EtlTest extends SparkTest {
+class SparkEtlTest extends SparkTest {
 
   val sellersSourceSchema: StructType = getSparkSchema(sellersSchemaPath)
   val sellersSourceRepo = new CsvRepo(sellersSourcePath, Some(sellersSourceSchema))
@@ -27,9 +27,9 @@ class EtlTest extends SparkTest {
 
 }
 
-object EtlTest {
+object SparkEtlTest {
 
-  val sellersDir = "src/test/resources/demos/sparkexercises/sellers"
+  val sellersDir = "src/test/resources/demos/dataproc/etl/sellers"
 
   val sellersSourcePath = s"$sellersDir/source.csv"
   val sellersSchemaPath = s"$sellersDir/source_schema.json"
