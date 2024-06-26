@@ -2,11 +2,16 @@
 
 Personal project to learn and explore GCP.
 
+Quotas:
+- CPUS ALL REGIONS: 12
+- N2 CPUS: 8
+
 ### Dataflow
 
 SCIO plugin is required: https://github.com/spotify/scio-idea-plugin
 
 Add the following options to the IntelliJ Scala compiler and to the SBT VM parameters: 
+
 -Dbigquery.project=industrial-keep-410516 -Dbigquery.cache.enabled=false -Dbigquery.types.debug=false
 
 ### Demos (WIP 🔨)

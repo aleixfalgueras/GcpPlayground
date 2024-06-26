@@ -26,10 +26,6 @@ jobs:
         spark.history.fs.logDirectory: "gs://@@SPARK_HISTORY_PATH/spark-job-history"
         spark.history.fs.gs.outputstream.type: "FLUSHABLE_COMPOSITE"
         spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
-        # scheduling CONTROL strategy
-        spark.scheduler.minRegisteredResourcesRatio: "1.0"
-        spark.scheduler.mode: "FIFO"
-        spark.scheduler.maxRegisteredResourcesWaitingTime: "7200s" # 2 hours
     stepId: compute
 placement:
   clusterSelector:
