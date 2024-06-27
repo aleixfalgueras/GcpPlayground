@@ -1,0 +1,72 @@
+name: Run SparkSql
+
+on:
+  workflow_dispatch:
+    inputs:
+      build:
+        description: 'Build before run workflow'
+        required: true
+        type: boolean
+        default: false
+      cluster_type:
+        description: 'Select cluster type'
+        required: true
+        type: choice
+        options:
+          - ephemeral
+          - persistent
+        default: ephemeral
+      cluster_name:
+        description: 'Cluster name'
+        required: true
+        type: string
+        default: spark-sql
+
+permissions:
+  contents: read
+
+env:
+  EPHEMERAL_WT_PATH: ./src/main/resources/dataproc/workflowtemplate/SparkSql_wt.yaml
+  EPHEMERAL_WT_ID: spark-sql
+  PERSISTENT_WT_PATH: ./src/main/resources/dataproc/workflowtemplate/SparkSql_persistent_wt.yaml
+  PERSISTENT_WT_ID: spark-sql-persistent
+
+jobs:
+  call_build_workflow:
+    if: inputs.build == true
+    uses: ./.github/workflows/build.yaml
+    with:
+      deploy: true
+    secrets: inherit
+
+  prepare_params:
+    runs-on: ubuntu-latest
+    outputs:
+      workflow_template_path: ${{ steps.set_workflow_template_params.outputs.workflow_template_path }}
+      workflow_template_id: ${{ steps.set_workflow_template_params.outputs.workflow_template_id }}
+      cluster_name: ${{ steps.set_workflow_template_params.outputs.cluster_name }}
+    steps:
+      - id: set_workflow_template_params
+        name: Set workflow template params output values
+        run: |
+          if [ "${{ github.event.inputs.cluster_type }}" == "ephemeral" ]; then
+            echo "workflow_template_path=${{ env.EPHEMERAL_WT_PATH }}" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_id=${{ env.EPHEMERAL_WT_ID }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "workflow_template_path=${{ env.PERSISTENT_WT_PATH }}" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_id=${{ env.PERSISTENT_WT_ID }}" >> "$GITHUB_OUTPUT"
+          fi
+          echo "cluster_name=${{ inputs.cluster_name }}" >> "$GITHUB_OUTPUT"
+
+
+  call_run_dataproc_with_wt_workflow:
+    needs: [call_build_workflow, prepare_params]
+    if: always()
+    uses: ./.github/workflows/run_dataproc_with_wt.yaml
+    with:
+      region: us-central1
+      workflow_template_path: ${{ needs.prepare_params.outputs.workflow_template_path }}
+      workflow_template_id: ${{ needs.prepare_params.outputs.workflow_template_id }}
+      cluster_name: ${{ needs.prepare_params.outputs.cluster_name }}
+      spark_history_bucket: spark-history-bucket
+    secrets: inherit

@@ -13,7 +13,7 @@ import pureconfig.generic.auto._
 
 import scala.collection.immutable.Seq
 
-object SparkSqlExercises {
+object SparkSql {
 
   val PRODUCT_ID = "product_id"
   val PIECES_SOLD = "num_pieces_sold"
@@ -21,7 +21,7 @@ object SparkSqlExercises {
   private val logger: Logger = Logger.getLogger(getClass)
 
   // ! adding type annotation crash the code
-  implicit val sparkExercisesEtlConfigReader = pureconfig.ConfigReader[SparkEtlConfig]
+  implicit val sparkEtlConfig = pureconfig.ConfigReader[SparkEtlConfig]
   val configFilePath = "config/spark_etl.conf"
   
   /* WARM-UP 1: Which is the product contained in more orders? */

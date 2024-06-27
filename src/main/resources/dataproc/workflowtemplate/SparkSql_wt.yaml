@@ -1,0 +1,48 @@
+dagTimeout: 1200s
+jobs:
+  - sparkJob:
+      jarFileUris:
+        - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+      mainClass: com.demos.dataproc.SparkSql
+      args:
+      properties: # [2e, 2c, 2G, 6c (4 + 2), 6G (4 + 2)]
+        spark.driver.cores: "2"
+        spark.driver.memory: "2G"
+        spark.executor.instances: "2"
+        spark.executor.memory: "2G"
+        spark.executor.cores: "2"
+        spark.dynamicAllocation.enabled: "false"
+        # jvm logs timezone config
+        spark.driver.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
+        spark.executor.extraJavaOptions: "-Duser.timezone=Europe/Sofia"
+        # properties to enable and save spark history logs
+        spark.eventLog.enabled: "true"
+        spark.eventLog.dir: "gs://@@SPARK_HISTORY_PATH/spark-job-history"
+        spark.hadoop.yarn.nodemanager.remote-app-log-dir: "gs://@@SPARK_HISTORY_PATH/yarn-logs"
+        spark.history.fs.logDirectory: "gs://@@SPARK_HISTORY_PATH/spark-job-history"
+        spark.history.fs.gs.outputstream.type: "FLUSHABLE_COMPOSITE"
+        spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
+    stepId: compute
+placement:
+  managedCluster: # [2w, 2c, 8G, 6c (4 + 2), ()]
+    clusterName: @@CLUSTER_NAME
+    config:
+      initializationActions:
+        "executableFile": "gs://aleix-demos-bucket/init_actions/set_timezone.sh"
+        "executionTimeout": "300s"
+      endpointConfig:
+        enableHttpPortAccess: true
+      configBucket: dataproc-stg-bucket
+      tempBucket: dataproc-tmp-bucket
+      softwareConfig:
+        imageVersion: 2.2.2-debian12
+      masterConfig:
+        numInstances: 1
+        machineTypeUri: 'e2-standard-2'
+        diskConfig:
+          bootDiskSizeGb: 100
+      workerConfig:
+        numInstances: 2
+        machineTypeUri: 'e2-standard-2'
+        diskConfig:
+          bootDiskSizeGb: 100
