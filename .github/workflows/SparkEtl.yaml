@@ -33,10 +33,10 @@ on:
         type: choice
         options:
           - ephemeral
-          - persistent (spark-etl-persistent)
+          - persistent
         default: ephemeral
       cluster_name:
-        description: 'Cluster name (ignored if cluster_type is persistent)'
+        description: 'Cluster name'
         required: true
         type: string
         default: spark-etl
@@ -45,10 +45,10 @@ permissions:
   contents: read
 
 env:
-  ephemeral: ./src/main/resources/dataproc/workflowtemplate/SparkEtl_wt.yaml
-  ephemeral_id: spark-etl
-  persistent: ./src/main/resources/dataproc/workflowtemplate/SparkEtl_persistent_wt.yaml
-  persistent_id: spark-etl-persistent
+  EPHEMERAL_WT_PATH: ./src/main/resources/dataproc/workflowtemplate/SparkEtl_wt.yaml
+  EPHEMERAL_WT_ID: spark-etl
+  PERSISTENT_WT_PATH: ./src/main/resources/dataproc/workflowtemplate/SparkEtl_persistent_wt.yaml
+  PERSISTENT_WT_ID: spark-etl-persistent
 
 jobs:
   call_build_workflow:
@@ -69,14 +69,13 @@ jobs:
         name: Set workflow template params output values
         run: |
           if [ "${{ github.event.inputs.cluster_type }}" == "ephemeral" ]; then
-            echo "workflow_template_path=${{ env.ephemeral }}" >> "$GITHUB_OUTPUT"
-            echo "workflow_template_id=${{ env.ephemeral_id }}" >> "$GITHUB_OUTPUT"
-            echo "cluster_name=${{ inputs.cluster_name }}" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_path=${{ env.EPHEMERAL_WT_PATH }}" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_id=${{ env.EPHEMERAL_WT_ID }}" >> "$GITHUB_OUTPUT"
           else
-            echo "workflow_template_path=${{ env.persistent }}" >> "$GITHUB_OUTPUT"
-            echo "workflow_template_id=${{ env.persistent_id }}" >> "$GITHUB_OUTPUT"
-            echo "cluster_name=spark-etl-persistent" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_path=${{ env.PERSISTENT_WT_PATH }}" >> "$GITHUB_OUTPUT"
+            echo "workflow_template_id=${{ env.PERSISTENT_WT_ID }}" >> "$GITHUB_OUTPUT"
           fi
+          echo "cluster_name=${{ inputs.cluster_name }}" >> "$GITHUB_OUTPUT"
 
   call_run_dataproc_with_wt_workflow:
     needs: [call_build_workflow, prepare_params]
