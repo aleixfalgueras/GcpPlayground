@@ -1,9 +1,10 @@
-package com.demos.dataproc.sparkexercises
+package com.demos.dataproc
 
-import com.configs.SparkExercisesConfig
+import com.configs.SparkEtlConfig
 import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.repo.implementation.ParquetRepo
 import com.spark.utils.SparkSessionUtils.getSparkSession
+import org.apache.log4j.Logger
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
@@ -12,20 +13,22 @@ import pureconfig.generic.auto._
 
 import scala.collection.immutable.Seq
 
-object SqlExercises {
+object SparkSqlExercises {
 
   val PRODUCT_ID = "product_id"
   val PIECES_SOLD = "num_pieces_sold"
 
-  // ! adding type annotation crash the code
-  implicit val sparkExercisesEtlConfigReader = pureconfig.ConfigReader[SparkExercisesConfig]
-  val configFilePath = "config/spark_exercises.conf"
+  private val logger: Logger = Logger.getLogger(getClass)
 
+  // ! adding type annotation crash the code
+  implicit val sparkExercisesEtlConfigReader = pureconfig.ConfigReader[SparkEtlConfig]
+  val configFilePath = "config/spark_etl.conf"
+  
   /* WARM-UP 1: Which is the product contained in more orders? */
   def warmUp1(products: DataFrame, sales: DataFrame, sellers: DataFrame): Unit = {
-    println(s"Products: ${products.count()}, " + s"sales ${sales.count()} and sellers ${sellers.count()}")
+    logger.info(s"Products: ${products.count()}, " + s"sales ${sales.count()} and sellers ${sellers.count()}")
 
-    println(s"At least have been sold ${sales.select("product_id").distinct().count()} products")
+    logger.info(s"At least have been sold ${sales.select("product_id").distinct().count()} different products")
 
     val top_product = sales
       .groupBy(PRODUCT_ID)
@@ -33,12 +36,12 @@ object SqlExercises {
       .orderBy(col("product_id_sales").desc)
       .first()(0)
 
-    println("top product id: " + top_product)
+    logger.info("top product id: " + top_product)
 
   }
 
   /* WARM-UP 2: How many distinct products have been sold in each day? */
-  def warmUp2(products: DataFrame, sales: DataFrame, sellers: DataFrame): Unit = {
+  def warmUp2(sales: DataFrame): Unit = {
     sales
       .groupBy("date")
       .agg(countDistinct(PRODUCT_ID) as "Distinct products sold")
@@ -46,7 +49,7 @@ object SqlExercises {
   }
 
   /* Ex 1: What is the average revenue of the orders? */
-  def ex1(products: DataFrame, sales: DataFrame, sellers: DataFrame): Unit = {
+  def ex1(products: DataFrame, sales: DataFrame): Unit = {
     sales
       .join(products, Seq("product_id"), "inner")
       .withColumn("revenue", col("price") * col(PIECES_SOLD))
@@ -55,7 +58,7 @@ object SqlExercises {
   }
 
   /* Ex 2: For each seller, what is the average % contribution of an order to the seller's daily quota? */
-  def ex2(products: DataFrame, sales: DataFrame, sellers: DataFrame): Unit = {
+  def ex2(sales: DataFrame, sellers: DataFrame): Unit = {
     sales
       .join(broadcast(sellers), Seq("seller_id"), "inner")
       .withColumn("contribution", col(PIECES_SOLD) / col("daily_target"))
@@ -66,7 +69,7 @@ object SqlExercises {
 
   /* Ex 3
    Who are the second most selling and the least selling persons (sellers) for each product?
-   Who are those for product with `product_id = 0` */
+   Who are those for product with `product_id = 0`? */
   def ex3(sales: DataFrame): Unit = {
     val product_window = Window.partitionBy("product_id").orderBy(col("total_PS").asc)
 
@@ -77,7 +80,7 @@ object SqlExercises {
       .agg(sum(PIECES_SOLD) as "total_PS")
       .withColumn("top_sellers", row_number().over(product_window))
       .withColumn("next_seller", lead("seller_id", 1).over(product_window))
-      .where("top_sellers = 2 or next_seller is null")
+      .where("top_sellers = 2 or next_seller is null")  // if the next_seller is null, this seller is the last one
       .show()
 
   }
@@ -90,7 +93,7 @@ object SqlExercises {
       - if the order_id is odd: apply SHA256 hashing to the bill text
 
   Finally, check if there are any duplicate on the new column*/
-  def ex4(spark: SparkSession): Unit = {
+  def ex4()(implicit spark: SparkSession): Unit = {
     def someFancyOperation = (colValueOne: Int, colValue2: Int) => {
       // some operation not possible with sql.functions
       colValueOne * colValue2
@@ -164,10 +167,10 @@ object SqlExercises {
     products.cache(); sales.cache(); sellers.cache()
 
     warmUp1(products, sales, sellers)
-    warmUp2(products, sales, sellers)
+    warmUp2(sales)
 
-    ex1(products, sales, sellers)
-    ex2(products, sales, sellers)
+    ex1(products, sales)
+    ex2(sales, sellers)
     ex3(sales)
     ex4(spark)
     joinExamples(products, sales, sellers)

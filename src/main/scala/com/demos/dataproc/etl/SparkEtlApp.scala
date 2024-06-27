@@ -14,7 +14,7 @@ import org.apache.spark.sql.SparkSession
 import pureconfig.generic.auto._
 
 /**
- * Simple Spark-Dataproc ETL examples.
+ * Simple Spark ETL example.
  *
  */
 object SparkEtlApp {
