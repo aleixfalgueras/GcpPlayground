@@ -1,4 +1,3 @@
-dagTimeout: 1200s
 jobs:
   - sparkJob:
       jarFileUris:

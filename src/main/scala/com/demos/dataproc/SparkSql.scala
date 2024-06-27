@@ -168,14 +168,14 @@ object SparkSql {
 
     warmUp1(products, sales, sellers)
     warmUp2(sales)
-
-    ex1(products, sales)
-    ex2(sales, sellers)
-    ex3(sales)
-    ex4()
-    joinExamples(products, sales, sellers)
-    explode_example(spark)
-    pivot_example(spark)
+//
+//    ex1(products, sales)
+//    ex2(sales, sellers)
+//    ex3(sales)
+//    ex4()
+//    joinExamples(products, sales, sellers)
+//    explode_example(spark)
+//    pivot_example(spark)
 
   }
 

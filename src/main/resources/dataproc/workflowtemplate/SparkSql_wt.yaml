@@ -1,4 +1,3 @@
-dagTimeout: 1200s
 jobs:
   - sparkJob:
       jarFileUris:
@@ -24,7 +23,7 @@ jobs:
         spark.history.fs.gs.outputstream.sync.min.interval.ms: "5000ms"
     stepId: compute
 placement:
-  managedCluster: # [2w, 2c, 8G, 6c (4 + 2), ()]
+  managedCluster: # [2w, 2c, 6G, 4c, 12G]
     clusterName: @@CLUSTER_NAME
     config:
       initializationActions:
@@ -35,7 +34,7 @@ placement:
       configBucket: dataproc-stg-bucket
       tempBucket: dataproc-tmp-bucket
       softwareConfig:
-        imageVersion: 2.2.2-debian12
+        imageVersion: 2.2-debian12
       masterConfig:
         numInstances: 1
         machineTypeUri: 'e2-standard-2'
