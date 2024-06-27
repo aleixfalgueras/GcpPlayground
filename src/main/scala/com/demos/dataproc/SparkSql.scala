@@ -156,7 +156,7 @@ object SparkSql {
   }
 
   def main(args: Array[String]): Unit = {
-    implicit val spark: SparkSession = getSparkSession("SqlExercises")
+    implicit val spark: SparkSession = getSparkSession("SparkSql")
 
     implicit val config = readConfigFromFile("dev", configFilePath)
 
@@ -164,18 +164,18 @@ object SparkSql {
     val sales = new ParquetRepo(config.salesSourceGcsPath).read()
     val sellers = new ParquetRepo(config.sellersSourceGcsPath).read()
 
-    products.cache(); sales.cache(); sellers.cache()
+    // products.cache(); sales.cache(); sellers.cache() too expensive
 
     warmUp1(products, sales, sellers)
     warmUp2(sales)
-//
-//    ex1(products, sales)
-//    ex2(sales, sellers)
-//    ex3(sales)
-//    ex4()
-//    joinExamples(products, sales, sellers)
-//    explode_example(spark)
-//    pivot_example(spark)
+
+    ex1(products, sales)
+    ex2(sales, sellers)
+    ex3(sales)
+    ex4()
+    joinExamples(products, sales, sellers)
+    explode_example(spark)
+    pivot_example(spark)
 
   }
 
