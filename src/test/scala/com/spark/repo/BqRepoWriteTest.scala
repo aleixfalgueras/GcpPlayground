@@ -1,11 +1,11 @@
 package com.spark.repo
 
 import com.bq.BqClient
-import com.demos.utils.DateTimeUtils.{BQ_DATE_PARTITION_FORMAT, BQ_HOUR_PARTITION_FORMAT, currentDate, currentDateTime, formatDate, formatDateTime}
 import com.google.cloud.spark.bigquery.repackaged.com.google.cloud.bigquery.TimePartitioning
 import com.spark.repo.BqRepoTestUtils.getPartitionIdAndTotalRows
 import com.spark.repo.BqRepoWriteTest._
 import com.spark.repo.implementation.BqRepo
+import com.utils.DateTimeUtils._
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper

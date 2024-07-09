@@ -1,6 +1,7 @@
 package com.spark.repo
 
-import com.demos.utils.EnumUtils.matchEnum
+import com.utils.EnumUtils.matchEnum
+
 
 object PartitionType extends Enumeration {
 

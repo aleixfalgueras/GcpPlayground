@@ -1,6 +1,6 @@
 package com.spark.repo
 
-import com.demos.utils.EnumUtils.matchEnum
+import com.utils.EnumUtils.matchEnum
 
 object SparkRepoType extends Enumeration {
 

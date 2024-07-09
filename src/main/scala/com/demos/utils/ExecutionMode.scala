@@ -1,6 +1,7 @@
 package com.demos.utils
 
-import com.demos.utils.EnumUtils.matchEnum
+import com.utils.EnumUtils.matchEnum
+
 
 object ExecutionMode extends Enumeration {
 

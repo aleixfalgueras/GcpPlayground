@@ -1,10 +1,10 @@
-package com.demos.utils
+package com.utils
 
 import org.apache.log4j.Logger
 
 import java.sql.{Date, Timestamp}
-import java.time.{Instant, LocalDate, LocalDateTime, ZoneId, ZonedDateTime}
 import java.time.format.DateTimeFormatter
+import java.time._
 import scala.util.Try
 
 object DateTimeUtils {
@@ -13,11 +13,12 @@ object DateTimeUtils {
 
   // date
   val SIMPLE_DATE_FORMAT = "dd-MM-yyyy"
-  val ISO8601_DATE_FORMAT = "yyyy-MM-dd"
+  val ISO_DATE_FORMAT = "yyyy-MM-dd"
 
   // timestamp
   val SIMPLE_TIMESTAMP_FORMAT = "dd-MM-yyyy HH:mm:ss"
-  val ISO8601_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss"
+  val ISO_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss"
+  val LONG_TIMESTAMP_FORMAT = "yyyyMMddHHmmss"
 
   // BQ
   val BQ_DATE_PARTITION_FORMAT = "yyyyMMdd"
@@ -43,13 +44,13 @@ object DateTimeUtils {
     formatDateTime(date.atStartOfDay(), format)
   }
 
-  def formatDateISO8601(date: LocalDate): String = formatDate(date, ISO8601_DATE_FORMAT)
+  def formatDateISO(date: LocalDate): String = formatDate(date, ISO_DATE_FORMAT)
 
   def formatDateTime(dateTime: LocalDateTime, format: String): String = {
     DateTimeFormatter.ofPattern(format).format(dateTime)
   }
 
-  def formatDateTimeISO8601(dateTime: LocalDateTime): String = formatDateTime(dateTime, ISO8601_TIMESTAMP_FORMAT)
+  def formatDateTimeISO(dateTime: LocalDateTime): String = formatDateTime(dateTime, ISO_TIMESTAMP_FORMAT)
 
   // parse methods
 

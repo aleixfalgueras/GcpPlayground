@@ -1,18 +1,19 @@
 package com.spark.repo
 
 import com.bq.BqClient
-import com.demos.utils.DateTimeUtils
-import com.demos.utils.DateTimeUtils.{currentDate, formatDateISO8601}
 import com.google.cloud.spark.bigquery.repackaged.com.google.cloud.bigquery.TimePartitioning
 import com.spark.repo.BqRepoTestUtils.getPartitionIdAndTotalRows
 import com.spark.repo.BqRepoWritePartitionDateTest._
 import com.spark.repo.implementation.BqRepo
+import com.utils.DateTimeUtils
+import com.utils.DateTimeUtils.{currentDate, formatDateISO}
 import org.apache.log4j.Logger
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import utils.SparkTestUtils.getDf
 import utils.{SparkTest, TestingConfig}
+
 
 /**
  * Test BigQuery different partition date-time strategies.
@@ -228,7 +229,7 @@ class BqRepoWritePartitionDateTest extends SparkTest {
       studentsDatePartitionField
     )
 
-    val partitionFilter = s"birth_date = '${formatDateISO8601(currentDate)}'"
+    val partitionFilter = s"birth_date = '${formatDateISO(currentDate)}'"
     val expectedData = studentsDailyOptionsRepo.read().where(partitionFilter)
 
     logger.info(s"Partition filter: $partitionFilter")
@@ -275,3 +276,4 @@ object BqRepoWritePartitionDateTest {
   val studentsHourlyTableName = s"${TestingConfig.projectId}.${TestingConfig.dataset}.students_hourly"
 
 }
+

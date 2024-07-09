@@ -1,6 +1,7 @@
 package com.bq
 
-import com.demos.utils.EnumUtils.matchEnum
+import com.utils.EnumUtils.matchEnum
+
 
 object BqType extends Enumeration {
 

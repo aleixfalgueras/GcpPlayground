@@ -124,6 +124,20 @@ object BqClient {
 
   }
 
+  def isExternalTable(tableName: String): Boolean = {
+    val table = bigQuery.getTable(getTableIdByTableName(tableName))
+
+    if (table == null) {
+      throw new RuntimeException(s"Table $tableName not found")
+    }
+
+    table.getDefinition[TableDefinition]() match {
+      case _: ExternalTableDefinition => true
+      case _ => false
+    }
+
+  }
+
   def deleteTable(tableName: String): Boolean = {
     val result = bigQuery.delete(getTableIdByTableName(tableName))
 

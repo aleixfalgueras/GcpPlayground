@@ -1,4 +1,4 @@
-package com.demos.utils
+package com.utils
 
 import scala.util.{Failure, Success, Try}
 

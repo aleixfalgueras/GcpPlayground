@@ -1,9 +1,9 @@
 package com.spark.repo.implementation
 
 import com.bq.BqClient
-import com.demos.utils.DateTimeUtils.formatDateTimeISO8601
 import com.spark.repo.implementation.BqRepo.ONLY_READ_REPO
 import com.spark.repo.{PartitionType, SparkRepo}
+import com.utils.DateTimeUtils.formatDateTimeISO
 import org.apache.log4j.Logger
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
@@ -16,8 +16,11 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
   private val logger: Logger = Logger.getLogger(getClass)
 
   override def read(): DataFrame = {
-    logger.info(s"Reading $tableName from BigQuery...")
-    spark.read.format("bigquery").load(tableName)
+    if (BqClient.isExternalTable(tableName)) readExternalTable()
+    else {
+      logger.info(s"Reading $tableName from BigQuery...")
+      spark.read.format("bigquery").load(tableName)
+    }
 
   }
 
@@ -73,8 +76,8 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
    * @param endDateTime ending date time point
    */
   def readByPartitionTimeInterval(startDateTime: LocalDateTime, endDateTime: LocalDateTime): DataFrame = {
-    val startTimestampFormatted = formatDateTimeISO8601(startDateTime)
-    val endTimestampFormatted = formatDateTimeISO8601(endDateTime)
+    val startTimestampFormatted = formatDateTimeISO(startDateTime)
+    val endTimestampFormatted = formatDateTimeISO(endDateTime)
     val query =
       s"""
       |SELECT
@@ -98,7 +101,7 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
   def readByPartitionTime(partitionTime: LocalDateTime, limitPruningFilter: Option[String] = None): DataFrame = {
     // minimum partition level is hourly
     val partitionTimeHour = partitionTime.withMinute(0).withSecond(0).withNano(0)
-    val partitionTimeFormatted = formatDateTimeISO8601(partitionTimeHour)
+    val partitionTimeFormatted = formatDateTimeISO(partitionTimeHour)
     val _limitPruningFilter = limitPruningFilter match {
       case Some(value) => value + " AND "
       case None => ""
