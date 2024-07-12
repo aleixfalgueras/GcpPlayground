@@ -54,7 +54,7 @@ object DateTimeUtils {
 
   // parse methods
 
-  def getDate(stringDate: String, format: String = SIMPLE_DATE_FORMAT): LocalDate =
+  def getDate(stringDate: String, format: String = ISO_DATE_FORMAT): LocalDate =
     LocalDate.parse(stringDate, DateTimeFormatter.ofPattern(format))
 
   def toDateMultipleFormats(stringDate: String, formats: Seq[String]): Option[LocalDate] = {

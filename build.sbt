@@ -18,6 +18,10 @@ lazy val root = (project in file("."))
       "org.rogach" %% "scallop" % "5.0.1",
       "com.github.pureconfig" %% "pureconfig" % "0.17.5",
       "org.mockito" %% "mockito-scala-scalatest" % "1.16.15" % Test,
+      // circle
+      "io.circe" %% "circe-core" % "0.14.7",
+      "io.circe" %% "circe-generic" % "0.14.9",
+      "io.circe" %% "circe-parser" % "0.14.9",
       // spark
       "org.apache.spark" %% "spark-avro" % sparkVersion,
       "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
