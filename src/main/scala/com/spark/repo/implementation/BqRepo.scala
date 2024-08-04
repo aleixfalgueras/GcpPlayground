@@ -29,7 +29,7 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
     data.write
       .format("bigquery")
       .mode(saveMode)
-      .option("temporaryGcsBucket", gcsTmpBucket)
+      .option("writeMethod", "direct")
       .save(tableName)
 
   }
