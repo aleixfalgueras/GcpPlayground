@@ -17,6 +17,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.rogach" %% "scallop" % "5.0.1",
       "com.github.pureconfig" %% "pureconfig" % "0.17.5",
+      "mysql" % "mysql-connector-java" % "8.0.33",
       "org.mockito" %% "mockito-scala-scalatest" % "1.16.15" % Test,
       // circle
       "io.circe" %% "circe-core" % "0.14.7",

@@ -1,6 +1,7 @@
 package com.demos.dataproc
 
 import com.configs.SparkEtlConfig
+import com.demos.utils.ExecutionMode
 import com.demos.utils.PureConfigUtils.readConfigFromFile
 import com.spark.repo.implementation.ParquetRepo
 import com.spark.utils.SparkSessionUtils.getSparkSession
@@ -156,7 +157,7 @@ object SparkSql {
   }
 
   def main(args: Array[String]): Unit = {
-    implicit val spark: SparkSession = getSparkSession("SparkSql")
+    implicit val spark: SparkSession = getSparkSession("SparkSql", ExecutionMode.GCP)
 
     implicit val config = readConfigFromFile("dev", configFilePath)
 
