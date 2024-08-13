@@ -263,3 +263,4 @@ notas.txt
 oauth_playground_credentials.json
 /src/main/scala/com/QuickTest.scala
 /src/main/resources/downloader/*
+/src/main/resources/cloud_functions/quick_test.py

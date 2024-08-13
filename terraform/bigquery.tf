@@ -151,3 +151,9 @@ resource "google_bigquery_dataset" "BQ_dataset_testing" {
   description = "Dataset for testing ephemeral tables"
   default_table_expiration_ms = 3600000 // minum value (1 hour)
 }
+
+resource "google_bigquery_dataset" "BQ_dataset_bq_ml" {
+  dataset_id  = "bq_ml"
+  location    = var.multiregion
+  description = "Dataset for BQ ML udemy course"
+}
