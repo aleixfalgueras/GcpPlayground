@@ -2,7 +2,11 @@
 
 Personal project to learn and explore GCP.
 
-Quotas:
+Project Structure:
+- JDK Temurin 11.0.24
+- Scala 2.12.18
+
+GCP Quotas:
 - CPUS ALL REGIONS: 12
 - N2 CPUS: 8
 
