@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TaxiSessionsPipeline" type="Application" factoryName="Application" folderName="Dataflow">
+    <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+    <option name="MAIN_CLASS_NAME" value="com.demos.dataflow.taxiworkshop.TaxiSessionsPipeline" />
+    <module name="GcpPlayground" />
+    <option name="PROGRAM_PARAMETERS" value="--project=industrial-keep-410516 --region=us-central1 --runner=DataflowRunner --gcpTempLocation=gs://aleix-tmp-bucket/dataflow/tmp --pubsub-topic=projects/pubsub-public-data/topics/taxirides-realtime --output-table=&quot;industrial-keep-410516.dataflow_exercises.point_rides&quot; --accum-table=&quot;industrial-keep-410516.dataflow_exercises.total_rides&quot; --errors-table=&quot;industrial-keep-410516.dataflow_exercises.errors&quot; --usePublicIps=false --enableStreamingEngine=true " />
+    <shortenClasspath name="ARGS_FILE" />
+    <option name="VM_PARAMETERS" value="-Dlog4j.configurationFile=src/main/resources/log4j2.properties" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.demos.dataflow.taxiworkshop.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
