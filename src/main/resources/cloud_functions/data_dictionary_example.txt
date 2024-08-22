@@ -1,0 +1,14 @@
+{
+    "bucket": "X_BUCKET",
+    "name": "folder/myfile.txt",
+    "size": "1024",
+    "timeCreated": "2024-08-22T12:34:56.789Z",
+    "updated": "2024-08-22T12:34:56.789Z",
+    "contentType": "text/plain",
+    "metageneration": "1",
+    "mediaLink": "https://www.googleapis.com/download/storage/v1/b/X_BUCKET/o/folder%2Fmyfile.txt?generation=1596750035930382&alt=media",
+    "crc32c": "rTVTeQ==",
+    "md5Hash": "k1uK/kBxl2MI44G3KDdI2w==",
+    "generation": "1596750035930382",
+    "resourceState": "exists"
+}

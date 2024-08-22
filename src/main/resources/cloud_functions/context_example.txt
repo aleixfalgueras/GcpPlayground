@@ -1,0 +1,10 @@
+{
+    "event_id": "1234567890123456",
+    "timestamp": "2024-08-22T12:34:56.789Z",
+    "event_type": "google.storage.object.finalize",
+    "resource": {
+        "service": "storage.googleapis.com",
+        "name": "projects/_/buckets/X_BUCKET/objects/folder/myfile.txt",
+        "type": "storage#object"
+    }
+}

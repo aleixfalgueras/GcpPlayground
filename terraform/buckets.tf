@@ -91,6 +91,14 @@ resource "google_storage_bucket" "project_id_cloudbuild"{
   }
 }
 
+resource "google_storage_bucket" "aleix_cloud_functions_bucket"{
+  name = "aleix-cloud-functions-bucket"
+  location = var.region
+
+  uniform_bucket_level_access = true
+  force_destroy = true
+}
+
 // OPTIONAL
 
 resource "google_storage_bucket" "aleix_demos_bucket" {
