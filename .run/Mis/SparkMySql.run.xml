@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="SparkMySql" type="Application" factoryName="Application">
+  <configuration default="false" name="SparkMySql" type="Application" factoryName="Application" folderName="Mis">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.demos.mis.SparkMySql" />
     <module name="GcpPlayground" />
