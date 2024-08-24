@@ -1,7 +1,7 @@
 jobs:
   - sparkJob:
       jarFileUris:
-        - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+        - gs://demos-bucket-gcpplay/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
       mainClass: com.demos.dataproc.SparkSql
       args:
       properties: # [2e, 2c, 2G, 6c (4 + 2), 6G (4 + 2)]
@@ -26,13 +26,15 @@ placement:
   managedCluster: # [2w, 2c, 6G, 4c, 12G]
     clusterName: @@CLUSTER_NAME
     config:
+      gceClusterConfig:
+        internalIpOnly: false
       initializationActions:
-        "executableFile": "gs://aleix-demos-bucket/init_actions/set_timezone.sh"
+        "executableFile": "gs://demos-bucket-gcpplay/init_actions/set_timezone.sh"
         "executionTimeout": "300s"
       endpointConfig:
         enableHttpPortAccess: true
-      configBucket: dataproc-stg-bucket
-      tempBucket: dataproc-tmp-bucket
+      configBucket: dataproc-stg-bucket-gcpplay
+      tempBucket: dataproc-tmp-bucket-gcpplay
       softwareConfig:
         imageVersion: 2.2-debian12
       masterConfig:

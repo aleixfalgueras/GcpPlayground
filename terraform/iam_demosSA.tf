@@ -28,7 +28,7 @@ resource "google_project_iam_member" "demosSA_dataflow_service_agent" {
 # buckets
 
 resource "google_storage_bucket_iam_member" "demosSA_demos_bucket_admin" {
-  bucket = google_storage_bucket.aleix_demos_bucket.name
+  bucket = google_storage_bucket.demos_bucket.name
   role   = "roles/storage.admin"
   member = "serviceAccount:${google_service_account.demosSA.email}"
 }

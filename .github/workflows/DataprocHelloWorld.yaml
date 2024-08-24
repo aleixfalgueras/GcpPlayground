@@ -15,7 +15,7 @@ env:
   REGION: us-central1
   WORKFLOW_TEMPLATE_PATH: ./src/main/resources/dataproc/workflowtemplate/DataprocHelloWorld_wt.yaml
   WORKFLOW_TEMPLATE_ID: dataproc-hello-world
-  SPARK_HISTORY_BUCKET: spark-history-bucket
+  SPARK_HISTORY_BUCKET: spark-history-bucket-gcpplay
 
 jobs:
   call_build_workflow:

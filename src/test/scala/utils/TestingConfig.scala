@@ -2,9 +2,9 @@ package utils
 
 object TestingConfig {
 
-  val projectId = "industrial-keep-410516"
+  val projectId = "gcpplayground-433406"
   val dataset = "testing"
-  val gcsTmpBucket = "gs://bq-tmp-bucket"
+  val gcsTmpBucket = "gs://bq-tmp-bucket-gcpplay"
   val createTables = true
 
 }

@@ -19,9 +19,9 @@ permissions:
 env:
   CLUSTER_NAME: spark-history
   CLUSTER_REGION: us-central1
-  SPARK_HISTORY_BUCKET: spark-history-bucket
-  DATAPROC_STG_BUCKET: dataproc-stg-bucket
-  DATAPROC_TEMP_BUCKET: dataproc-tmp-bucket
+  SPARK_HISTORY_BUCKET: spark-history-bucket-gcpplay
+  DATAPROC_STG_BUCKET: dataproc-stg-bucket-gcpplay
+  DATAPROC_TEMP_BUCKET: dataproc-tmp-bucket-gcpplay
   DATAPROC_IMAGE: 2.2.2-debian12
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
         gcloud dataproc clusters create ${{ env.CLUSTER_NAME }} --region=${{ env.CLUSTER_REGION }} \
         --master-machine-type=n2-standard-2 --single-node --image-version=${{ env.DATAPROC_IMAGE }} \
         --bucket=${{ env.DATAPROC_STG_BUCKET }} --temp-bucket=${{ env.DATAPROC_TEMP_BUCKET }} \
-        --enable-component-gateway \
+        --enable-component-gateway --public-ip-address \
         --properties=yarn:yarn.nodemanager.remote-app-log-dir=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/yarn-logs,spark:spark.history.fs.logDirectory=gs://${{ env.SPARK_HISTORY_BUCKET }}/*/spark-job-history,spark:spark.history.custom.executor.log.url.applyIncompleteApplication=false,spark:spark.history.custom.executor.log.url="{{ '{{YARN_LOG_SERVER_URL}}/{{NM_HOST}}:{{NM_PORT}}/{{CONTAINER_ID}}/{{CONTAINER_ID}}/{{USER}}/{{FILE_NAME}}' }}"
 
     - name: Delete spark history cluster

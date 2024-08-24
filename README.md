@@ -16,7 +16,7 @@ SCIO plugin is required: https://github.com/spotify/scio-idea-plugin
 
 Add the following options to the IntelliJ Scala compiler and to the SBT VM parameters: 
 
--Dbigquery.project=industrial-keep-410516 -Dbigquery.cache.enabled=false -Dbigquery.types.debug=false
+-Dbigquery.project=gcpplayground-433406 -Dbigquery.cache.enabled=false -Dbigquery.types.debug=false
 
 ### Demos (WIP 🔨)
 

@@ -1,7 +1,7 @@
 jobs:
   - sparkJob:
       jarFileUris:
-        - gs://aleix-demos-bucket/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
+        - gs://demos-bucket-gcpplay/jars/GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
       mainClass: com.demos.dataproc.SparkSql
       args:
       properties: # [2e, 2c, 2G, 6c (4 + 2), 6G (4 + 2)]

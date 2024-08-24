@@ -11,6 +11,10 @@ variable "project_number" {
   description = "GCP project number"
 }
 
+variable "project_suffix" {
+  description = "Project suffix for unique names"
+}
+
 variable "region" {
   description = "Region for all resources"
 }

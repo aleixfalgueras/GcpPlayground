@@ -49,7 +49,7 @@ resource "google_bigquery_table" "BQ_table_sellers" {
     },
     {
       name = "daily_target"
-      type = "INTEGER"
+      type = "INT64"
       mode = "NULLABLE"
     }
   ])

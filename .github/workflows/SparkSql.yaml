@@ -68,5 +68,5 @@ jobs:
       workflow_template_path: ${{ needs.prepare_params.outputs.workflow_template_path }}
       workflow_template_id: ${{ needs.prepare_params.outputs.workflow_template_id }}
       cluster_name: ${{ needs.prepare_params.outputs.cluster_name }}
-      spark_history_bucket: spark-history-bucket
+      spark_history_bucket: spark-history-bucket-gcpplay
     secrets: inherit

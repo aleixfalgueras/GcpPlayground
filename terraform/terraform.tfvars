@@ -1,5 +1,6 @@
 credentials_file_path = "C:/Users/falgu/AppData/Roaming/gcloud/application_default_credentials.json"
-project_id = "industrial-keep-410516"
-project_number = "321560073577"
+project_id = "gcpplayground-433406"
+project_number = "608273188096"
+project_suffix = "gcpplay"
 region = "us-central1"
 multiregion = "us"

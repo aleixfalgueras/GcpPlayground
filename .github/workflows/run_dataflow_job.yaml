@@ -17,7 +17,7 @@ on:
         description: 'Flex template file path'
         required: true
         type: string
-        default: gs://aleix-demos-bucket/dataflow_templates/dataflow_hello_world_template.json
+        default: gs://demos-bucket-gcpplay/dataflow_templates/dataflow_hello_world_template.json
       java_main_class:
         description: 'Java main class'
         required: true
@@ -44,13 +44,13 @@ permissions:
 
 env:
   REGION: us-central1
-  REMOTE_JAR_PATH: gs://aleix-demos-bucket/jars
+  REMOTE_JAR_PATH: gs://demos-bucket-gcpplay/jars
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
   LOCAL_JAR_PATH: .
-  DOCKER_REPO: us-central1-docker.pkg.dev/industrial-keep-410516/docker-repo
-  DATAFLOW_STAGING_PATH: gs://aleix-tmp-bucket/dataflow/staging
-  DATAFLOW_TMP_PATH: gs://aleix-tmp-bucket/dataflow/tmp
-  CLOUDBUILD_LOGS_PATH: gs://aleix-tmp-bucket/dataflow/cloudbuild_logs
+  DOCKER_REPO: us-central1-docker.pkg.dev/gcpplayground-433406/docker-repo
+  DATAFLOW_STAGING_PATH: gs://tmp-bucket-gcpplay/dataflow/staging
+  DATAFLOW_TMP_PATH: gs://tmp-bucket-gcpplay/dataflow/tmp
+  CLOUDBUILD_LOGS_PATH: gs://tmp-bucket-gcpplay/dataflow/cloudbuild_logs
 
 jobs:
   call_build_workflow:

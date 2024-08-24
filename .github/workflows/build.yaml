@@ -20,10 +20,10 @@ permissions:
   contents: read
 
 env:
-  PROJECT_ID: industrial-keep-410516
+  PROJECT_ID: gcpplayground-433406
   JAR_NAME: GcpPlayground-assembly-0.1.0-SNAPSHOT.jar
   REGION: us-central1
-  DEPLOY_PATH: gs://aleix-demos-bucket/jars/
+  DEPLOY_PATH: gs://demos-bucket-gcpplay/jars/
 
 jobs:
   build:

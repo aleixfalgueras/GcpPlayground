@@ -3,7 +3,7 @@
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.demos.dataflow.DataflowHelloWorld" />
     <module name="GcpPlayground" />
-    <option name="PROGRAM_PARAMETERS" value="--project=industrial-keep-410516 --runner=DirectRunner --tempLocation=gs://aleix-tmp-bucket/dataflow/tmp" />
+    <option name="PROGRAM_PARAMETERS" value="--project=gcpplayground-433406 --runner=DirectRunner --tempLocation=gs://tmp-bucket-gcpplay/dataflow/tmp" />
     <shortenClasspath name="MANIFEST" />
     <option name="VM_PARAMETERS" value="-Dlog4j.configurationFile=src/main/resources/log4j2.properties" />
     <extension name="coverage">

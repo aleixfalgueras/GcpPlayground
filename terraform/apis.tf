@@ -1,6 +1,16 @@
 
+resource "google_project_service" "compute_api" {
+  service = "compute.googleapis.com"
+  project = var.project_id
+}
+
 resource "google_project_service" "dataproc_api" {
   service = "dataproc.googleapis.com"
+  project = var.project_id
+}
+
+resource "google_project_service" "artifactregistry_api" {
+  service = "artifactregistry.googleapis.com"
   project = var.project_id
 }
 
