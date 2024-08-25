@@ -34,6 +34,16 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
 
   }
 
+  /** At today, Direct write method does not support writing into a partitioned ingestion table. */
+  def writeIngestion[T](data: Dataset[T], saveMode: SaveMode): Unit = {
+    data.write
+      .format("bigquery")
+      .mode(saveMode)
+      .option("temporaryGcsBucket", gcsTmpBucket)
+      .save(tableName)
+
+  }
+
   def readExternalTable(): DataFrame = {
     spark.conf.set("materializationDataset", tableName.split('.')(1))
     val query = s"SELECT * FROM `$tableName`"
@@ -150,13 +160,13 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
                             partitionType: PartitionType.Value = PartitionType.DAY,
                             datePartition: Option[String] = None): Unit = {
     val options = datePartition match {
-      case Some(partitionDateValue) =>
+      case Some(datePartitionValue) =>
         logger.info(s"Writing partition in BigQuery table $tableName: \n" +
-          s"[partition ID = $partitionDateValue, partition field = $partitionField, " +
+          s"[partition ID = $datePartitionValue, partition field = $partitionField, " +
           s"partition type = $partitionType, mode = $saveMode]")
         Map(
           "temporaryGcsBucket" -> gcsTmpBucket,
-          "datePartition" -> partitionDateValue,
+          "datePartition" -> datePartitionValue,
           "partitionField" -> partitionField,
           "partitionType" -> partitionType.toString
         )
