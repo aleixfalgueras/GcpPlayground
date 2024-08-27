@@ -2,6 +2,7 @@ package com
 
 package object configs {
 
+  // shared GCP config values
   case class GCP(projectId: String,
                  demosBucket: String,
                  bqTmpBucket: String)

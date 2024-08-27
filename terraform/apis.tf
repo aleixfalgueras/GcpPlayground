@@ -30,3 +30,24 @@ resource "google_project_service" "dataflow_api" {
   service = "dataflow.googleapis.com"
   project = var.project_id
 }
+
+resource "google_project_service" "cloudfunctions_api" {
+  service = "cloudfunctions.googleapis.com"
+  project = var.project_id
+}
+
+resource "google_project_service" "cloudbuild_api" {
+  service = "cloudbuild.googleapis.com"
+  project = var.project_id
+}
+
+resource "google_project_service" "logging_api" {
+  service = "logging.googleapis.com"
+  project = var.project_id
+}
+
+resource "google_project_service" "pubsub_api" {
+  service = "pubsub.googleapis.com"
+  project = var.project_id
+}
+
