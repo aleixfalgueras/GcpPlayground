@@ -4,6 +4,11 @@ import com.demos.utils.{ExecutionMode, StandardArgs}
 import com.spark.utils.SparkSessionUtils.getSparkSession
 import org.apache.log4j.Logger
 
+/**
+ * Simple example of how to run a Scala Spark application in Dataproc.
+ * This code just creates and prints a dataframe.
+ *
+ */
 object DataprocHelloWorld {
 
   private val logger: Logger = Logger.getLogger(getClass)

@@ -7,6 +7,10 @@ import com.spark.utils.BqSparkSchema
 import org.apache.spark.sql.types.StructType
 import org.slf4j.{Logger, LoggerFactory}
 
+/**
+ * Object to interact directly with BigQuery.
+ *
+ */
 object BqClient {
 
   val logger: Logger = LoggerFactory getLogger getClass.getName
@@ -64,7 +68,7 @@ object BqClient {
 
   /**
    * If the table is partitioned by ingestion time, fields "_PARTITIONTIME" and "_PARTITIONDATE" (Type.DAY)
-   * will be add to the schema.
+   * will be added to the schema.
    *
    * @param partitionField if None, ingestion time is used as a partition field
    * @param requirePartitionFilter forces you to always provide a filter for partitions

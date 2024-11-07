@@ -32,10 +32,10 @@ object DateTimeUtils {
   def currentTimestampZoned: Instant       = Instant.now()       // timestamp with timezone (nanosecond precision)
 
   /* Examples:
-  currentDate           -> 2024-06-02
-  currentDateTime       -> 2024-06-02T11:53:18.560716800
-  currentZonedDateTime  -> 2024-06-02T11:53:18.560716800+02:00[Europe/Madrid]
-  currentTimestampZoned -> 2024-06-02T09:53:18.560716800Z
+    currentDate           -> 2024-06-02
+    currentDateTime       -> 2024-06-02T11:53:18.560716800
+    currentZonedDateTime  -> 2024-06-02T11:53:18.560716800+02:00[Europe/Madrid]
+    currentTimestampZoned -> 2024-06-02T09:53:18.560716800Z
   */
 
   // format methods

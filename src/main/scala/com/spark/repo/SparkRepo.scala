@@ -4,6 +4,10 @@ import com.spark.repo.implementation.{AvroRepo, BqRepo, CsvRepo, ParquetRepo}
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
+/**
+ * Simplify and standarize Spark read and write methods for the different data sources.
+ *
+ */
 trait SparkRepo {
 
   def read(): DataFrame
@@ -12,6 +16,13 @@ trait SparkRepo {
 
 }
 
+/**
+ * SparkRepo is a factory object that provides instances of different Spark repository types
+ * (e.g., BigQuery, CSV, Avro, Parquet), depending on the specified configuration. It abstracts away
+ * the initialization logic for different data sources, simplifying interaction with various
+ * data repositories on Google Cloud Storage (GCS) and BigQuery.
+ *
+ */
 object SparkRepo {
 
   def getGcsSparkRepo(sparkRepoType: SparkRepoType.Value,

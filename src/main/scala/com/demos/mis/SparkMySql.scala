@@ -2,6 +2,10 @@ package com.demos.mis
 
 import com.spark.utils.SparkSessionUtils.getSparkSession
 
+/**
+ * Simple example of how to connect Spark to a MySql instance using the JDBC.
+ *
+ */
 object SparkMySql extends App {
 
   val MYSQL_USER = "pep_melos"

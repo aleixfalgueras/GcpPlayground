@@ -8,6 +8,16 @@ import com.spotify.scio.{Args, ContextAndArgs, ScioContext, streaming}
 import org.apache.beam.sdk.transforms.windowing.{AfterProcessingTime, AfterWatermark}
 import org.joda.time.Duration
 
+/**
+ * A more comple example of Dataflow and SCIO from the Scio/Scala workshop in the Beam Summit 2021:
+ *
+ * This pipeline takes some JSON data from a public PubSub topic, parses the JSON strings into a custom case class,
+ * aggregates some of the produced objects using a window, and writes some output to BigQuery.
+ *
+ * Resources:
+ * - https://www.youtube.com/watch?v=Kz4pn4KoPZo
+ * - https://github.com/iht/scio-scala-beam-summit/tree/main
+ */
 object TaxiSessionsPipeline {
   val SESSION_GAP = 600
   val EARLY_RESULT = 10

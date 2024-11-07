@@ -8,16 +8,30 @@ import org.json4s.jackson.JsonMethods.parse
 
 import scala.io.Source
 
-/* import org.json4s._  sometimes this import is removed automatically and not auto-detected later */
+/* import org.json4s._ // sometimes this import is removed automatically and not auto-detected later */
+
+/**
+ * BqSparkSchema provides utility methods for mapping schemas and data types between
+ * Google BigQuery and Apache Spark. It enables seamless conversion of BigQuery data types
+ * to their equivalent Spark types, handling differences in precision and data type limitations.
+ * This object is particularly useful for applications integrating Spark with BigQuery, as it
+ * bridges the type system differences between the two platforms.
+ *
+ * Notable differences handled by this object:
+ * - BigQuery `BIGNUMERIC` type: BigQuery allows up to 76 digits of precision for `BIGNUMERIC`,
+ *   while Spark’s maximum supported precision for `DecimalType` is 38.
+ * - Data type mappings for BigQuery types like `TIMESTAMP`, `DATETIME`, `FLOAT64`, etc.,
+ *   have corresponding Spark types, which are handled in the type conversion methods here.
+ */
 object BqSparkSchema {
 
   /**
-   * BQ type "BIGNUMERIC" (aka "BIGDECIMAL") precision is 76.76 (the 77th digit is partial), however Spark DecimalType
-   * maximum precision allowed is 38.
+   * Converts a BigQuery data type to the corresponding Spark data type.
    *
-   * https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#data-types
-   * https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types
-   * https://spark.apache.org/docs/latest/sql-ref-datatypes.html
+   * Resources:
+   * - https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#data-types
+   * - https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types
+   * - https://spark.apache.org/docs/latest/sql-ref-datatypes.html
    */
   def bqTypeToSparkType(bqType: BqType.Value): DataType = {
     bqType match {
@@ -85,6 +99,5 @@ object BqSparkSchema {
     Schema.of(fields: _*)
 
   }
-
 
 }

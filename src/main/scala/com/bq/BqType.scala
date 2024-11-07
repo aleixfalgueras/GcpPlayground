@@ -2,7 +2,10 @@ package com.bq
 
 import com.utils.EnumUtils.matchEnum
 
-
+/**
+ * Enumeration used to represent BiqQuery native types.
+ *
+ */
 object BqType extends Enumeration {
 
   val BOOLEAN, STRING, INT64, INT, SMALLINT, INTEGER, BIGINT, TINYINT, BYTEINT,

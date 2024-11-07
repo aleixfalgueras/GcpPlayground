@@ -3,7 +3,6 @@ package com.demos.utils
 import org.apache.log4j.Logger
 import pureconfig.{ConfigReader, ConfigSource}
 
-
 object PureConfigUtils {
   private val logger: Logger = Logger.getLogger(getClass.getName)
 

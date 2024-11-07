@@ -5,6 +5,11 @@ import com.spotify.scio.bigquery.types.BigQueryType
 import com.spotify.scio.bigquery.{Query, Table, WRITE_TRUNCATE, bigQueryScioContextOps, description}
 import org.slf4j.{Logger, LoggerFactory}
 
+/**
+ * Simple example of how to use Dataflow with SCIO. Read data from [[BQ_SELLERS_TABLE]], apply map + partition function
+ * and write into [[BQ_BAD_SELLERS_TABLE]].
+ *
+ */
 object DataflowHelloWorld {
 
   private val logger: Logger = LoggerFactory getLogger getClass.getName
@@ -13,6 +18,7 @@ object DataflowHelloWorld {
   @BigQueryType.fromTable("spark_exercises.sellers")
   class Seller
 
+  val BQ_BAD_SELLERS_TABLE = "dataflow_exercises.bad_sellers"
   @BigQueryType.toTable
   @description("Sellers considered 'bad' seller")
   case class BadSeller(sellerName: String)
@@ -34,7 +40,7 @@ object DataflowHelloWorld {
     goodSellers.map(goodSeller => logger.info(goodSeller.toString))
     badSellers.map(badSeller => logger.warn(badSeller.toString))
 
-    badSellers.saveAsTypedBigQueryTable(Table.Spec("dataflow_exercises.bad_sellers"), writeDisposition = WRITE_TRUNCATE)
+    badSellers.saveAsTypedBigQueryTable(Table.Spec(BQ_BAD_SELLERS_TABLE), writeDisposition = WRITE_TRUNCATE)
 
     scioContext.run
 

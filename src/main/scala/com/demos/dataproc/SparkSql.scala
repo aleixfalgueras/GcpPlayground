@@ -14,6 +14,10 @@ import pureconfig.generic.auto._
 
 import scala.collection.immutable.Seq
 
+/**
+ * Object with demonstrations of common Spark SQL functions using a set of data stored in GCS.
+ *
+ */
 object SparkSql {
 
   val PRODUCT_ID = "product_id"

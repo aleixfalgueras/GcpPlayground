@@ -10,7 +10,11 @@ import scala.util.{Failure, Success, Try}
 
 case class Person(name: String, age: Int, birthDate: LocalDate)
 
-object CircleDemo extends App {
+/**
+ * Simple example of how to parse JSONs into a case class using io.circe libraries.
+ *
+ */
+object CirceDemo extends App {
 
   implicit val personDecoder: Decoder[Person] = deriveDecoder[Person]
 

@@ -14,7 +14,9 @@ import org.apache.spark.sql.SparkSession
 import pureconfig.generic.auto._
 
 /**
- * Simple Spark ETL example.
+ * Multiple Spark ETL examples using the SparkRepo framework.
+ *
+ * Data is always read from GCS in Parquet format, and it's stored with the [[SparkRepoType]] format provided.
  *
  */
 object SparkEtlApp {
