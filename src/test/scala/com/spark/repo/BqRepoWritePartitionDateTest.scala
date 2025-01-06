@@ -59,7 +59,6 @@ class BqRepoWritePartitionDateTest extends SparkTest {
   val studentsYearlyRepo = new BqRepo(studentsYearlyTableName, TestingConfig.gcsTmpBucket)
   val studentsHourlyRepo = new BqRepo(studentsHourlyTableName, TestingConfig.gcsTmpBucket)
 
-
   override def beforeAll(): Unit = {
     if (TestingConfig.createTables) {
       BqClient.createOrOverwritePartitionedTable(

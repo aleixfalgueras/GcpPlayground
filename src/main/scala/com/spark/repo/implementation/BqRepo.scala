@@ -35,7 +35,7 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
   }
 
   /** At today, Direct write method does not support writing into a partitioned ingestion table. */
-  def writeIngestion[T](data: Dataset[T], saveMode: SaveMode): Unit = {
+  def writeInIngestionPartitionedTable[T](data: Dataset[T], saveMode: SaveMode): Unit = {
     data.write
       .format("bigquery")
       .mode(saveMode)
@@ -85,7 +85,7 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
    * @param startDateTime starting date time point
    * @param endDateTime ending date time point
    */
-  def readByPartitionTimeInterval(startDateTime: LocalDateTime, endDateTime: LocalDateTime): DataFrame = {
+  def readBy_partitiontimeInterval(startDateTime: LocalDateTime, endDateTime: LocalDateTime): DataFrame = {
     val startTimestampFormatted = formatDateTimeISO(startDateTime)
     val endTimestampFormatted = formatDateTimeISO(endDateTime)
     val query =
@@ -103,20 +103,13 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
   }
 
   /**
-   * Reads the partition for the partitionTime provided. To limit the partitions that are scanned in a query,
-   * provide a limitPruningFilter. Seconds and minutes from _PARTITIONTIME are ignored.
+   * Reads the partition for the partitionTime provided, seconds and minutes from partitionTime are ignored
+   * because BQ's minimum partition level is hourly.
    *
-   * limitPruningFilter example: _PARTITIONTIME BETWEEN TIMESTAMP('2017-01-01') AND TIMESTAMP('2017-03-01')
    */
-  def readByPartitionTime(partitionTime: LocalDateTime, limitPruningFilter: Option[String] = None): DataFrame = {
-    // minimum partition level is hourly
+  def readBy_partitiontime(partitionTime: LocalDateTime): DataFrame = {
     val partitionTimeHour = partitionTime.withMinute(0).withSecond(0).withNano(0)
     val partitionTimeFormatted = formatDateTimeISO(partitionTimeHour)
-    val _limitPruningFilter = limitPruningFilter match {
-      case Some(value) => value + " AND "
-      case None => ""
-    }
-
     val query =
       s"""
          |SELECT
@@ -124,15 +117,15 @@ class BqRepo(val tableName: String, val gcsTmpBucket: String = ONLY_READ_REPO)(i
          |FROM
          |  $tableName
          |WHERE
-         |  ${_limitPruningFilter}_PARTITIONTIME = TIMESTAMP('$partitionTimeFormatted')
+         | _PARTITIONTIME = TIMESTAMP('$partitionTimeFormatted')
          |""".stripMargin
 
     runSqlQuery(query)
 
   }
 
-  def readByPartitionDate(partitionDate: LocalDate, limitPruningFilter: Option[String] = None): DataFrame =
-    readByPartitionTime(partitionDate.atStartOfDay(), limitPruningFilter)
+  def readByPartitionDate(partitionDate: LocalDate): DataFrame =
+    readBy_partitiontime(partitionDate.atStartOfDay())
 
   /**
    *

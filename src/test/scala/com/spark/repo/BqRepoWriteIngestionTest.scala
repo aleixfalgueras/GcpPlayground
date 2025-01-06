@@ -48,7 +48,7 @@ class BqRepoWriteIngestionTest extends SparkTest {
   behavior of "A daily partitioned table by ingestion time"
 
   it must "have daily partition after the write" in {
-    studentsIngestionTimeDailyBqRepo.writeIngestion(oneStudentPartition, SaveMode.Overwrite)
+    studentsIngestionTimeDailyBqRepo.writeInIngestionPartitionedTable(oneStudentPartition, SaveMode.Overwrite)
 
     val partitionIdAndRows = getPartitionIdAndTotalRows(studentsIngestionTimeDailyBqRepo.readPartitionsInfo())
     val expectedPartitionIdAndRows = Set((formatDate(currentDate, BQ_DATE_PARTITION_FORMAT), 1))
@@ -58,13 +58,13 @@ class BqRepoWriteIngestionTest extends SparkTest {
 
   it must "return the partitions from the interval [currentDate - 1 d, currentDate + 1 d] using " +
     " readByPartitionTimeInterval and the current date partition using readByPartitionDate after the write" in {
-    studentsIngestionTimeDailyBqRepo.writeIngestion(oneStudentPartition, SaveMode.Overwrite)
+    studentsIngestionTimeDailyBqRepo.writeInIngestionPartitionedTable(oneStudentPartition, SaveMode.Overwrite)
 
     val currentDateMinus1Day = currentDate.minusDays(1).atStartOfDay()
     val currentDatePlus1Day = currentDate.plusDays(1).atStartOfDay()
 
     val dataUsingPartitionDate = studentsIngestionTimeDailyBqRepo.readByPartitionDate(currentDate)
-    val dataUsingInterval = studentsIngestionTimeDailyBqRepo.readByPartitionTimeInterval(
+    val dataUsingInterval = studentsIngestionTimeDailyBqRepo.readBy_partitiontimeInterval(
       currentDateMinus1Day,
       currentDatePlus1Day
     )
@@ -78,7 +78,7 @@ class BqRepoWriteIngestionTest extends SparkTest {
   behavior of "An hourly partitioned table by ingestion time"
 
   it must "have an hourly partition after the write" in {
-    studentsIngestionTimeHourlyBqRepo.writeIngestion(oneStudentPartition, SaveMode.Overwrite)
+    studentsIngestionTimeHourlyBqRepo.writeInIngestionPartitionedTable(oneStudentPartition, SaveMode.Overwrite)
 
     val partitionIdAndRows = getPartitionIdAndTotalRows(studentsIngestionTimeHourlyBqRepo.readPartitionsInfo())
     val expectedPartitionIdAndRows = Set((formatDateTime(currentDateTime, BQ_HOUR_PARTITION_FORMAT), 1))
@@ -90,13 +90,13 @@ class BqRepoWriteIngestionTest extends SparkTest {
 
   it must "return the partitions from the interval [currentDateTime - 1 H, currentDateTime + 1 H] using " +
     " readByPartitionTimeInterval and the current hour partition using readByPartitionTime after the write" in {
-    studentsIngestionTimeHourlyBqRepo.writeIngestion(oneStudentPartition, SaveMode.Overwrite)
+    studentsIngestionTimeHourlyBqRepo.writeInIngestionPartitionedTable(oneStudentPartition, SaveMode.Overwrite)
 
     val currentDateTimeMinus1H = currentDateTime.minusHours(1)
     val currentDateTimePlus1H = currentDateTime.plusHours(1)
 
-    val dataUsingPartitionDate = studentsIngestionTimeHourlyBqRepo.readByPartitionTime(currentDateTime)
-    val dataUsingInterval = studentsIngestionTimeHourlyBqRepo.readByPartitionTimeInterval(
+    val dataUsingPartitionDate = studentsIngestionTimeHourlyBqRepo.readBy_partitiontime(currentDateTime)
+    val dataUsingInterval = studentsIngestionTimeHourlyBqRepo.readBy_partitiontimeInterval(
       currentDateTimeMinus1H,
       currentDateTimePlus1H
     )
